@@ -13,6 +13,15 @@ public class ShipController : MonoBehaviour
     [SerializeField]
     private float pitchTorqueAmount;
 
+    [SerializeField]
+    private ParticleSystem boostMain;
+
+    [SerializeField]
+    private ParticleSystem boostLeft;
+
+    [SerializeField]
+    private ParticleSystem boostRight;
+
     private float vertInput;
 
     private float horizInput;
@@ -35,6 +44,7 @@ public class ShipController : MonoBehaviour
     private void FixedUpdate()
     {
         HandlePhysics();
+        HandleParticles();
     }
 
     private void HandlePhysics()
@@ -58,6 +68,42 @@ public class ShipController : MonoBehaviour
         {
             float lerpedAngle = Mathf.LerpAngle(transform.localEulerAngles.z, 0f, Time.fixedDeltaTime * 0.6f);
             transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, lerpedAngle);
+        }
+    }
+
+    /// <summary>
+    /// Controls the Particles on the boosts. They will be activated on their proper
+    /// user input andd deactivated if theres no proper input:
+    ///
+    /// vertical input: activate main Boost
+    /// left Input: activate right Boost
+    /// right Input: activate left Boost
+    /// </summary>
+    private void HandleParticles()
+    {
+        if (vertInput == 0f)
+        {
+            boostMain.Stop();
+        }
+        else
+        {
+            boostMain.Play();
+        }
+
+        if (horizInput > 0f)
+        {
+            boostLeft.Play();
+            boostRight.Stop();
+        }
+        else if (horizInput < 0f)
+        {
+            boostLeft.Stop();
+            boostRight.Play();
+        }
+        else
+        {
+            boostLeft.Stop();
+            boostRight.Stop();
         }
     }
 
