@@ -9,7 +9,10 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        // Set the rotation of camera to default
         transform.rotation = Quaternion.identity;
+
+        // Look at our target
         transform.LookAt(target.transform);
     }
 }
