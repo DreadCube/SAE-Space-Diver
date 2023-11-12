@@ -81,7 +81,7 @@ public class ShipController : MonoBehaviour
     /// </summary>
     private void HandleParticles()
     {
-        if (vertInput == 0f)
+        if (vertInput <= 0f)
         {
             boostMain.Stop();
         }
