@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
     {
         /**
          * Our Camera position is based on the position of the target.
-         * We use a default forward Offset and the sqrtMagnitute of the target as an
+         * We use a default Offset and the sqrtMagnitute of the target as an
          * additional "velocity" offset.
          */
         float sqrtMagnitude = targetRigidbody.velocity.sqrMagnitude;
