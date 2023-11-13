@@ -10,6 +10,8 @@ public class CameraController : MonoBehaviour
     private Rigidbody targetRigidbody;
 
     private float forwardOffset = 50f;
+    private float upOffset = 8f;
+
 
     private void Awake()
     {
@@ -20,17 +22,17 @@ public class CameraController : MonoBehaviour
     {
         /**
          * Our Camera position is based on the position of the target.
-         * We use a default Offset and the sqrtMagnitute of the target as an
+         * We use a default forward offfset and the sqrtMagnitute of the target as an
          * additional "velocity" offset.
          */
         float sqrtMagnitude = targetRigidbody.velocity.sqrMagnitude;
         float velocityOffset = Mathf.Clamp(sqrtMagnitude / 500, 1f, 20f);
         transform.position = target.position - (target.forward * (forwardOffset + velocityOffset));
 
-        // To prevent up and down jigglering we force Y position to zero.
-        transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+        // Setting the up Offset
+        transform.position = new Vector3(transform.position.x, upOffset, transform.position.z);
 
-        // Look to the target
+        // Look at the target
         transform.LookAt(target.transform);
     }
 }
