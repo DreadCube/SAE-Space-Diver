@@ -5840,7 +5840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   verticalForceAmount: 100
   rollTorqueAmount: 4
-  pitchTorqueAmount: -2
+  pitchTorqueAmount: 2
   boostMain: {fileID: 1007851255}
   boostLeft: {fileID: 1914267543}
   boostRight: {fileID: 1768420845}
