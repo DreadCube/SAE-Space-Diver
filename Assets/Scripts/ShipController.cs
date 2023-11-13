@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
+    [Range(0f, 100f)]
     [SerializeField]
     private float verticalForceAmount;
 
+    [Range(0f, 10f)]
     [SerializeField]
     private float rollTorqueAmount;
 
+    [Range(0f, 10f)]
     [SerializeField]
     private float pitchTorqueAmount;
 
@@ -59,7 +62,7 @@ public class ShipController : MonoBehaviour
         Vector3 rollTorqueSum = transform.up * horizInput * rollTorqueAmount;
         rigidBody.AddTorque(rollTorqueSum, ForceMode.Force);
 
-        Vector3 pitchTorqueSum = transform.forward * horizInput * pitchTorqueAmount;
+        Vector3 pitchTorqueSum = transform.forward * horizInput * -pitchTorqueAmount;
         rigidBody.AddTorque(pitchTorqueSum, ForceMode.Force);
 
 
