@@ -30,10 +30,6 @@ public class CameraController : MonoBehaviour
         // To prevent up and down jigglering we force Y position to zero.
         transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
 
-        // We always keep the default rotation of the camera
-        transform.rotation = Quaternion.identity;
-
-
         // Look to the target
         transform.LookAt(target.transform);
     }
