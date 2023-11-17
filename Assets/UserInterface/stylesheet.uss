@@ -1,0 +1,184 @@
+.button-primary {
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    background-color: rgba(255, 0, 0, 0);
+    -unity-text-outline-width: 0;
+    -unity-font: url('project://database/Assets/UserInterface/Fonts/Valorax.otf?fileID=12800000&guid=b100759de6b694a808315e3382fe7ed8&type=3#Valorax');
+    -unity-font-definition: url('project://database/Assets/UserInterface/Fonts/Valorax%20SDF.asset?fileID=11400000&guid=54bae48c509e54c37bc19c20a4380eb1&type=2#Valorax SDF');
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgb(255, 0, 0);
+    border-right-color: rgb(255, 0, 0);
+    border-top-color: rgb(255, 0, 0);
+    border-bottom-color: rgb(255, 0, 0);
+    color: rgb(255, 0, 0);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    flex-grow: 0;
+    width: 125px;
+    min-height: 75px;
+}
+
+.button-primary:hover {
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    background-color: rgb(255, 0, 0);
+    -unity-text-outline-width: 0;
+    -unity-font: url('project://database/Assets/UserInterface/Fonts/Valorax.otf?fileID=12800000&guid=b100759de6b694a808315e3382fe7ed8&type=3#Valorax');
+    -unity-font-definition: url('project://database/Assets/UserInterface/Fonts/Valorax%20SDF.asset?fileID=11400000&guid=54bae48c509e54c37bc19c20a4380eb1&type=2#Valorax SDF');
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgb(255, 0, 0);
+    border-right-color: rgb(255, 0, 0);
+    border-top-color: rgb(255, 0, 0);
+    border-bottom-color: rgb(255, 0, 0);
+    color: rgb(0, 0, 0);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    width: 125px;
+    min-height: 75px;
+}
+
+.button-primary-selected {
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    background-color: rgb(255, 0, 0);
+    -unity-text-outline-width: 0;
+    -unity-font: url('project://database/Assets/UserInterface/Fonts/Valorax.otf?fileID=12800000&guid=b100759de6b694a808315e3382fe7ed8&type=3#Valorax');
+    -unity-font-definition: url('project://database/Assets/UserInterface/Fonts/Valorax%20SDF.asset?fileID=11400000&guid=54bae48c509e54c37bc19c20a4380eb1&type=2#Valorax SDF');
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgb(255, 0, 0);
+    border-right-color: rgb(255, 0, 0);
+    border-top-color: rgb(255, 0, 0);
+    border-bottom-color: rgb(255, 0, 0);
+    color: rgb(0, 0, 0);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+}
+
+.button-secondary {
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    background-color: rgba(255, 0, 0, 0);
+    -unity-text-outline-width: 0;
+    -unity-font: url('project://database/Assets/UserInterface/Fonts/Valorax.otf?fileID=12800000&guid=b100759de6b694a808315e3382fe7ed8&type=3#Valorax');
+    -unity-font-definition: url('project://database/Assets/UserInterface/Fonts/Valorax%20SDF.asset?fileID=11400000&guid=54bae48c509e54c37bc19c20a4380eb1&type=2#Valorax SDF');
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgb(255, 223, 0);
+    border-right-color: rgb(255, 223, 0);
+    border-top-color: rgb(255, 223, 0);
+    border-bottom-color: rgb(255, 223, 0);
+    color: rgb(255, 223, 0);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    width: 125px;
+    min-height: 75px;
+}
+
+.button-secondary:hover {
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    background-color: rgb(255, 223, 0);
+    -unity-text-outline-width: 0;
+    -unity-font: url('project://database/Assets/UserInterface/Fonts/Valorax.otf?fileID=12800000&guid=b100759de6b694a808315e3382fe7ed8&type=3#Valorax');
+    -unity-font-definition: url('project://database/Assets/UserInterface/Fonts/Valorax%20SDF.asset?fileID=11400000&guid=54bae48c509e54c37bc19c20a4380eb1&type=2#Valorax SDF');
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgb(255, 223, 0);
+    border-right-color: rgb(255, 223, 0);
+    border-top-color: rgb(255, 223, 0);
+    border-bottom-color: rgb(255, 223, 0);
+    color: rgb(0, 0, 0);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    width: 125px;
+    min-height: 75px;
+}
+
+.button-secondary-selected {
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    background-color: rgb(255, 223, 0);
+    -unity-text-outline-width: 0;
+    -unity-font: url('project://database/Assets/UserInterface/Fonts/Valorax.otf?fileID=12800000&guid=b100759de6b694a808315e3382fe7ed8&type=3#Valorax');
+    -unity-font-definition: url('project://database/Assets/UserInterface/Fonts/Valorax%20SDF.asset?fileID=11400000&guid=54bae48c509e54c37bc19c20a4380eb1&type=2#Valorax SDF');
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgb(255, 223, 0);
+    border-right-color: rgb(255, 223, 0);
+    border-top-color: rgb(255, 223, 0);
+    border-bottom-color: rgb(255, 223, 0);
+    color: rgb(0, 0, 0);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+}
+
+.inventory-item {
+    background-image: url('project://database/Assets/UserInterface/Sprites/Circle.png?fileID=2800000&guid=e56c620ae506a4c2e969eba697c61cc7&type=3#Circle');
+    -unity-background-scale-mode: scale-to-fit;
+    background-color: rgba(255, 0, 0, 0);
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 75px;
+    height: 75px;
+    display: flex;
+    -unity-text-align: lower-right;
+    color: rgb(255, 255, 255);
+    white-space: normal;
+    letter-spacing: 0;
+    -unity-background-image-tint-color: rgb(255, 5, 0);
+    -unity-text-outline-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
+
+.inventory-item-amount {
+    right: 0;
+    position: absolute;
+    bottom: 0;
+    -unity-font: url('project://database/Assets/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=26fad7e459c5d481e96b5b1ab8e2342d&type=3#NotInter-Regular');
+    -unity-font-definition: initial;
+    font-size: 30px;
+    -unity-text-outline-width: 0;
+    -unity-text-align: middle-center;
+}

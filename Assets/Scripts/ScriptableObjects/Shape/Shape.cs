@@ -14,6 +14,8 @@ public class Shape : ScriptableObject
 
     [field: SerializeField] public Color Color { get; private set; }
 
+    [field: SerializeField] public Texture2D UITexture { get; private set; }
+
     public float Hue
     {
         get

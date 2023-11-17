@@ -1,7 +1,9 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class InventoryManager : MonoBehaviour
 {
+    public static InventoryManager Instance { get; private set; }
 
     public enum SortDirection
     {
@@ -9,50 +11,53 @@ public class InventoryManager : MonoBehaviour
         Desc
     }
 
-    private enum SortType
+    public enum SortType
     {
         Amount,
         Hue,
         ShapeType
     }
 
-    private InventoryItem[] inventoryItems;
+    private List<InventoryItem> inventoryItems = new List<InventoryItem>();
 
-    private SortDirection activeSortDirection = SortDirection.Asc;
-    private SortType activeSortType = SortType.ShapeType;
 
+    private SortType activeSortType = SortType.Amount;
+    private SortDirection activeSortDirection = SortDirection.Desc;
 
     private void Awake()
     {
-        object[] definitions = Resources.LoadAll("ShapeDefinitions", typeof(Shape));
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
 
-        System.Array.Resize(ref inventoryItems, definitions.Length);
+        object[] definitions = Resources.LoadAll("ShapeDefinitions", typeof(Shape));
 
         for (int i = 0; i < definitions.Length; i++)
         {
-            inventoryItems[i] = new InventoryItem((Shape)definitions[i], Random.Range(0, 10));
+            InventoryItem item = new InventoryItem((Shape)definitions[i], Random.Range(10, 10));
+            inventoryItems.Add(item);
         }
-
-        SortList(activeSortType, activeSortDirection);
-        RenderList();
     }
 
-    private void RenderList()
+    private void Start()
     {
+        SortInventoryItems(activeSortType, activeSortDirection, true);
+        UIManager.Instance.Init();
+    }
 
-        Debug.Log("-------------START---------------");
-        Debug.Log($"Sort Direction: {activeSortDirection}");
-        Debug.Log($"Sort Type: {activeSortType}");
-
-        foreach (InventoryItem item in inventoryItems)
+    public void SortInventoryItems(SortType sortType, SortDirection sortDirection, bool isInitialSort = false)
+    {
+        // Nothing to do if the requested sorting is the current active sorting
+        if (sortType == activeSortType && activeSortDirection == sortDirection && !isInitialSort)
         {
-            Debug.Log($"AMOUNT: {item.GetAmount()} / HUE: {item.GetShape().Hue} / TYPE: {item.GetShape().Type}");
+            return;
         }
-        Debug.Log("-------------END-----------------");
-    }
 
-    private void SortList(SortType sortType, SortDirection sortDirection)
-    {
         switch (sortType)
         {
             case SortType.Amount:
@@ -66,5 +71,23 @@ public class InventoryManager : MonoBehaviour
                 MergeSort.Sort(inventoryItems, sortDirection);
                 break;
         }
+
+        activeSortType = sortType;
+        activeSortDirection = sortDirection;
+    }
+
+    public List<InventoryItem> GetInventoryItems()
+    {
+        return inventoryItems;
+    }
+
+    public SortType GetActiveSortType()
+    {
+        return activeSortType;
+    }
+
+    public SortDirection GetActiveSortDirection()
+    {
+        return activeSortDirection;
     }
 }

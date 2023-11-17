@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c748c1d3580f54d73b08b63eda93c74c, type: 3}
-  m_Name: RedCube
+  m_Name: BlueCircle
   m_EditorClassIdentifier: 
-  <Type>k__BackingField: 0
-  <Color>k__BackingField: {r: 1, g: 0, b: 0, a: 1}
-  <UITexture>k__BackingField: {fileID: 2800000, guid: fae32a475ea5b485aac4987ebb317199, type: 3}
+  <Type>k__BackingField: 1
+  <Color>k__BackingField: {r: 0.2637477, g: 0, b: 1, a: 1}
+  <UITexture>k__BackingField: {fileID: 2800000, guid: e56c620ae506a4c2e969eba697c61cc7, type: 3}

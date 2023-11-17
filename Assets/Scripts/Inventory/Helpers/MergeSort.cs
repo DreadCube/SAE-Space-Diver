@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+
 public static class MergeSort
 {
     // Merge Sort
-    public static void Sort(InventoryItem[] items, InventoryManager.SortDirection sortDirection)
+    public static void Sort(List<InventoryItem> items, InventoryManager.SortDirection sortDirection)
     {
-        HandleSort(items, 0, items.Length - 1, sortDirection);
+        HandleSort(items, 0, items.Count - 1, sortDirection);
     }
 
     // Helper: MERGE SORT
-    private static void HandleSort(InventoryItem[] items, int left, int right, InventoryManager.SortDirection sortDirection)
+    private static void HandleSort(List<InventoryItem> items, int left, int right, InventoryManager.SortDirection sortDirection)
     {
         if (left >= right)
         {
@@ -24,23 +26,22 @@ public static class MergeSort
     }
 
     // Helper: MERGE SORT
-    private static void Merge(InventoryItem[] items, int left, int middlePoint, int right, InventoryManager.SortDirection sortDirection)
+    private static void Merge(List<InventoryItem> items, int left, int middlePoint, int right, InventoryManager.SortDirection sortDirection)
     {
         int sizeA = middlePoint - left + 1;
         int sizeB = right - middlePoint;
 
-
-        InventoryItem[] tempLeft = new InventoryItem[sizeA];
-        InventoryItem[] tempRight = new InventoryItem[sizeB];
+        List<InventoryItem> tempLeft = new List<InventoryItem>();
+        List<InventoryItem> tempRight = new List<InventoryItem>();
 
         for (int i = 0; i < sizeA; ++i)
         {
-            tempLeft[i] = items[left + i];
+            tempLeft.Add(items[left + i]);
         }
 
         for (int j = 0; j < sizeB; ++j)
         {
-            tempRight[j] = items[middlePoint + 1 + j];
+            tempRight.Add(items[middlePoint + 1 + j]);
         }
 
         int index = left;
