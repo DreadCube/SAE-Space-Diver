@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 
-
-using System;
 using static InventoryManager;
 
 public class UIManager : MonoBehaviour
@@ -43,14 +40,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void Init()
+    private void Start()
     {
         EnableInventoryUI();
         DrawInventoryUI();
-    }
-    private void Update()
-    {
-
     }
 
     private void EnableInventoryUI()
@@ -66,18 +59,9 @@ public class UIManager : MonoBehaviour
         descButton = inventoryRoot.Q<Button>("Desc");
 
 
-
-
-
         UIDocument.rootVisualElement.focusable = true;
-        UIDocument.rootVisualElement.pickingMode = PickingMode.Position;
-        UIDocument.rootVisualElement.Focus();
-
         UIDocument.rootVisualElement.RegisterCallback<KeyDownEvent>(ev =>
         {
-            // TODO: Maybe use normal keydown events
-            Debug.Log("HIER");
-            Debug.Log(ev.keyCode);
             switch (ev.keyCode)
             {
                 case KeyCode.Alpha1:
@@ -92,7 +76,7 @@ public class UIManager : MonoBehaviour
                     break;
 
                 case KeyCode.Tab:
-                    ChangeSortDirection(InventoryManager.Instance.GetActiveSortDirection() == InventoryManager.SortDirection.Asc ? InventoryManager.SortDirection.Desc : InventoryManager.SortDirection.Asc);
+                    ChangeSortDirection(InventoryManager.Instance.GetInactiveSortDirection());
                     break;
             }
         });

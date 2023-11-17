@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 [CreateAssetMenu(fileName = "Shape", menuName = "ScriptableObjects/Shape", order = 1)]
 public class Shape : ScriptableObject
 {

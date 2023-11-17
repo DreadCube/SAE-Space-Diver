@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class InventoryItem
 {
     private Shape item;
@@ -13,13 +9,7 @@ public class InventoryItem
         this.amount = amount;
     }
 
-    public int GetAmount()
-    {
-        return amount;
-    }
+    public int GetAmount() => amount;
 
-    public Shape GetShape()
-    {
-        return item;
-    }
+    public Shape GetShape() => item;
 }

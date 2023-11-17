@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public static class InsertionSort
 {
@@ -20,16 +18,13 @@ public static class InsertionSort
                     ? items[j].GetAmount() > item.GetAmount()
                     : items[j].GetAmount() < item.GetAmount();
 
-                if (comparator)
-                {
-                    items[j + 1] = items[j];
-                    j = j - 1;
-                }
-                else
+                if (!comparator)
                 {
                     break;
                 }
 
+                items[j + 1] = items[j];
+                j = j - 1;
             }
             items[j + 1] = item;
         }

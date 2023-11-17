@@ -20,39 +20,15 @@ public class InventoryManager : MonoBehaviour
 
     private List<InventoryItem> inventoryItems = new List<InventoryItem>();
 
-
     private SortType activeSortType = SortType.Amount;
     private SortDirection activeSortDirection = SortDirection.Desc;
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-
-        object[] definitions = Resources.LoadAll("ShapeDefinitions", typeof(Shape));
-
-        for (int i = 0; i < definitions.Length; i++)
-        {
-            InventoryItem item = new InventoryItem((Shape)definitions[i], Random.Range(10, 10));
-            inventoryItems.Add(item);
-        }
-    }
-
-    private void Start()
-    {
-        SortInventoryItems(activeSortType, activeSortDirection, true);
-        UIManager.Instance.Init();
-    }
-
     public void SortInventoryItems(SortType sortType, SortDirection sortDirection, bool isInitialSort = false)
     {
-        // Nothing to do if the requested sorting is the current active sorting
+        /*
+         * Nothing to do if the requested sorting is the current active sorting
+         * and not the initial sort
+         */
         if (sortType == activeSortType && activeSortDirection == sortDirection && !isInitialSort)
         {
             return;
@@ -76,18 +52,42 @@ public class InventoryManager : MonoBehaviour
         activeSortDirection = sortDirection;
     }
 
-    public List<InventoryItem> GetInventoryItems()
+    public List<InventoryItem> GetInventoryItems() => inventoryItems;
+
+    public SortType GetActiveSortType() => activeSortType;
+
+    public SortDirection GetActiveSortDirection() => activeSortDirection;
+
+    public SortDirection GetInactiveSortDirection()
     {
-        return inventoryItems;
+        if (activeSortDirection == SortDirection.Asc)
+        {
+            return SortDirection.Desc;
+        }
+        return SortDirection.Asc;
     }
 
-    public SortType GetActiveSortType()
+    private void Awake()
     {
-        return activeSortType;
-    }
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
 
-    public SortDirection GetActiveSortDirection()
-    {
-        return activeSortDirection;
+        object[] definitions = Resources.LoadAll("ShapeDefinitions", typeof(Shape));
+
+        for (int i = 0; i < definitions.Length; i++)
+        {
+            InventoryItem item = new InventoryItem((Shape)definitions[i], Random.Range(1, 10));
+            inventoryItems.Add(item);
+        }
+
+        // Sorts the items initially based on defaults
+        SortInventoryItems(activeSortType, activeSortDirection, true);
+
     }
 }
