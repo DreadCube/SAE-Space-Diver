@@ -3,6 +3,7 @@ using UnityEngine.UIElements;
 using System.Collections.Generic;
 
 using static InventoryManager;
+using static UnityEditor.Progress;
 
 public class UIManager : MonoBehaviour
 {
@@ -23,9 +24,7 @@ public class UIManager : MonoBehaviour
     private Button descButton;
 
     private string classNamePrimarySelected = "button-primary-selected";
-    private string classNameSecondarySelected = "button-secondary-selected";
     private string classNameInventoryItem = "inventory-item";
-    private string classNameInventoryItemAmount = "inventory-item-amount";
 
 
     private void Awake()
@@ -120,7 +119,6 @@ public class UIManager : MonoBehaviour
 
         inventoryItemsRoot.Clear();
 
-
         amountButton.RemoveFromClassList(classNamePrimarySelected);
         hueButton.RemoveFromClassList(classNamePrimarySelected);
         shapeButton.RemoveFromClassList(classNamePrimarySelected);
@@ -141,31 +139,30 @@ public class UIManager : MonoBehaviour
 
         if (InventoryManager.Instance.GetActiveSortDirection() == InventoryManager.SortDirection.Asc)
         {
-            ascButton.AddToClassList(classNameSecondarySelected);
-            descButton.RemoveFromClassList(classNameSecondarySelected);
-
+            ascButton.AddToClassList(classNamePrimarySelected);
+            descButton.RemoveFromClassList(classNamePrimarySelected);
         }
         else
         {
-            descButton.AddToClassList(classNameSecondarySelected);
-            ascButton.RemoveFromClassList(classNameSecondarySelected);
+            descButton.AddToClassList(classNamePrimarySelected);
+            ascButton.RemoveFromClassList(classNamePrimarySelected);
         }
 
-        foreach (InventoryItem item in inventoryItems)
+        for (int i = 0; i < inventoryItems.Count; i++)
         {
+            InventoryItem item = inventoryItems[i];
+
             Button itemButton = new Button();
             itemButton.AddToClassList(classNameInventoryItem);
 
             itemButton.style.backgroundImage = item.GetShape().UITexture;
 
-            itemButton.style.unityBackgroundImageTintColor = item.GetShape().Color;
 
-            Label itemButtonLabel = new Label();
-            itemButtonLabel.AddToClassList(classNameInventoryItemAmount);
-            itemButtonLabel.text = item.GetAmount().ToString();
+            // TODO: Add Controls for switching between current active item
+            Color shapeColor = item.GetShape().Color;
+            itemButton.style.unityBackgroundImageTintColor = shapeColor;
 
-
-            itemButton.Add(itemButtonLabel);
+            itemButton.text = item.GetAmount().ToString();
 
             inventoryItemsRoot.Add(itemButton);
         }

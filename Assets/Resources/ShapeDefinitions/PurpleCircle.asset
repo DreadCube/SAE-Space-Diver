@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 1
   <Color>k__BackingField: {r: 1, g: 0, b: 0.80757713, a: 1}
-  <UITexture>k__BackingField: {fileID: 2800000, guid: e56c620ae506a4c2e969eba697c61cc7, type: 3}
+  <UITexture>k__BackingField: {fileID: 2800000, guid: 9ee1decce9e2c483fa97ddb433371c07, type: 3}
