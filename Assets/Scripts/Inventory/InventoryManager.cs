@@ -82,7 +82,7 @@ public class InventoryManager : MonoBehaviour
 
         foreach (Shape shape in shapes)
         {
-            InventoryItem item = new InventoryItem(shape, Random.Range(0, 0));
+            InventoryItem item = new InventoryItem(shape, Random.Range(0, 100));
             inventoryItems.Add(item);
         }
 

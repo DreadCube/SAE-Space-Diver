@@ -3,7 +3,6 @@ using UnityEngine.UIElements;
 using System.Collections.Generic;
 
 using static InventoryManager;
-using static UnityEditor.Progress;
 
 public class UIManager : MonoBehaviour
 {
@@ -154,7 +153,6 @@ public class UIManager : MonoBehaviour
 
             Button itemButton = new Button();
             itemButton.AddToClassList(classNameInventoryItem);
-            itemButton.AddToClassList("fadeIn");
 
             itemButton.style.backgroundImage = item.GetShape().UITexture;
 
