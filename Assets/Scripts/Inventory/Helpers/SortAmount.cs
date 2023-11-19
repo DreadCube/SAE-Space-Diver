@@ -1,7 +1,15 @@
 ﻿using System.Collections.Generic;
 
-public static class InsertionSort
+public static class SortAmount
 {
+    /**
+     * Sorts our Inventory Items based on Amount.
+     * 
+     * We use a Insertion Sort here.
+     * 
+     * Used reference:
+     * https://www.geeksforgeeks.org/insertion-sort/
+     */
     public static void Sort(List<InventoryItem> items, InventoryManager.SortDirection sortDirection)
     {
         int arrayLength = items.Count;

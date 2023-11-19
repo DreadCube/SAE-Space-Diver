@@ -37,14 +37,14 @@ public class InventoryManager : MonoBehaviour
         switch (sortType)
         {
             case SortType.Amount:
-                InsertionSort.Sort(inventoryItems, sortDirection);
+                SortAmount.Sort(inventoryItems, sortDirection);
                 break;
 
             case SortType.Hue:
-                QuickSort.Sort(inventoryItems, sortDirection);
+                SortHue.Sort(inventoryItems, sortDirection);
                 break;
             default:
-                MergeSort.Sort(inventoryItems, sortDirection);
+                SortShapeType.Sort(inventoryItems, sortDirection);
                 break;
         }
 
@@ -88,6 +88,5 @@ public class InventoryManager : MonoBehaviour
 
         // Sorts the items initially based on defaults
         SortInventoryItems(activeSortType, activeSortDirection, true);
-
     }
 }

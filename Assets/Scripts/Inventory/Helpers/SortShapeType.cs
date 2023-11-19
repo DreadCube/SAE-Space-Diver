@@ -1,9 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-public static class MergeSort
+public static class SortShapeType
 {
-    // Merge Sort
+    /**
+     * Sorts our Inventory Items based on the Shape Type.
+     * 
+     * We use a Merge Sort here.
+     * 
+     * Used reference:
+     * https://www.geeksforgeeks.org/merge-sort/
+     */
     public static void Sort(List<InventoryItem> items, InventoryManager.SortDirection sortDirection)
     {
         HandleSort(items, 0, items.Count - 1, sortDirection);
@@ -22,7 +28,6 @@ public static class MergeSort
         HandleSort(items, middlePoint + 1, right, sortDirection);
 
         Merge(items, left, middlePoint, right, sortDirection);
-
     }
 
     // Helper: MERGE SORT

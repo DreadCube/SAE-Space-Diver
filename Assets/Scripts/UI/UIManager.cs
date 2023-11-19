@@ -154,6 +154,7 @@ public class UIManager : MonoBehaviour
 
             Button itemButton = new Button();
             itemButton.AddToClassList(classNameInventoryItem);
+            itemButton.AddToClassList("fadeIn");
 
             itemButton.style.backgroundImage = item.GetShape().UITexture;
 

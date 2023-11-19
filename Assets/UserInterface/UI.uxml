@@ -13,7 +13,7 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="InventoryItems" style="width: 100%; height: auto; flex-direction: row; flex-grow: 0; align-items: flex-end; justify-content: flex-start; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
-            <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="ItemSlot" enable-rich-text="false" text="123" class="inventory-item" style="-unity-background-image-tint-color: rgba(255, 5, 0, 0.51);" />
+            <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="ItemSlot" enable-rich-text="false" text="123" class="inventory-item" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
