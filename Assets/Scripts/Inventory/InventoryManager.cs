@@ -78,15 +78,36 @@ public class InventoryManager : MonoBehaviour
             Instance = this;
         }
 
-        object[] definitions = Resources.LoadAll("ShapeDefinitions", typeof(Shape));
+        List<Shape> shapes = LoadShapeDefinitions();
 
-        for (int i = 0; i < definitions.Length; i++)
+        foreach (Shape shape in shapes)
         {
-            InventoryItem item = new InventoryItem((Shape)definitions[i], Random.Range(1, 10));
+            InventoryItem item = new InventoryItem(shape, Random.Range(0, 0));
             inventoryItems.Add(item);
         }
 
         // Sorts the items initially based on defaults
         SortInventoryItems(activeSortType, activeSortDirection, true);
+    }
+
+    /**
+     * Loads our available Shape Definitions on runtime
+     * 
+     * TODO: This logic will be moved later on to a more central place, because we will need the available
+     * Shape Definitions in different places (inventory, enemies spawning, pickup items). Should also be potential
+     * cached
+     */
+    private List<Shape> LoadShapeDefinitions()
+    {
+        object[] definitions = Resources.LoadAll("ShapeDefinitions", typeof(Shape));
+
+        List<Shape> shapes = new List<Shape>();
+
+        foreach (object shapeDefinition in definitions)
+        {
+            shapes.Add((Shape)shapeDefinition);
+        }
+
+        return shapes;
     }
 }
