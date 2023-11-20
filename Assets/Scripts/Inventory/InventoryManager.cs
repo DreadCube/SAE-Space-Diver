@@ -67,6 +67,24 @@ public class InventoryManager : MonoBehaviour
         return SortDirection.Asc;
     }
 
+    /**
+     * Adds a PickupItem to the inventory
+     */
+    public void AddItem(PickupItem pickupItem)
+    {
+        // find the corresponding inventory item that matches the provided pickup
+        // item and increase it's amount by one.
+        InventoryItem inventoryItem = inventoryItems.Find(item => item.GetShape() == pickupItem.GetShape());
+        inventoryItem.Increase();
+
+
+        /**
+         * Redraws the inventory UI to show the new amount.
+         * TODO: Ideally we do not have to draw the whole inventory UI.
+         */
+        UIManager.Instance.DrawInventoryUI();
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -78,7 +96,7 @@ public class InventoryManager : MonoBehaviour
             Instance = this;
         }
 
-        List<Shape> shapes = LoadShapeDefinitions();
+        List<Shape> shapes = ShapeDefinition.GetShapeDefinitions();
 
         foreach (Shape shape in shapes)
         {
@@ -88,26 +106,5 @@ public class InventoryManager : MonoBehaviour
 
         // Sorts the items initially based on defaults
         SortInventoryItems(activeSortType, activeSortDirection, true);
-    }
-
-    /**
-     * Loads our available Shape Definitions on runtime
-     * 
-     * TODO: This logic will be moved later on to a more central place, because we will need the available
-     * Shape Definitions in different places (inventory, enemies spawning, pickup items). Should also be potential
-     * cached
-     */
-    private List<Shape> LoadShapeDefinitions()
-    {
-        object[] definitions = Resources.LoadAll("ShapeDefinitions", typeof(Shape));
-
-        List<Shape> shapes = new List<Shape>();
-
-        foreach (object shapeDefinition in definitions)
-        {
-            shapes.Add((Shape)shapeDefinition);
-        }
-
-        return shapes;
     }
 }

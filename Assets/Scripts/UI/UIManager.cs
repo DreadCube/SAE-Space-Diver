@@ -112,7 +112,7 @@ public class UIManager : MonoBehaviour
         DrawInventoryUI();
     }
 
-    private void DrawInventoryUI()
+    public void DrawInventoryUI()
     {
         List<InventoryItem> inventoryItems = InventoryManager.Instance.GetInventoryItems();
 

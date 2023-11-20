@@ -60,10 +60,10 @@ public class ShipController : MonoBehaviour
 
         // Roll and Pitch with Torque sideways
         Vector3 rollTorqueSum = transform.up * horizInput * rollTorqueAmount;
-        rigidBody.AddTorque(rollTorqueSum, ForceMode.Force);
+        rigidBody.AddTorque(rollTorqueSum, ForceMode.Acceleration);
 
         Vector3 pitchTorqueSum = transform.forward * horizInput * -pitchTorqueAmount;
-        rigidBody.AddTorque(pitchTorqueSum, ForceMode.Force);
+        rigidBody.AddTorque(pitchTorqueSum, ForceMode.Acceleration);
 
 
         // If we don't have left / right input, we smoothly rotate the pitch rotation back to normal
@@ -132,5 +132,15 @@ public class ShipController : MonoBehaviour
         float start = (min + max) * 0.5f - 180;
         float floor = Mathf.FloorToInt((angle - start) / 360) * 360;
         return Mathf.Clamp(angle, min + floor, max + floor);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "PickupItem")
+        {
+            PickupItem pickupItem = other.gameObject.GetComponent<PickupItem>();
+            InventoryManager.Instance.AddItem(pickupItem);
+            Destroy(other.gameObject);
+        }
     }
 }
