@@ -1,7 +1,9 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class InventoryManager : MonoBehaviour
 {
+    public static InventoryManager Instance { get; private set; }
 
     public enum SortDirection
     {
@@ -9,62 +11,103 @@ public class InventoryManager : MonoBehaviour
         Desc
     }
 
-    private enum SortType
+    public enum SortType
     {
         Amount,
         Hue,
         ShapeType
     }
 
-    private InventoryItem[] inventoryItems;
+    private List<InventoryItem> inventoryItems = new List<InventoryItem>();
 
-    private SortDirection activeSortDirection = SortDirection.Asc;
-    private SortType activeSortType = SortType.ShapeType;
+    private SortType activeSortType = SortType.Amount;
+    private SortDirection activeSortDirection = SortDirection.Desc;
 
-
-    private void Awake()
+    public void SortInventoryItems(SortType sortType, SortDirection sortDirection, bool isInitialSort = false)
     {
-        object[] definitions = Resources.LoadAll("ShapeDefinitions", typeof(Shape));
-
-        System.Array.Resize(ref inventoryItems, definitions.Length);
-
-        for (int i = 0; i < definitions.Length; i++)
+        /*
+         * Nothing to do if the requested sorting is the current active sorting
+         * and not the initial sort
+         */
+        if (sortType == activeSortType && activeSortDirection == sortDirection && !isInitialSort)
         {
-            inventoryItems[i] = new InventoryItem((Shape)definitions[i], Random.Range(0, 10));
+            return;
         }
 
-        SortList(activeSortType, activeSortDirection);
-        RenderList();
-    }
-
-    private void RenderList()
-    {
-
-        Debug.Log("-------------START---------------");
-        Debug.Log($"Sort Direction: {activeSortDirection}");
-        Debug.Log($"Sort Type: {activeSortType}");
-
-        foreach (InventoryItem item in inventoryItems)
-        {
-            Debug.Log($"AMOUNT: {item.GetAmount()} / HUE: {item.GetShape().Hue} / TYPE: {item.GetShape().Type}");
-        }
-        Debug.Log("-------------END-----------------");
-    }
-
-    private void SortList(SortType sortType, SortDirection sortDirection)
-    {
         switch (sortType)
         {
             case SortType.Amount:
-                InsertionSort.Sort(inventoryItems, sortDirection);
+                SortAmount.Sort(inventoryItems, sortDirection);
                 break;
 
             case SortType.Hue:
-                QuickSort.Sort(inventoryItems, sortDirection);
+                SortHue.Sort(inventoryItems, sortDirection);
                 break;
             default:
-                MergeSort.Sort(inventoryItems, sortDirection);
+                SortShapeType.Sort(inventoryItems, sortDirection);
                 break;
         }
+
+        activeSortType = sortType;
+        activeSortDirection = sortDirection;
+    }
+
+    public List<InventoryItem> GetInventoryItems() => inventoryItems;
+
+    public SortType GetActiveSortType() => activeSortType;
+
+    public SortDirection GetActiveSortDirection() => activeSortDirection;
+
+    public SortDirection GetInactiveSortDirection()
+    {
+        if (activeSortDirection == SortDirection.Asc)
+        {
+            return SortDirection.Desc;
+        }
+        return SortDirection.Asc;
+    }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
+        List<Shape> shapes = LoadShapeDefinitions();
+
+        foreach (Shape shape in shapes)
+        {
+            InventoryItem item = new InventoryItem(shape, Random.Range(0, 100));
+            inventoryItems.Add(item);
+        }
+
+        // Sorts the items initially based on defaults
+        SortInventoryItems(activeSortType, activeSortDirection, true);
+    }
+
+    /**
+     * Loads our available Shape Definitions on runtime
+     * 
+     * TODO: This logic will be moved later on to a more central place, because we will need the available
+     * Shape Definitions in different places (inventory, enemies spawning, pickup items). Should also be potential
+     * cached
+     */
+    private List<Shape> LoadShapeDefinitions()
+    {
+        object[] definitions = Resources.LoadAll("ShapeDefinitions", typeof(Shape));
+
+        List<Shape> shapes = new List<Shape>();
+
+        foreach (object shapeDefinition in definitions)
+        {
+            shapes.Add((Shape)shapeDefinition);
+        }
+
+        return shapes;
     }
 }

@@ -10,7 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c748c1d3580f54d73b08b63eda93c74c, type: 3}
-  m_Name: YellowCube
+  m_Name: RedCircle
   m_EditorClassIdentifier: 
-  <Type>k__BackingField: 0
-  <Color>k__BackingField: {r: 1, g: 1, b: 0, a: 0}
+  <Type>k__BackingField: 1
+  <Color>k__BackingField: {r: 1, g: 0, b: 0, a: 1}
+  <UITexture>k__BackingField: {fileID: 2800000, guid: 9ee1decce9e2c483fa97ddb433371c07, type: 3}

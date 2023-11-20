@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UserInterface/stylesheet.uss?fileID=7433441132597879392&amp;guid=96497880025d847f18362b30a6afac8d&amp;type=3#stylesheet" />
+    <ui:VisualElement name="Inventory" style="flex-grow: 1; align-items: flex-start; justify-content: flex-end; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+        <ui:VisualElement name="SortWrapper" style="flex-grow: 0; flex-direction: row; height: 10%; flex-shrink: 0; justify-content: flex-start; align-items: flex-end; align-self: stretch;">
+            <ui:VisualElement name="SortTypeWrapper" style="flex-grow: 1; flex-direction: row; align-items: flex-start; justify-content: flex-start; min-height: auto;">
+                <ui:Button text="1: Amount" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Amount" enable-rich-text="true" class="button-primary" />
+                <ui:Button text="2: Hue" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Hue" class="button-primary" />
+                <ui:Button text="3: Shape" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Shape" class="button-primary" />
+            </ui:VisualElement>
+            <ui:VisualElement name="SortDirectionWrapper" style="flex-grow: 1; flex-direction: row; align-items: flex-start; justify-content: flex-end;">
+                <ui:Button text="Tab: Asc" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Asc" class="button-secondary button-primary" />
+                <ui:Button text="Tab: Desc" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Desc" enable-rich-text="false" class="button-secondary button-primary" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="InventoryItems" style="width: 100%; height: auto; flex-direction: row; flex-grow: 0; align-items: flex-end; justify-content: flex-start; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+            <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="ItemSlot" enable-rich-text="false" text="123" class="inventory-item" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
