@@ -12,4 +12,9 @@ public class InventoryItem
     public int GetAmount() => amount;
 
     public Shape GetShape() => item;
+
+    public void Increase()
+    {
+        amount++;
+    }
 }
