@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbddea4a1ea4e40f68231429fbfc1d63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationSpeed: 30
+  vacuumThreshold: 400
+  vacuumSpeed: 120
 --- !u!54 &-1320673293694274101
 Rigidbody:
   m_ObjectHideFlags: 0
