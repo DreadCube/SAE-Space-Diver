@@ -8,10 +8,10 @@ public class PickupItem : MonoBehaviour
     private int rotationSpeed = 30;
 
     [SerializeField]
-    private float vacuumThreshold = 300f;
+    private float vacuumThreshold = 400f;
 
     [SerializeField]
-    private float vacuumSpeed = 80f;
+    private float vacuumSpeed = 120f;
 
     private Transform target;
 
