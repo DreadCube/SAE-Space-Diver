@@ -80,6 +80,7 @@ public class UIManager : MonoBehaviour
             InventoryItem item = inventoryItems[i];
 
             Button itemButton = new Button();
+            itemButton.focusable = false;
             itemButton.AddToClassList(classNameInventoryItem);
 
             itemButton.style.backgroundImage = item.GetShape().UITexture;
