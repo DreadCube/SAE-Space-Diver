@@ -30,10 +30,6 @@ public class PickupItem : MonoBehaviour
             collider.isTrigger = true;
         }
 
-        // TODO: Well could be potentially defined already on the PickupItem prefab
-        var rb = gameObject.AddComponent<Rigidbody>();
-        rb.useGravity = false;
-
         this.shape = shape;
     }
 
