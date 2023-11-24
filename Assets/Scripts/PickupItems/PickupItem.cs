@@ -6,7 +6,7 @@ public class PickupItem : MonoBehaviour
 
     /**
      * The Instantiate of PickupItem creates the child game Object
-     * based on the shape, sets proper color / scale and the correct collider / rigidbody
+     * based on the shape, sets proper color / scale and the correct collider
      * for our needs.
      */
     public void Instantiate(Shape shape)
