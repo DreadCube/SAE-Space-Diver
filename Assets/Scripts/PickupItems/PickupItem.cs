@@ -6,7 +6,7 @@ public class PickupItem : MonoBehaviour
 
     /**
      * The Instantiate of PickupItem creates the child game Object
-     * based on the shape, sets proper color / scale and the correct collider / rigidbody
+     * based on the shape, sets proper color / scale and the correct collider
      * for our needs.
      */
     public void Instantiate(Shape shape)
@@ -16,8 +16,6 @@ public class PickupItem : MonoBehaviour
         Renderer renderer = child.GetComponent<Renderer>();
 
         renderer.material.SetColor("_Color", shape.Color);
-
-        transform.localScale = new Vector3(5, 5, 5);
 
         if (shape.Type == Shape.ShapeType.Cube)
         {
@@ -29,10 +27,6 @@ public class PickupItem : MonoBehaviour
             SphereCollider collider = gameObject.AddComponent<SphereCollider>();
             collider.isTrigger = true;
         }
-
-        // TODO: Well could be potentially defined already on the PickupItem prefab
-        var rb = gameObject.AddComponent<Rigidbody>();
-        rb.useGravity = false;
 
         this.shape = shape;
     }

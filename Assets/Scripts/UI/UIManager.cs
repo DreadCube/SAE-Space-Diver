@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance { get; private set; }
 
     [SerializeField]
-    private UIDocument UIDocument;
+    private UIDocument CoreUIDocument;
 
     private VisualElement inventoryRoot;
     private VisualElement inventoryItemsRoot;
@@ -80,6 +80,7 @@ public class UIManager : MonoBehaviour
             InventoryItem item = inventoryItems[i];
 
             Button itemButton = new Button();
+            itemButton.focusable = false;
             itemButton.AddToClassList(classNameInventoryItem);
 
             itemButton.style.backgroundImage = item.GetShape().UITexture;
@@ -124,7 +125,7 @@ public class UIManager : MonoBehaviour
      */
     private void EnableInventoryUI()
     {
-        inventoryRoot = UIDocument.rootVisualElement.Q<VisualElement>("Inventory");
+        inventoryRoot = CoreUIDocument.rootVisualElement.Q<VisualElement>("Inventory");
         inventoryItemsRoot = inventoryRoot.Q<VisualElement>("InventoryItems");
 
         amountButton = inventoryRoot.Q<Button>("Amount");
@@ -135,8 +136,8 @@ public class UIManager : MonoBehaviour
         descButton = inventoryRoot.Q<Button>("Desc");
 
 
-        UIDocument.rootVisualElement.focusable = true;
-        UIDocument.rootVisualElement.RegisterCallback<KeyDownEvent>(ev =>
+        CoreUIDocument.rootVisualElement.focusable = true;
+        CoreUIDocument.rootVisualElement.RegisterCallback<KeyDownEvent>(ev =>
         {
             switch (ev.keyCode)
             {
