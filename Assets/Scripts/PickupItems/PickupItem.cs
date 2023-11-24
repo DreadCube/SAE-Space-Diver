@@ -17,8 +17,6 @@ public class PickupItem : MonoBehaviour
 
         renderer.material.SetColor("_Color", shape.Color);
 
-        transform.localScale = new Vector3(5, 5, 5);
-
         if (shape.Type == Shape.ShapeType.Cube)
         {
             BoxCollider collider = gameObject.AddComponent<BoxCollider>();
