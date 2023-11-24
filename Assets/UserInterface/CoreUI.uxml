@@ -1,9 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UserInterface/stylesheet.uss?fileID=7433441132597879392&amp;guid=96497880025d847f18362b30a6afac8d&amp;type=3#stylesheet" />
-    <ui:VisualElement name="ExplainContainer" style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
-        <ui:Label tabindex="-1" text="Spaceship Controls:&#10;W = Move forward&#10;A / D = Move rotate left / right" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 16px; color: rgb(255, 255, 255);" />
-        <ui:Label tabindex="-1" text="Press 1 = Sort By Amount (Insertion Sort)&#10;Press 2 = Sort By Hue (Stable Quick Sort)&#10;Press 3 = Sort By Shape Type (Merge Sort)&#10;&#10;Press Tab = Switch between Ascending and Descending order&#10;&#10;You can also press the buttons with your mouse.&#10;&#10;Try to collect the different shapes. Your Inventory will be corresponding updated." parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 16px; color: rgb(255, 255, 255);" />
-    </ui:VisualElement>
     <ui:VisualElement name="Inventory" style="flex-grow: 1; align-items: flex-start; justify-content: flex-end; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
         <ui:VisualElement name="SortWrapper" style="flex-grow: 0; flex-direction: row; height: 10%; flex-shrink: 0; justify-content: flex-start; align-items: flex-end; align-self: stretch;">
             <ui:VisualElement name="SortTypeWrapper" style="flex-grow: 1; flex-direction: row; align-items: flex-start; justify-content: flex-start; min-height: auto;">
