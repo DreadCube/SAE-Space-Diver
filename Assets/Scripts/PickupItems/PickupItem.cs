@@ -1,9 +1,7 @@
 using UnityEngine;
 
-public class PickupItem : MonoBehaviour
+public class PickupItem : ShapeMonoBehaviour
 {
-    private Shape shape;
-
     [SerializeField]
     private int rotationSpeed = 30;
 
@@ -14,35 +12,6 @@ public class PickupItem : MonoBehaviour
     private float vacuumSpeed = 120f;
 
     private Transform target;
-
-    /**
-     * The Instantiate of PickupItem creates the child game Object
-     * based on the shape, sets proper color / scale and the correct collider
-     * for our needs.
-     */
-    public void Instantiate(Shape shape)
-    {
-        GameObject child = Instantiate(shape.GameObject, transform);
-
-        Renderer renderer = child.GetComponent<Renderer>();
-
-        renderer.material.SetColor("_Color", shape.Color);
-
-        if (shape.Type == Shape.ShapeType.Cube)
-        {
-            BoxCollider collider = gameObject.AddComponent<BoxCollider>();
-            collider.isTrigger = true;
-        }
-        else
-        {
-            SphereCollider collider = gameObject.AddComponent<SphereCollider>();
-            collider.isTrigger = true;
-        }
-
-        this.shape = shape;
-    }
-
-    public Shape GetShape() => shape;
 
     private void Awake()
     {

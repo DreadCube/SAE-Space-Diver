@@ -25,6 +25,9 @@ public class ShipController : MonoBehaviour
     [SerializeField]
     private ParticleSystem boostRight;
 
+    [SerializeField]
+    private GameObject bulletPrefab;
+
     private float vertInput;
 
     private float horizInput;
@@ -32,6 +35,12 @@ public class ShipController : MonoBehaviour
     private float maxPitchAngle = 45f;
 
     private Rigidbody rigidBody;
+
+
+    private float lastTimeShooted;
+
+    [SerializeField]
+    private float shootInterval = 0.2f;
 
     private void Start()
     {
@@ -42,6 +51,15 @@ public class ShipController : MonoBehaviour
     {
         vertInput = Input.GetAxis("Vertical");
         horizInput = Input.GetAxis("Horizontal");
+
+
+        bool shootInput = Input.GetKey(KeyCode.Space);
+        if (shootInput && Time.timeSinceLevelLoad - lastTimeShooted >= shootInterval)
+        {
+            lastTimeShooted = Time.timeSinceLevelLoad;
+
+            Shoot();
+        }
     }
 
     private void FixedUpdate()
@@ -142,5 +160,28 @@ public class ShipController : MonoBehaviour
             InventoryManager.Instance.AddItem(pickupItem);
             Destroy(other.gameObject);
         }
+    }
+
+    private void Shoot()
+    {
+        InventoryItem activeInventoryItem = InventoryManager.Instance.GetActiveInventoryItem();
+
+        // Check if we have enough ammo of this type
+        if (activeInventoryItem.GetAmount() <= 0)
+        {
+            return;
+        }
+
+        // Decrease amount by one
+        activeInventoryItem.Decrease();
+
+
+        // Instantiate the bullet
+        GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+        bullet.GetComponent<Bullet>().Instantiate(activeInventoryItem.GetShape());
+
+        // Redraw the UI
+        // TODO: also here. if possible find a way to not redraw the whole UI.
+        UIManager.Instance.DrawInventoryUI();
     }
 }
