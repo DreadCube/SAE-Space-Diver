@@ -20,6 +20,11 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!targetRigidbody)
+        {
+            return;
+        }
+
         /**
          * Our Camera position is based on the position of the target.
          * We use a default forward offfset and the sqrtMagnitute of the target as an

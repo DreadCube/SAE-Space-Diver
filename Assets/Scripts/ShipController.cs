@@ -160,6 +160,11 @@ public class ShipController : MonoBehaviour
             InventoryManager.Instance.AddItem(pickupItem);
             Destroy(other.gameObject);
         }
+
+        if (other.tag == "Enemy")
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Shoot()

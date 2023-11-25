@@ -1,34 +1,45 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PickupItemsSpawnManager : MonoBehaviour
 {
+    public static PickupItemsSpawnManager Instance { get; private set; }
+
     [SerializeField]
     private GameObject pickupItem;
 
+
+    [SerializeField]
+    private int spawnMaxOffset = 10;
+
     private void Awake()
     {
-        List<Shape> shapes = ShapeDefinition.GetShapeDefinitions();
-
-        for (int i = 0; i < 10; i++)
+        if (Instance != null && Instance != this)
         {
-            Shape randomShape = shapes[Random.Range(0, shapes.Count)];
-            Spawn(randomShape);
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
         }
     }
 
-    /**
-     * Spawns a Pickup Item at a random position.
-     * Instantiate of PickupItem will be called to render / set correct Shape
-     * Informations.
+    /***
+     * Spawns pickup Items near the position, requested Shape and the amount of pickup Items
+     * that will be spawnend
      */
-    private void Spawn(Shape shape)
+    public void SpawnAroundPosition(Vector3 position, Shape shape, int amount)
     {
-        Vector3 spawnPosition = new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100));
+        for (int i = 0; i < amount; i++)
+        {
+            Vector3 offset = new Vector3(Random.Range(-1 * spawnMaxOffset, spawnMaxOffset), 0, Random.Range(-1 * spawnMaxOffset, spawnMaxOffset));
+            Vector3 spawnPosition = position + offset;
 
-        GameObject item = Instantiate(pickupItem, spawnPosition, Quaternion.identity);
-        item.tag = "PickupItem";
+            GameObject item = Instantiate(pickupItem, spawnPosition, Quaternion.identity);
+            item.tag = "PickupItem";
 
-        item.GetComponent<PickupItem>().Instantiate(shape);
+            item.GetComponent<PickupItem>().Instantiate(shape);
+        }
     }
 }
