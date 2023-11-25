@@ -69,6 +69,8 @@ public class UIManager : MonoBehaviour
             ascButton.RemoveFromClassList(classNamePrimarySelected);
         }
 
+
+        InventoryItem activeInventoryItem = InventoryManager.Instance.GetActiveInventoryItem();
         /**
          * For every inventoryItem we create the proper Button and apply the correct
          * backgroundImage / tintColor and item Count.
@@ -91,6 +93,20 @@ public class UIManager : MonoBehaviour
             itemButton.style.unityBackgroundImageTintColor = shapeColor;
 
             itemButton.text = item.GetAmount().ToString();
+
+
+            itemButton.RegisterCallback<ClickEvent>((ev) =>
+            {
+                InventoryManager.Instance.SetActiveInventoryItem(item);
+                DrawInventoryUI();
+            });
+
+
+            if (item == activeInventoryItem)
+            {
+                itemButton.style.backgroundColor = Color.white;
+            }
+
 
             inventoryItemsRoot.Add(itemButton);
         }
@@ -154,6 +170,15 @@ public class UIManager : MonoBehaviour
 
                 case KeyCode.Tab:
                     ChangeSortDirection(InventoryManager.Instance.GetInactiveSortDirection());
+                    break;
+
+                case KeyCode.Q:
+                    InventoryManager.Instance.SetActiveInventoryItem(-1);
+                    DrawInventoryUI();
+                    break;
+                case KeyCode.E:
+                    InventoryManager.Instance.SetActiveInventoryItem(1);
+                    DrawInventoryUI();
                     break;
             }
         });

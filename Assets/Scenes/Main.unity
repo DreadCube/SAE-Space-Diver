@@ -5711,6 +5711,8 @@ MonoBehaviour:
   boostMain: {fileID: 1007851255}
   boostLeft: {fileID: 1914267543}
   boostRight: {fileID: 1768420845}
+  bulletPrefab: {fileID: 6770336411633577358, guid: aea31657cc0f2447c8326fa4479df736, type: 3}
+  shootInterval: 0.2
 --- !u!65 &1068913971
 BoxCollider:
   m_ObjectHideFlags: 0
