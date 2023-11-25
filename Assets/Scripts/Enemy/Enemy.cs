@@ -7,15 +7,17 @@ public class Enemy : ShapeMonoBehaviour
 
     private Color materialColor;
 
+    [SerializeField]
+    private float speed = 30f;
+
+
     private void Awake()
     {
         followTarget = GameObject.Find("Ship");
     }
 
-
     private void Start()
     {
-        shapeRenderer.material.EnableKeyword("_EMISSION");
         materialColor = shapeRenderer.material.color;
     }
 
@@ -39,7 +41,7 @@ public class Enemy : ShapeMonoBehaviour
             return;
         }
 
-        float delta = 30f * Time.fixedDeltaTime;
+        float delta = speed * Time.fixedDeltaTime;
         transform.position = Vector3.MoveTowards(transform.position, followTarget.transform.position, delta);
     }
 
