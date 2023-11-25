@@ -10,6 +10,9 @@ public class Enemy : ShapeMonoBehaviour
     [SerializeField]
     private float speed = 30f;
 
+    [SerializeField]
+    private int dropAmount = 5;
+
 
     private void Awake()
     {
@@ -34,7 +37,7 @@ public class Enemy : ShapeMonoBehaviour
     }
 
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (!followTarget)
         {
@@ -43,6 +46,11 @@ public class Enemy : ShapeMonoBehaviour
 
         float delta = speed * Time.fixedDeltaTime;
         transform.position = Vector3.MoveTowards(transform.position, followTarget.transform.position, delta);
+    }
+
+    private void OnDestroy()
+    {
+        PickupItemsSpawnManager.Instance.SpawnAroundPosition(transform.position, shape, dropAmount);
     }
 
 

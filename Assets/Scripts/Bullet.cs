@@ -6,7 +6,7 @@ public class Bullet : ShapeMonoBehaviour
     private Rigidbody bulletRigidbody;
 
     [SerializeField]
-    private float maxLiveTime = 1f;
+    private float maxLiveTime = 3f;
 
     private float startTime;
 
@@ -33,11 +33,8 @@ public class Bullet : ShapeMonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
         if (other.tag == "Enemy")
         {
-
-
             Enemy enemy = other.GetComponent<Enemy>();
 
             // The Enemy is immutable agains same shape Type
