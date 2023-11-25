@@ -47,14 +47,9 @@ public class Enemy : ShapeMonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, followTarget.transform.position, delta);
     }
 
-    private void OnDestroy()
-    {
-        PickupItemsSpawnManager.Instance.SpawnAroundPosition(transform.position, shape, dropAmount);
-    }
-
-
     public void TakeDamage()
     {
+        PickupItemsSpawnManager.Instance.SpawnAroundPosition(transform.position, shape, dropAmount);
         Destroy(gameObject);
     }
 }
