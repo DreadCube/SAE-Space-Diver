@@ -29,4 +29,24 @@ public class Bullet : ShapeMonoBehaviour
             Destroy(gameObject);
         }
     }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.tag == "Enemy")
+        {
+
+
+            Enemy enemy = other.GetComponent<Enemy>();
+
+            // The Enemy is immutable agains same shape Type
+            if (enemy.GetShape() != GetShape())
+            {
+                other.GetComponent<Enemy>().TakeDamage();
+            }
+
+            Destroy(gameObject);
+        }
+    }
 }

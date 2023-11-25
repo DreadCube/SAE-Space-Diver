@@ -20,6 +20,11 @@ public class PickupItem : ShapeMonoBehaviour
 
     private void Update()
     {
+        if (!target)
+        {
+            return;
+        }
+
         /**
          * This will rotate our Pickup Item
          *

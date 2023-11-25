@@ -4,6 +4,8 @@ public class ShapeMonoBehaviour : MonoBehaviour
 {
     protected Shape shape;
 
+    protected Renderer shapeRenderer;
+
     /**
      * The Instantiate of PickupItem creates the child game Object
      * based on the shape, sets proper color / scale and the correct collider
@@ -13,9 +15,10 @@ public class ShapeMonoBehaviour : MonoBehaviour
     {
         GameObject child = Instantiate(shape.GameObject, transform);
 
-        Renderer renderer = child.GetComponent<Renderer>();
+        shapeRenderer = child.GetComponent<Renderer>();
 
-        renderer.material.SetColor("_Color", shape.Color);
+        shapeRenderer.material.SetColor("_Color", shape.Color);
+
 
         if (shape.Type == Shape.ShapeType.Cube)
         {
