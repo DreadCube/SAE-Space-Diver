@@ -94,19 +94,20 @@ public class UIManager : MonoBehaviour
 
             itemButton.text = item.GetAmount().ToString();
 
-
             itemButton.RegisterCallback<ClickEvent>((ev) =>
             {
                 InventoryManager.Instance.SetActiveInventoryItem(item);
                 DrawInventoryUI();
             });
 
-
+            // Sets corresponding active Styles for the active Inventory Item
+            // TODO: could also be done over className.
             if (item == activeInventoryItem)
             {
-                itemButton.style.backgroundColor = Color.white;
+                itemButton.style.color = Color.white;
+                itemButton.style.borderBottomColor = Color.white;
+                itemButton.style.borderBottomWidth = 2;
             }
-
 
             inventoryItemsRoot.Add(itemButton);
         }
