@@ -17,4 +17,9 @@ public class InventoryItem
     {
         amount++;
     }
+
+    public void Decrease()
+    {
+        amount--;
+    }
 }

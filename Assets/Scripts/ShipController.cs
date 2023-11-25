@@ -164,7 +164,24 @@ public class ShipController : MonoBehaviour
 
     private void Shoot()
     {
-        GameObject bullet = Instantiate(bulletPrefab, transform);
-        //bullet.GetComponent<Bullet>().Instantiate()
+        InventoryItem activeInventoryItem = InventoryManager.Instance.GetActiveInventoryItem();
+
+        // Check if we have enough ammo of this type
+        if (activeInventoryItem.GetAmount() <= 0)
+        {
+            return;
+        }
+
+        // Decrease amount by one
+        activeInventoryItem.Decrease();
+
+
+        // Instantiate the bullet
+        GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+        bullet.GetComponent<Bullet>().Instantiate(activeInventoryItem.GetShape());
+
+        // Redraw the UI
+        // TODO: also here. if possible find a way to not redraw the whole UI.
+        UIManager.Instance.DrawInventoryUI();
     }
 }
