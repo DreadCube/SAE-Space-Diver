@@ -133,6 +133,25 @@ public class InventoryManager : MonoBehaviour
         UIManager.Instance.DrawInventoryUI();
     }
 
+    public InventoryItem GetInventoryItemByLowestAmount()
+    {
+        InventoryItem lowest = null;
+
+        inventoryItems.ForEach(inventoryItem =>
+        {
+            if (lowest == null)
+            {
+                lowest = inventoryItem;
+            }
+            else if (inventoryItem.GetAmount() < lowest.GetAmount())
+            {
+                lowest = inventoryItem;
+            }
+        });
+
+        return lowest;
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)

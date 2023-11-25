@@ -36,7 +36,6 @@ public class Enemy : ShapeMonoBehaviour
         shapeRenderer.material.color = a >= 0.7 ? Color.white : materialColor;
     }
 
-
     private void FixedUpdate()
     {
         if (!followTarget)
