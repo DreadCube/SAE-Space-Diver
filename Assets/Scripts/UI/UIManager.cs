@@ -113,6 +113,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void UpdateTime()
+    {
+
+    }
+
 
     private void Awake()
     {
@@ -130,6 +135,8 @@ public class UIManager : MonoBehaviour
     {
         EnableInventoryUI();
         DrawInventoryUI();
+
+        InvokeRepeating("DrawTime", 0, 1f);
     }
 
     /**
@@ -215,6 +222,22 @@ public class UIManager : MonoBehaviour
         SortType activeSortType = InventoryManager.Instance.GetActiveSortType();
         InventoryManager.Instance.SortInventoryItems(activeSortType, sortDirection);
         DrawInventoryUI();
+    }
+
+
+    private void DrawTime()
+    {
+        Label timer = CoreUIDocument.rootVisualElement.Q<Label>("Timer");
+
+        int seconds = Mathf.RoundToInt(Time.timeSinceLevelLoad);
+
+        int minutes = seconds / 60;
+        int rest = seconds % 60;
+
+        string formattedMinutes = minutes.ToString().PadLeft(2, '0');
+        string formattedSeconds = rest.ToString().PadLeft(2, '0');
+
+        timer.text = $"{formattedMinutes}:{formattedSeconds}";
     }
 }
 

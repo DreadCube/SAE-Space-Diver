@@ -1,5 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UserInterface/stylesheet.uss?fileID=7433441132597879392&amp;guid=96497880025d847f18362b30a6afac8d&amp;type=3#stylesheet" />
+    <ui:Label tabindex="-1" text="00:00" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Timer" style="color: rgb(255, 255, 255); font-size: 100%;" />
     <ui:VisualElement name="Inventory" style="flex-grow: 1; align-items: flex-start; justify-content: flex-end; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
         <ui:VisualElement name="SortWrapper" style="flex-grow: 0; flex-direction: row; height: 10%; flex-shrink: 0; justify-content: flex-start; align-items: flex-end; align-self: stretch;">
             <ui:VisualElement name="SortTypeWrapper" style="flex-grow: 1; flex-direction: row; align-items: flex-start; justify-content: flex-start; min-height: auto;">

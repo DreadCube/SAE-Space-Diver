@@ -28,7 +28,6 @@ public class EnemySpawnManager : MonoBehaviour
         player = GameObject.Find("Ship").transform;
     }
 
-    // Start is called before the first frame update
     private void Start()
     {
         lastSpawnTime = Time.timeSinceLevelLoad;
@@ -57,7 +56,6 @@ public class EnemySpawnManager : MonoBehaviour
     private void Spawn()
     {
         // We spawn based on the user Inventory. We spawn that
-
         InventoryItem inventoryItem = InventoryManager.Instance.GetInventoryItemByLowestAmount();
         Shape shape = inventoryItem.GetShape();
 
