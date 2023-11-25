@@ -52,9 +52,12 @@ public class EnemySpawnManager : MonoBehaviour
         }
     }
 
-
     private void Spawn()
     {
+        if (!player)
+        {
+            return;
+        }
         // We spawn based on the user Inventory. We spawn that
         InventoryItem inventoryItem = InventoryManager.Instance.GetInventoryItemByLowestAmount();
         Shape shape = inventoryItem.GetShape();

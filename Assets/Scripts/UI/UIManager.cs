@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 using static InventoryManager;
@@ -113,12 +114,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateTime()
-    {
-
-    }
-
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -136,7 +131,7 @@ public class UIManager : MonoBehaviour
         EnableInventoryUI();
         DrawInventoryUI();
 
-        InvokeRepeating("DrawTime", 0, 1f);
+        InvokeRepeating("DrawRoundTime", 0, 1f);
     }
 
     /**
@@ -200,6 +195,35 @@ public class UIManager : MonoBehaviour
         descButton.RegisterCallback(OnClickSortDirection(InventoryManager.SortDirection.Desc));
     }
 
+    public void ShowDeathOverlay()
+    {
+        VisualElement deathOverlay = CoreUIDocument.rootVisualElement.Q<VisualElement>("DeathOverlay");
+
+        deathOverlay.RegisterCallback<KeyDownEvent>(ev =>
+        {
+            if (ev.keyCode == KeyCode.R)
+            {
+                Restart();
+            }
+        });
+
+        deathOverlay.style.display = DisplayStyle.Flex;
+        deathOverlay.focusable = true;
+        deathOverlay.Focus();
+
+        Button restartButton = deathOverlay.Q<Button>("Restart");
+
+        Label finalTime = deathOverlay.Q<Label>("FinalTime");
+        finalTime.text = GetRoundTime();
+
+        restartButton.RegisterCallback<ClickEvent>(ev =>
+        {
+            Restart();
+        });
+        DrawRoundTime();
+        CancelInvoke("DrawRoundTime");
+    }
+
     private EventCallback<ClickEvent> OnClickSortType(SortType sortType)
     {
         return (ev) => ChangeSortType(sortType);
@@ -224,11 +248,14 @@ public class UIManager : MonoBehaviour
         DrawInventoryUI();
     }
 
-
-    private void DrawTime()
+    private void DrawRoundTime()
     {
         Label timer = CoreUIDocument.rootVisualElement.Q<Label>("Timer");
+        timer.text = GetRoundTime();
+    }
 
+    private string GetRoundTime()
+    {
         int seconds = Mathf.RoundToInt(Time.timeSinceLevelLoad);
 
         int minutes = seconds / 60;
@@ -237,7 +264,12 @@ public class UIManager : MonoBehaviour
         string formattedMinutes = minutes.ToString().PadLeft(2, '0');
         string formattedSeconds = rest.ToString().PadLeft(2, '0');
 
-        timer.text = $"{formattedMinutes}:{formattedSeconds}";
+        return $"{formattedMinutes}:{formattedSeconds}";
+    }
+
+    private void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
 
