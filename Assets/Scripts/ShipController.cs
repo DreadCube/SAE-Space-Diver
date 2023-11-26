@@ -164,6 +164,7 @@ public class ShipController : MonoBehaviour
         if (other.tag == "Enemy")
         {
             Destroy(gameObject);
+            UIManager.Instance.ShowDeathOverlay();
         }
     }
 
