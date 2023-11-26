@@ -5,8 +5,7 @@ public class Bullet : ShapeMonoBehaviour
 {
     private Rigidbody bulletRigidbody;
 
-    [SerializeField]
-    private float maxLiveTime = 3f;
+    private float maxLiveTime = 1f;
 
     private float startTime;
 
@@ -18,7 +17,7 @@ public class Bullet : ShapeMonoBehaviour
 
     private void FixedUpdate()
     {
-        bulletRigidbody.AddRelativeForce(Vector3.forward * 50f, ForceMode.VelocityChange);
+        bulletRigidbody.AddRelativeForce(Vector3.forward * 1000f, ForceMode.VelocityChange);
 
         /**
          * We destroy the Bullet if the max live time is reached.
@@ -26,23 +25,6 @@ public class Bullet : ShapeMonoBehaviour
          */
         if (Time.timeSinceLevelLoad - startTime > maxLiveTime)
         {
-            Destroy(gameObject);
-        }
-    }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Enemy")
-        {
-            Enemy enemy = other.GetComponent<Enemy>();
-
-            // The Enemy is immutable agains same shape Type
-            if (enemy.GetShape() != GetShape())
-            {
-                other.GetComponent<Enemy>().TakeDamage();
-            }
-
             Destroy(gameObject);
         }
     }

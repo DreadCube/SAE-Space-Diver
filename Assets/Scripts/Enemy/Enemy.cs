@@ -45,10 +45,21 @@ public class Enemy : ShapeMonoBehaviour
 
         float delta = speed * Time.fixedDeltaTime;
         transform.position = Vector3.MoveTowards(transform.position, followTarget.transform.position, delta);
+
+        transform.LookAt(followTarget.transform);
     }
 
-    public void TakeDamage()
+    public void TakeDamage(Shape otherShape)
     {
+        Shape shape = GetShape();
+        if (otherShape == shape)
+        {
+            // Same Shape Type. The Enemy doesn't get damage
+            return;
+        }
+
+
+        // If the Enemy takes Damage: We destroy it for now. Could change in future.
         PickupItemsSpawnManager.Instance.SpawnAroundPosition(transform.position, shape, dropAmount);
         Destroy(gameObject);
     }
