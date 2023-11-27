@@ -79,6 +79,14 @@ public class ShipController : MonoBehaviour
         {
             lastTimeShooted = Time.timeSinceLevelLoad;
 
+            InventoryItem activeInventoryItem = InventoryManager.Instance.GetActiveInventoryItem();
+
+            // Check if we have enough ammo of active Type
+            if (activeInventoryItem.GetAmount() <= 0)
+            {
+                return;
+            }
+
             RaycastHit hit;
 
             Shoot();
@@ -93,10 +101,10 @@ public class ShipController : MonoBehaviour
     private void HandlePhysics()
     {
         // Acceleration forward
-        if (vertInput >= 0f)
-        {
-            rigidBody.AddForce(transform.forward * vertInput * verticalForceAmount, ForceMode.Force);
-        }
+        //if (vertInput >= 0f)
+        //{
+        rigidBody.AddForce(transform.forward * vertInput * verticalForceAmount, ForceMode.Force);
+        //}
 
         // Roll and Pitch with Torque sideways
         Vector3 rollTorqueSum = transform.up * horizInput * rollTorqueAmount;
@@ -183,7 +191,7 @@ public class ShipController : MonoBehaviour
             Destroy(other.gameObject);
         }
 
-        if (other.tag == "Enemy")
+        if (other.tag == "Enemy" || other.tag == "Wall")
         {
             Destroy(gameObject);
             UIManager.Instance.ShowDeathOverlay();
@@ -193,12 +201,6 @@ public class ShipController : MonoBehaviour
     private void Shoot()
     {
         InventoryItem activeInventoryItem = InventoryManager.Instance.GetActiveInventoryItem();
-
-        // Check if we have enough ammo of this type
-        if (activeInventoryItem.GetAmount() <= 0)
-        {
-            return;
-        }
 
         // Decrease amount by one
         activeInventoryItem.Decrease();
