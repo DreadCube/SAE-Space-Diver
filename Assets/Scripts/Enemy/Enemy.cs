@@ -34,6 +34,7 @@ public class Enemy : ShapeMonoBehaviour
          */
         float a = Mathf.PingPong(Time.time, 1);
         shapeRenderer.material.color = a >= 0.7 ? Color.white : materialColor;
+
     }
 
     private void FixedUpdate()
@@ -54,7 +55,8 @@ public class Enemy : ShapeMonoBehaviour
         Shape shape = GetShape();
         if (otherShape == shape)
         {
-            // Same Shape Type. The Enemy doesn't get damage
+            // Same Shape Type. The Enemy doesn't get damage but will increase its scale.
+            transform.localScale *= 1.5f;
             return;
         }
 
@@ -62,5 +64,8 @@ public class Enemy : ShapeMonoBehaviour
         // If the Enemy takes Damage: We destroy it for now. Could change in future.
         PickupItemsSpawnManager.Instance.SpawnAroundPosition(transform.position, shape, dropAmount);
         Destroy(gameObject);
+
+        // We inform the Enemy Spawn Manager that we got destroyed
+        EnemySpawnManager.Instance.EnemyGotDestroyed(gameObject);
     }
 }

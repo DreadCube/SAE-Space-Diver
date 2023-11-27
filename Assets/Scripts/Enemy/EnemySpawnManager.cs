@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class EnemySpawnManager : MonoBehaviour
 {
+    public static EnemySpawnManager Instance { get; private set; }
 
     [SerializeField]
     private GameObject enemyPrefab;
@@ -12,11 +13,23 @@ public class EnemySpawnManager : MonoBehaviour
     private float lastSpawnTime;
     private float spawnInterval = 20f;
 
+    private float spawnMultiplier = 1.5f;
+
     private int spawnAmount = 2;
 
+    private List<GameObject> enemies = new List<GameObject>();
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         player = GameObject.Find("Ship").transform;
     }
 
@@ -28,9 +41,17 @@ public class EnemySpawnManager : MonoBehaviour
 
     private void Update()
     {
-        if (Time.timeSinceLevelLoad - lastSpawnTime > spawnInterval)
+
+        /**
+         * We have a interval based spawning. To spawn the next enemies following
+         * conditions have to be met:
+         * 1. We reached the spawnInterval
+         * 2. We have no enemies left. For late game
+         * this makes for the player a little bit easier.
+         */
+        if (Time.timeSinceLevelLoad - lastSpawnTime > spawnInterval && enemies.Count == 0)
         {
-            spawnAmount = Mathf.RoundToInt(spawnAmount * 1.5f);
+            spawnAmount = Mathf.RoundToInt(spawnAmount * spawnMultiplier);
             lastSpawnTime = Time.timeSinceLevelLoad;
 
             SpawnCircular(spawnAmount, 1000);
@@ -56,7 +77,6 @@ public class EnemySpawnManager : MonoBehaviour
 
             Vector3 spawnPosition = player.transform.position + new Vector3(x, 0, z);
 
-
             GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
             InventoryItem inventoryItem = inventoryItems[Random.Range(0, inventoryItems.Count)];
@@ -64,6 +84,13 @@ public class EnemySpawnManager : MonoBehaviour
             Shape shape = inventoryItem.GetShape();
 
             enemy.GetComponent<Enemy>().Instantiate(shape);
+
+            enemies.Add(enemy);
         }
+    }
+
+    public void EnemyGotDestroyed(GameObject enemy)
+    {
+        enemies.Remove(enemies.Find(e => e == enemy));
     }
 }
