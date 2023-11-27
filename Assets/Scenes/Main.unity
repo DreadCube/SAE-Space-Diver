@@ -15342,6 +15342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wallPrefab: {fileID: 1767808802902288222, guid: 9e4112d2484d440d1804ef3305900aa9, type: 3}
+  worldDimension: 1000
 --- !u!4 &437420943279284598
 Transform:
   m_ObjectHideFlags: 0

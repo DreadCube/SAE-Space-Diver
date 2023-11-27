@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Linq;
 using System.Collections.Generic;
 
 public class InventoryManager : MonoBehaviour
@@ -133,23 +134,21 @@ public class InventoryManager : MonoBehaviour
         UIManager.Instance.DrawInventoryUI();
     }
 
-    public InventoryItem GetInventoryItemByLowestAmount()
+    /**
+     * Returns a list of inventory Items that are under the current average.
+     * 
+     * Average = The current average of all inventory items amount
+     * 
+     * This will be used for the EnemySpawnManager to spawn these enemy types.
+     * The target with that is, that the player will not run out of ammo.
+     */
+    public List<InventoryItem> GetLowestHalfAmount()
     {
-        InventoryItem lowest = null;
+        double average = inventoryItems.Average(item => item.GetAmount());
 
-        inventoryItems.ForEach(inventoryItem =>
-        {
-            if (lowest == null)
-            {
-                lowest = inventoryItem;
-            }
-            else if (inventoryItem.GetAmount() < lowest.GetAmount())
-            {
-                lowest = inventoryItem;
-            }
-        });
+        List<InventoryItem> lowestHalf = inventoryItems.FindAll(item => item.GetAmount() <= average);
 
-        return lowest;
+        return lowestHalf;
     }
 
     private void Awake()
