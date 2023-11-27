@@ -8,7 +8,7 @@ public class Enemy : ShapeMonoBehaviour
     private Color materialColor;
 
     [SerializeField]
-    private float speed = 30f;
+    private float speed = 50f;
 
     [SerializeField]
     private int dropAmount = 5;
