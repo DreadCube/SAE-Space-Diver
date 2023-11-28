@@ -13,10 +13,9 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _ALPHAPREMULTIPLY_ON
-  - _EMISSION
   - _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
@@ -72,7 +71,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 1
-    - _Metallic: 0
+    - _Metallic: 0.4
     - _Mode: 3
     - _OcclusionStrength: 1
     - _Parallax: 0.02
@@ -82,6 +81,6 @@ Material:
     - _UVSec: 0
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 1, g: 0, b: 0.06844187, a: 0.4117647}
-    - _EmissionColor: {r: 2, g: 0, b: 0.070589066, a: 1}
+    - _Color: {r: 1, g: 0, b: 0.06844187, a: 1}
+    - _EmissionColor: {r: 0.0755705, g: 0, b: 0.0036233016, a: 1}
   m_BuildTextureStacks: []
