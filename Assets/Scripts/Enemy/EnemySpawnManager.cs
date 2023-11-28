@@ -1,84 +1,96 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class EnemySpawnManager : MonoBehaviour
 {
+    public static EnemySpawnManager Instance { get; private set; }
 
     [SerializeField]
     private GameObject enemyPrefab;
 
     private Transform player;
 
-
     private float lastSpawnTime;
-    private float spawnInterval = 30f;
+    private float spawnInterval = 20f;
+
+    private float spawnMultiplier = 1.5f;
 
     private int spawnAmount = 2;
 
-    [SerializeField]
-    private float minSpawnOffset = 100;
-
-    [SerializeField]
-    private float maxSpawnOffset = 200;
-
+    private List<GameObject> enemies = new List<GameObject>();
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         player = GameObject.Find("Ship").transform;
     }
 
     private void Start()
     {
         lastSpawnTime = Time.timeSinceLevelLoad;
-        for (int i = 0; i < spawnAmount; i++)
-        {
-            Spawn();
-        }
+        SpawnCircular(spawnAmount);
     }
 
     private void Update()
     {
-        if (Time.timeSinceLevelLoad - lastSpawnTime > spawnInterval)
-        {
 
-            spawnAmount *= 2;
+        /**
+         * We have a interval based spawning. To spawn the next enemies following
+         * conditions have to be met:
+         * 1. We reached the spawnInterval
+         * 2. We have no enemies left. For late game
+         * this makes for the player a little bit easier.
+         */
+        if (Time.timeSinceLevelLoad - lastSpawnTime > spawnInterval && enemies.Count == 0)
+        {
+            spawnAmount = Mathf.RoundToInt(spawnAmount * spawnMultiplier);
             lastSpawnTime = Time.timeSinceLevelLoad;
 
-            for (int i = 0; i < spawnAmount; i++)
-            {
-                Spawn();
-            }
+            SpawnCircular(spawnAmount, 1000);
         }
     }
 
-    private void Spawn()
+    /**
+     * This will spawn our Enemies circular around the player.
+     * Based on amount of enemies to spawn and the radius in which they should
+     * spawn.
+     */
+    private void SpawnCircular(int amount, float radius = 400)
     {
-        if (!player)
+        List<InventoryItem> inventoryItems = InventoryManager.Instance.GetLowestHalfAmount();
+
+        for (int i = 0; i < amount; i++)
         {
-            return;
+            float nextRad = 360 / amount * i * Mathf.Deg2Rad;
+
+            float x = Mathf.Cos(nextRad) * radius;
+            float z = Mathf.Sin(nextRad) * radius;
+
+
+            Vector3 spawnPosition = player.transform.position + new Vector3(x, 0, z);
+
+            GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+
+            InventoryItem inventoryItem = inventoryItems[Random.Range(0, inventoryItems.Count)];
+
+            Shape shape = inventoryItem.GetShape();
+
+            enemy.GetComponent<Enemy>().Instantiate(shape);
+
+            enemies.Add(enemy);
         }
-        // We spawn based on the user Inventory. We spawn that
-        InventoryItem inventoryItem = InventoryManager.Instance.GetInventoryItemByLowestAmount();
-        Shape shape = inventoryItem.GetShape();
+    }
 
-
-        /**
-         *  Will result randomly 1 or -1
-         */
-        int randX = Random.Range(0, 2) * 2 - 1;
-        int randZ = Random.Range(0, 2) * 2 - 1;
-
-        Vector3 spawnPosition = player.position + new Vector3
-            (
-                Random.Range(minSpawnOffset, maxSpawnOffset) * randX,
-                0,
-                Random.Range(minSpawnOffset, maxSpawnOffset) * randZ
-            );
-
-
-        GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-        enemy.GetComponent<Enemy>().Instantiate(shape);
-
+    public void EnemyGotDestroyed(GameObject enemy)
+    {
+        enemies.Remove(enemies.Find(e => e == enemy));
     }
 }

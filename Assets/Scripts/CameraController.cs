@@ -38,6 +38,6 @@ public class CameraController : MonoBehaviour
         transform.position = new Vector3(transform.position.x, upOffset, transform.position.z);
 
         // Look at the target
-        transform.LookAt(target.transform);
+        transform.LookAt(target);
     }
 }

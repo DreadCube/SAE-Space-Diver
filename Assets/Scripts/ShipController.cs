@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ShipController : MonoBehaviour
@@ -28,19 +26,23 @@ public class ShipController : MonoBehaviour
     [SerializeField]
     private GameObject bulletPrefab;
 
+    [SerializeField]
+    private float shootInterval = 0.2f;
+
+    [SerializeField]
+    private float shootHitDistance = 500f;
+
     private float vertInput;
 
     private float horizInput;
 
     private float maxPitchAngle = 45f;
 
-    private Rigidbody rigidBody;
-
-
     private float lastTimeShooted;
 
-    [SerializeField]
-    private float shootInterval = 0.2f;
+    private bool shootInput;
+
+    private Rigidbody rigidBody;
 
     private void Start()
     {
@@ -53,28 +55,56 @@ public class ShipController : MonoBehaviour
         horizInput = Input.GetAxis("Horizontal");
 
 
-        bool shootInput = Input.GetKey(KeyCode.Space);
-        if (shootInput && Time.timeSinceLevelLoad - lastTimeShooted >= shootInterval)
-        {
-            lastTimeShooted = Time.timeSinceLevelLoad;
-
-            Shoot();
-        }
+        shootInput = Input.GetKey(KeyCode.Space);
     }
 
     private void FixedUpdate()
     {
         HandlePhysics();
         HandleParticles();
+        HandleShooting();
+    }
+
+    /**
+     * Handles Shooting behaviour
+     * 
+     * Every time we are allowed to shoot by the shoot Interval we Shoot a Bullet.
+     * Also we check over Raycast if we did hit something.
+     */
+    private void HandleShooting()
+    {
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward * shootHitDistance), Color.yellow);
+
+        if (shootInput && Time.timeSinceLevelLoad - lastTimeShooted >= shootInterval)
+        {
+            lastTimeShooted = Time.timeSinceLevelLoad;
+
+            InventoryItem activeInventoryItem = InventoryManager.Instance.GetActiveInventoryItem();
+
+            // Check if we have enough ammo of active Type
+            if (activeInventoryItem.GetAmount() <= 0)
+            {
+                return;
+            }
+
+            RaycastHit hit;
+
+            Shoot();
+
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, shootHitDistance))
+            {
+                onHit(hit);
+            }
+        }
     }
 
     private void HandlePhysics()
     {
         // Acceleration forward
-        if (vertInput >= 0f)
-        {
-            rigidBody.AddForce(transform.forward * vertInput * verticalForceAmount, ForceMode.Force);
-        }
+        //if (vertInput >= 0f)
+        //{
+        rigidBody.AddForce(transform.forward * vertInput * verticalForceAmount, ForceMode.Force);
+        //}
 
         // Roll and Pitch with Torque sideways
         Vector3 rollTorqueSum = transform.up * horizInput * rollTorqueAmount;
@@ -161,7 +191,7 @@ public class ShipController : MonoBehaviour
             Destroy(other.gameObject);
         }
 
-        if (other.tag == "Enemy")
+        if (other.tag == "Enemy" || other.tag == "Wall")
         {
             Destroy(gameObject);
             UIManager.Instance.ShowDeathOverlay();
@@ -172,22 +202,29 @@ public class ShipController : MonoBehaviour
     {
         InventoryItem activeInventoryItem = InventoryManager.Instance.GetActiveInventoryItem();
 
-        // Check if we have enough ammo of this type
-        if (activeInventoryItem.GetAmount() <= 0)
-        {
-            return;
-        }
-
         // Decrease amount by one
         activeInventoryItem.Decrease();
 
 
         // Instantiate the bullet
         GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
-        bullet.GetComponent<Bullet>().Instantiate(activeInventoryItem.GetShape());
+        bullet.GetComponent<Bullet>().Instantiate(activeInventoryItem.GetShape(), false);
 
         // Redraw the UI
         // TODO: also here. if possible find a way to not redraw the whole UI.
         UIManager.Instance.DrawInventoryUI();
+    }
+
+    /**
+     * onHit will check if we hitted a enemy and inform the corresponding enemy
+     * that he receives now damage
+     */
+    private void onHit(RaycastHit hit)
+    {
+        if (hit.transform.gameObject.tag == "Enemy")
+        {
+            Enemy enemy = hit.transform.GetComponent<Enemy>();
+            enemy.TakeDamage(InventoryManager.Instance.GetActiveInventoryItem().GetShape());
+        }
     }
 }

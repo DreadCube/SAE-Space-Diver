@@ -11,7 +11,7 @@ public class ShapeMonoBehaviour : MonoBehaviour
      * based on the shape, sets proper color / scale and the correct collider
      * for our needs.
      */
-    public void Instantiate(Shape shape)
+    public void Instantiate(Shape shape, bool withCollider = true)
     {
         GameObject child = Instantiate(shape.GameObject, transform);
 
@@ -22,13 +22,19 @@ public class ShapeMonoBehaviour : MonoBehaviour
 
         if (shape.Type == Shape.ShapeType.Cube)
         {
-            BoxCollider collider = gameObject.AddComponent<BoxCollider>();
-            collider.isTrigger = true;
+            if (withCollider)
+            {
+                BoxCollider collider = gameObject.AddComponent<BoxCollider>();
+                collider.isTrigger = true;
+            }
         }
         else
         {
-            SphereCollider collider = gameObject.AddComponent<SphereCollider>();
-            collider.isTrigger = true;
+            if (withCollider)
+            {
+                SphereCollider collider = gameObject.AddComponent<SphereCollider>();
+                collider.isTrigger = true;
+            }
         }
 
         this.shape = shape;
