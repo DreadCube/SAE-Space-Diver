@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 50
   dropAmount: 5
+  explosionSfx: {fileID: 8300000, guid: 485e858f6fb0e4ceeb60ae5102625498, type: 3}
 --- !u!54 &-7333525178370796264
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -44,6 +44,13 @@ public class ShipController : MonoBehaviour
 
     private Rigidbody rigidBody;
 
+    [SerializeField]
+    private AudioClip pickupSfx;
+
+    [SerializeField]
+    private AudioClip explosionSfx;
+
+
     private void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -189,12 +196,16 @@ public class ShipController : MonoBehaviour
             PickupItem pickupItem = other.gameObject.GetComponent<PickupItem>();
             InventoryManager.Instance.AddItem(pickupItem);
             Destroy(other.gameObject);
+
+            AudioManager.Instance.PlaySfx(pickupSfx, gameObject);
         }
 
         if (other.tag == "Enemy" || other.tag == "Wall")
         {
             Destroy(gameObject);
             UIManager.Instance.ShowDeathOverlay();
+
+            AudioManager.Instance.PlaySfx(explosionSfx);
         }
     }
 

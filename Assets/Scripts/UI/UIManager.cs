@@ -26,6 +26,10 @@ public class UIManager : MonoBehaviour
     private string classNamePrimarySelected = "button-primary-selected";
     private string classNameInventoryItem = "inventory-item";
 
+    [SerializeField]
+    private AudioClip buttonSfx;
+
+
     /**
      * Based on the current sorted Inventory Items
      * this draws the inventory UI
@@ -154,7 +158,6 @@ public class UIManager : MonoBehaviour
         ascButton = inventoryRoot.Q<Button>("Asc");
         descButton = inventoryRoot.Q<Button>("Desc");
 
-
         CoreUIDocument.rootVisualElement.focusable = true;
         CoreUIDocument.rootVisualElement.RegisterCallback<KeyDownEvent>(ev =>
         {
@@ -178,10 +181,14 @@ public class UIManager : MonoBehaviour
                 case KeyCode.Q:
                     InventoryManager.Instance.SetActiveInventoryItem(-1);
                     DrawInventoryUI();
+                    AudioManager.Instance.PlaySfx(buttonSfx);
+
                     break;
                 case KeyCode.E:
                     InventoryManager.Instance.SetActiveInventoryItem(1);
                     DrawInventoryUI();
+                    AudioManager.Instance.PlaySfx(buttonSfx);
+
                     break;
             }
         });
@@ -218,6 +225,7 @@ public class UIManager : MonoBehaviour
 
         restartButton.RegisterCallback<ClickEvent>(ev =>
         {
+            AudioManager.Instance.PlaySfx(buttonSfx);
             Restart();
         });
         DrawRoundTime();
@@ -236,6 +244,7 @@ public class UIManager : MonoBehaviour
 
     private void ChangeSortType(SortType sortType)
     {
+        AudioManager.Instance.PlaySfx(buttonSfx);
         InventoryManager.SortDirection activeSortDirection = InventoryManager.Instance.GetActiveSortDirection();
         InventoryManager.Instance.SortInventoryItems(sortType, activeSortDirection);
         DrawInventoryUI();
@@ -243,6 +252,7 @@ public class UIManager : MonoBehaviour
 
     private void ChangeSortDirection(InventoryManager.SortDirection sortDirection)
     {
+        AudioManager.Instance.PlaySfx(buttonSfx);
         SortType activeSortType = InventoryManager.Instance.GetActiveSortType();
         InventoryManager.Instance.SortInventoryItems(activeSortType, sortDirection);
         DrawInventoryUI();

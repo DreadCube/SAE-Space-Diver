@@ -13,6 +13,9 @@ public class Enemy : ShapeMonoBehaviour
     [SerializeField]
     private int dropAmount = 5;
 
+    [SerializeField]
+    private AudioClip explosionSfx;
+
 
     private void Awake()
     {
@@ -67,5 +70,7 @@ public class Enemy : ShapeMonoBehaviour
 
         // We inform the Enemy Spawn Manager that we got destroyed
         EnemySpawnManager.Instance.EnemyGotDestroyed(gameObject);
+
+        AudioManager.Instance.PlaySfx(explosionSfx);
     }
 }
