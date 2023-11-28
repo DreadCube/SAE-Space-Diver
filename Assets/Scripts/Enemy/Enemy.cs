@@ -68,9 +68,6 @@ public class Enemy : ShapeMonoBehaviour
         PickupItemsSpawnManager.Instance.SpawnAroundPosition(transform.position, shape, dropAmount);
         Destroy(gameObject);
 
-        // We inform the Enemy Spawn Manager that we got destroyed
-        EnemySpawnManager.Instance.EnemyGotDestroyed(gameObject);
-
         AudioManager.Instance.PlaySfx(explosionSfx);
     }
 }

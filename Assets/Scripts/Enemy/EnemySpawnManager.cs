@@ -17,8 +17,6 @@ public class EnemySpawnManager : MonoBehaviour
 
     private int spawnAmount = 2;
 
-    private List<GameObject> enemies = new List<GameObject>();
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -46,13 +44,12 @@ public class EnemySpawnManager : MonoBehaviour
          * We have a interval based spawning. To spawn the next enemies following
          * conditions have to be met:
          * 1. We reached the spawnInterval
-         * 2. We have no enemies left. For late game
-         * this makes for the player a little bit easier.
          */
-        if (Time.timeSinceLevelLoad - lastSpawnTime > spawnInterval && enemies.Count == 0)
+        if (Time.timeSinceLevelLoad - lastSpawnTime > spawnInterval)
         {
             spawnAmount = Mathf.RoundToInt(spawnAmount * spawnMultiplier);
             lastSpawnTime = Time.timeSinceLevelLoad;
+            spawnInterval += spawnInterval * 0.1f;
 
             SpawnCircular(spawnAmount, 1000);
         }
@@ -84,13 +81,6 @@ public class EnemySpawnManager : MonoBehaviour
             Shape shape = inventoryItem.GetShape();
 
             enemy.GetComponent<Enemy>().Instantiate(shape);
-
-            enemies.Add(enemy);
         }
-    }
-
-    public void EnemyGotDestroyed(GameObject enemy)
-    {
-        enemies.Remove(enemies.Find(e => e == enemy));
     }
 }
