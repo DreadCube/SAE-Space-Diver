@@ -14,6 +14,10 @@ public class MiniMapController : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!target)
+        {
+            return;
+        }
         transform.position = target.position + (Vector3.up * upOffset);
     }
 }
