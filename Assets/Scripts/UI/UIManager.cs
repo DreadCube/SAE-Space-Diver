@@ -228,6 +228,18 @@ public class UIManager : MonoBehaviour
             AudioManager.Instance.PlaySfx(buttonSfx);
             Restart();
         });
+
+
+        Button quitButton = deathOverlay.Q<Button>("Quit");
+
+
+        quitButton.RegisterCallback<ClickEvent>(ev =>
+        {
+            AudioManager.Instance.PlaySfx(buttonSfx);
+            Application.Quit();
+        });
+
+
         DrawRoundTime();
         CancelInvoke("DrawRoundTime");
     }

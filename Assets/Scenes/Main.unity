@@ -5408,6 +5408,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 6770336411633577358, guid: aea31657cc0f2447c8326fa4479df736, type: 3}
   shootInterval: 0.2
   shootHitDistance: 500
+  pickupSfx: {fileID: 8300000, guid: 5efdb1851abd3451ea3384b2b96ca119, type: 3}
+  explosionSfx: {fileID: 8300000, guid: 485e858f6fb0e4ceeb60ae5102625498, type: 3}
 --- !u!65 &1068913971
 BoxCollider:
   m_ObjectHideFlags: 0
