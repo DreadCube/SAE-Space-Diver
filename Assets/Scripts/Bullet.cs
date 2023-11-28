@@ -7,9 +7,14 @@ public class Bullet : ShapeMonoBehaviour
 
     private float maxLiveTime = 1f;
 
+    [SerializeField]
+    private AudioClip bulletSfx;
+
     private void Start()
     {
         bulletRigidbody = GetComponent<Rigidbody>();
+
+        AudioManager.Instance.PlaySfx(bulletSfx, gameObject);
 
         Destroy(gameObject, maxLiveTime);
     }

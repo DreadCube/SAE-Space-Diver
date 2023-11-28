@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d5a0ec989d644ceeae40e38e3734ed0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxLiveTime: 3
+  bulletSfx: {fileID: 8300000, guid: e0d667e5553884a52b32d521cef2948e, type: 3}
 --- !u!54 &-2857597119452704223
 Rigidbody:
   m_ObjectHideFlags: 0
