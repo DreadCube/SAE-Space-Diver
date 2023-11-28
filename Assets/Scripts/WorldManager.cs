@@ -2,34 +2,98 @@ using UnityEngine;
 
 public class WorldManager : MonoBehaviour
 {
+    public static WorldManager Instance { get; private set; }
+
     [SerializeField]
-    private GameObject wallPrefab;
+    private GameObject laserPrefab;
 
     [SerializeField]
     private float worldDimension = 1000f;
 
-    private float wallThickness = 5f;
-    private float wallHeight = 100f;
+    private float laserThickness = 3f;
+
+    private int minY = -50;
+    private int maxY = 50;
+    private int step = 10;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     /**
-     * Creates our "walls" based on the world Dimension
+     * Creates our laser walls based on the world Dimension
      */
     void Start()
     {
-        GameObject wall = Instantiate(wallPrefab, transform);
-        wall.transform.position = new Vector3(-worldDimension, 0, 0);
-        wall.transform.localScale = new Vector3(wallThickness, wallHeight, worldDimension * 2);
+        for (int y = minY; y <= maxY; y += step)
+        {
+            GameObject laser = Instantiate(laserPrefab, transform);
 
-        GameObject wall2 = Instantiate(wallPrefab, transform);
-        wall2.transform.position = new Vector3(0, 0, -worldDimension);
-        wall2.transform.localScale = new Vector3(worldDimension * 2, wallHeight, wallThickness);
+            laser.transform.position = new Vector3(-worldDimension, y, 0);
+            laser.transform.Rotate(Quaternion.Euler(90f, 0f, 0f).eulerAngles);
+            laser.transform.localScale = new Vector3(laserThickness, worldDimension - laserThickness / 2, laserThickness);
 
-        GameObject wall3 = Instantiate(wallPrefab, transform);
-        wall3.transform.position = new Vector3(worldDimension, 0, 0);
-        wall3.transform.localScale = new Vector3(wallThickness, wallHeight, worldDimension * 2);
+            /**
+             * We don't need Colliders on each laser because the player stays always on the same y achsis.
+             * So we only add a colldier for the lasers on the zero y achsis.
+             */
+            if (y == 0)
+            {
+                AddCollider(laser);
+            }
+        }
 
-        GameObject wall4 = Instantiate(wallPrefab, transform);
-        wall4.transform.position = new Vector3(0, 0, worldDimension);
-        wall4.transform.localScale = new Vector3(worldDimension * 2, wallHeight, wallThickness);
+        for (int y = minY; y <= maxY; y += step)
+        {
+            GameObject laser = Instantiate(laserPrefab, transform);
+            laser.transform.position = new Vector3(0, y, -worldDimension);
+            laser.transform.Rotate(Quaternion.Euler(0f, 0f, 90f).eulerAngles);
+            laser.transform.localScale = new Vector3(laserThickness, worldDimension - laserThickness / 2, laserThickness);
+
+            if (y == 0)
+            {
+                AddCollider(laser);
+            }
+        }
+
+        for (int y = minY; y <= maxY; y += step)
+        {
+            GameObject laser = Instantiate(laserPrefab, transform);
+            laser.transform.position = new Vector3(worldDimension, y, 0);
+            laser.transform.Rotate(Quaternion.Euler(90f, 0f, 0f).eulerAngles);
+            laser.transform.localScale = new Vector3(laserThickness, worldDimension - laserThickness / 2, laserThickness);
+
+            if (y == 0)
+            {
+                AddCollider(laser);
+            }
+        }
+
+        for (int y = minY; y <= maxY; y += step)
+        {
+            GameObject laser = Instantiate(laserPrefab, transform);
+            laser.transform.position = new Vector3(0, y, worldDimension);
+            laser.transform.Rotate(Quaternion.Euler(0f, 0f, 90f).eulerAngles);
+            laser.transform.localScale = new Vector3(laserThickness, worldDimension - laserThickness / 2, laserThickness);
+
+            if (y == 0)
+            {
+                AddCollider(laser);
+            }
+        }
+    }
+
+    private void AddCollider(GameObject wall)
+    {
+        wall.AddComponent<CapsuleCollider>();
+        wall.GetComponent<CapsuleCollider>().isTrigger = true;
     }
 }

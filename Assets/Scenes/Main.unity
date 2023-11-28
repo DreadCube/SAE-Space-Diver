@@ -15354,7 +15354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83253500f1bd84b12b959a1a5467fd56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallPrefab: {fileID: 1767808802902288222, guid: 9e4112d2484d440d1804ef3305900aa9, type: 3}
+  laserPrefab: {fileID: 8974809814656864143, guid: bbfac39b5695848e4962fa67907cbd78, type: 3}
   worldDimension: 1000
 --- !u!4 &437420943279284598
 Transform:
