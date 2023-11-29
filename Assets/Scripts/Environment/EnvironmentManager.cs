@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class WorldManager : MonoBehaviour
+public class EnvironmentManager : MonoBehaviour
 {
-    public static WorldManager Instance { get; private set; }
+    public static EnvironmentManager Instance { get; private set; }
 
     [SerializeField]
     private GameObject laserPrefab;
