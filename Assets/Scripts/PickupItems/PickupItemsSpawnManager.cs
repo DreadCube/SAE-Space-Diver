@@ -7,7 +7,7 @@ public class PickupItemsSpawnManager : MonoBehaviour
     public static PickupItemsSpawnManager Instance { get; private set; }
 
     [SerializeField]
-    private GameObject pickupItem;
+    private GameObject pickupItemPrefab;
 
 
     [SerializeField]
@@ -36,7 +36,7 @@ public class PickupItemsSpawnManager : MonoBehaviour
             Vector3 offset = new Vector3(Random.Range(-1 * spawnMaxOffset, spawnMaxOffset), 0, Random.Range(-1 * spawnMaxOffset, spawnMaxOffset));
             Vector3 spawnPosition = position + offset;
 
-            GameObject item = Instantiate(pickupItem, spawnPosition, Quaternion.identity);
+            GameObject item = Instantiate(pickupItemPrefab, spawnPosition, Quaternion.identity);
             item.tag = "PickupItem";
 
             item.GetComponent<PickupItem>().Instantiate(shape);
