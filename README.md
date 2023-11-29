@@ -9,7 +9,7 @@ Author:         MixoFX
 
 Font Licence:   Free for personal & commercial use
 
-In Project:     Assets/UserInterface/Fonts/Azonix
+In Project:     Assets/UserInterface/3rdParty/Fonts/Azonix
 
 Link to Asset:          https://www.1001freefonts.com/azonix.font
 
@@ -24,7 +24,7 @@ Author:         MaknaStudio
 
 Font Licence:   Free for personal use
 
-In Project:     Assets/UserInterface/Fonts/Valorax
+In Project:     Assets/UserInterface/3rdParty/Fonts/Valorax
 
 Link to Asset:          https://fontlot.com/481708/valorax-font/
 
