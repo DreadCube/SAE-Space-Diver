@@ -1,0 +1,102 @@
+.button-primary {
+    background-image: url('project://database/Assets/UserInterface/3rdParty/Cyberpunk_RPG_UI/UI_Parts/Chip_6_g.png?fileID=2800000&guid=3887ba5c83d43d34e85197866d1032e2&type=3#Chip_6_g');
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgba(188, 188, 188, 0);
+    width: 125px;
+    height: 75px;
+    -unity-font: url('project://database/Assets/UserInterface/3rdParty/Fonts/Valorax.otf?fileID=12800000&guid=b100759de6b694a808315e3382fe7ed8&type=3#Valorax');
+    -unity-font-definition: url('project://database/Assets/UserInterface/3rdParty/Fonts/Valorax%20SDF.asset?fileID=11400000&guid=54bae48c509e54c37bc19c20a4380eb1&type=2#Valorax SDF');
+    color: rgb(9, 206, 211);
+    font-size: 14px;
+}
+
+.button-primary-selected {
+    background-image: url('project://database/Assets/UserInterface/3rdParty/Cyberpunk_RPG_UI/UI_Parts/Chip_6.png?fileID=2800000&guid=a3bf107b52733314b9fe25eaa3ae4650&type=3#Chip_6');
+}
+
+.button-primary:hover {
+    background-image: url('project://database/Assets/UserInterface/3rdParty/Cyberpunk_RPG_UI/UI_Parts/Chip_6.png?fileID=2800000&guid=a3bf107b52733314b9fe25eaa3ae4650&type=3#Chip_6');
+}
+
+.inventory-item {
+    width: 50px;
+    height: 50px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgba(188, 188, 188, 0);
+    -unity-font: url('project://database/Assets/UserInterface/3rdParty/Fonts/Azonix.otf?fileID=12800000&guid=75b083ec1e94f48fdb13ae3c1f289bb8&type=3#Azonix');
+    -unity-font-definition: url('project://database/Assets/UserInterface/3rdParty/Fonts/Azonix%20SDF.asset?fileID=11400000&guid=06f2868e1d20247d3901194d9a377ec0&type=2#Azonix SDF');
+    font-size: 10px;
+    color: rgb(255, 255, 255);
+}
+
+.label-primary {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    -unity-font: url('project://database/Assets/UserInterface/3rdParty/Fonts/Valorax.otf?fileID=12800000&guid=b100759de6b694a808315e3382fe7ed8&type=3#Valorax');
+    -unity-font-definition: url('project://database/Assets/UserInterface/3rdParty/Fonts/Valorax%20SDF.asset?fileID=11400000&guid=54bae48c509e54c37bc19c20a4380eb1&type=2#Valorax SDF');
+    color: rgb(202, 10, 0);
+}
+
+.button-background {
+    flex-grow: 1;
+    width: 0;
+    background-color: rgba(255, 0, 3, 0.51);
+    transition-property: width;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
+}
+
+.button-menu {
+    width: 100%;
+    background-image: url('project://database/Assets/UserInterface/3rdParty/Cyberpunk_RPG_UI/UI_Parts/Icon_fr_3_r.png?fileID=2800000&guid=69c1a39440607314c8c09a5ab4c268b7&type=3#Icon_fr_3_r');
+    background-color: rgba(56, 56, 56, 0);
+    color: rgb(202, 10, 0);
+    align-items: flex-start;
+    justify-content: center;
+    padding-left: 10px;
+    padding-bottom: 0;
+    padding-right: 10px;
+    padding-top: 0;
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    font-size: 18px;
+}
+
+.button-menu:hover {
+    width: 100%;
+    background-image: url('project://database/Assets/UserInterface/3rdParty/Cyberpunk_RPG_UI/UI_Parts/Icon_fr_3_r.png?fileID=2800000&guid=69c1a39440607314c8c09a5ab4c268b7&type=3#Icon_fr_3_r');
+    background-color: rgba(56, 56, 56, 0);
+    color: rgb(255, 255, 255);
+    align-items: flex-start;
+    justify-content: center;
+    padding-left: 10px;
+    padding-bottom: 0;
+    padding-right: 10px;
+    padding-top: 0;
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+}
+
+.button-menu:hover > .button-background {
+    flex-grow: 1;
+    width: 100%;
+    background-color: rgba(255, 0, 3, 0.23);
+    transition-property: width;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in;
+}
