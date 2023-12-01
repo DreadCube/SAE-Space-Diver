@@ -15,8 +15,8 @@ public class MainMenuManager : MonoBehaviour
     void Start()
     {
         Button startGameButton = UIDocument.rootVisualElement.Q<Button>("StartGame");
-        Button optionsButton = UIDocument.rootVisualElement.Q<Button>("StartGame");
-        Button quitGameButton = UIDocument.rootVisualElement.Q<Button>("StartGame");
+        Button optionsButton = UIDocument.rootVisualElement.Q<Button>("Options");
+        Button quitGameButton = UIDocument.rootVisualElement.Q<Button>("QuitGame");
 
         startGameButton.RegisterCallback<ClickEvent>((ev) =>
         {
@@ -25,7 +25,7 @@ public class MainMenuManager : MonoBehaviour
 
         optionsButton.RegisterCallback<ClickEvent>((ev) =>
         {
-            SceneManager.LoadScene("Options");
+            SceneManager.LoadScene("OptionsMenu");
         });
 
 
