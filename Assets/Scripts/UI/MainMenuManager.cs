@@ -12,7 +12,6 @@ public class MainMenuManager : MonoBehaviour
         UIDocument = GetComponent<UIDocument>();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         Button startGameButton = UIDocument.rootVisualElement.Q<Button>("StartGame");
