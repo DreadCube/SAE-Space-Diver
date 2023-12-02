@@ -131,7 +131,7 @@ public class InventoryManager : MonoBehaviour
          * Redraws the inventory UI to show the new amount.
          * TODO: Ideally we do not have to draw the whole inventory UI.
          */
-        UIManager.Instance.DrawInventoryUI();
+        GameLoopManager.Instance.DrawInventoryUI();
     }
 
     /**

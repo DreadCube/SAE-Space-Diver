@@ -3,17 +3,15 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
-public class MainMenuManager : MonoBehaviour
+public class MainMenuManager : UIManager
 {
-    private UIDocument UIDocument;
+    [SerializeField]
+    private VisualTreeAsset mainMenuVisuals;
 
-    private void Awake()
+    protected override void Start()
     {
-        UIDocument = GetComponent<UIDocument>();
-    }
+        UIDocument.rootVisualElement.Q("Layout").Add(mainMenuVisuals.Instantiate());
 
-    void Start()
-    {
         Button startGameButton = UIDocument.rootVisualElement.Q<Button>("StartGame");
         Button optionsButton = UIDocument.rootVisualElement.Q<Button>("Options");
         Button quitGameButton = UIDocument.rootVisualElement.Q<Button>("QuitGame");
@@ -34,5 +32,6 @@ public class MainMenuManager : MonoBehaviour
             Application.Quit();
         });
 
+        base.Start();
     }
 }

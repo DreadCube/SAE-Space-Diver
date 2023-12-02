@@ -203,7 +203,7 @@ public class ShipController : MonoBehaviour
         if (other.tag == "Enemy" || other.tag == "Wall")
         {
             Destroy(gameObject);
-            UIManager.Instance.ShowDeathOverlay();
+            GameLoopManager.Instance.ShowDeathOverlay();
 
             AudioManager.Instance.PlaySfx(explosionSfx);
         }
@@ -223,7 +223,7 @@ public class ShipController : MonoBehaviour
 
         // Redraw the UI
         // TODO: also here. if possible find a way to not redraw the whole UI.
-        UIManager.Instance.DrawInventoryUI();
+        GameLoopManager.Instance.DrawInventoryUI();
     }
 
     /**
