@@ -7,7 +7,8 @@
             <ui:VisualElement name="Options" style="flex-grow: 0; width: 80%; margin-top: 20px; height: 60%; justify-content: space-around;">
                 <ui:Slider picking-mode="Ignore" label="Music Volume" value="0.5" high-value="1" show-input-field="true" page-size="0" name="MusicVolume" direction="Horizontal" inverted="false" class="slider" />
                 <ui:Slider picking-mode="Ignore" label="SFX Volume" value="0.5" high-value="1" show-input-field="true" page-size="0" name="SFXVolume" direction="Horizontal" inverted="false" class="slider" />
-                <ui:EnumField label="Resolution" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" value="Center" name="Resolution" include-obsolete-values="false" class="enum" />
+                <ui:Toggle label="Fullscreen" name="FullscreenToggle" style="color: rgb(202, 10, 0); -unity-font: url(&apos;project://database/Assets/UserInterface/3rdParty/Fonts/Valorax.otf?fileID=12800000&amp;guid=b100759de6b694a808315e3382fe7ed8&amp;type=3#Valorax&apos;); -unity-font-definition: url(&apos;project://database/Assets/UserInterface/3rdParty/Fonts/Valorax%20SDF.asset?fileID=11400000&amp;guid=54bae48c509e54c37bc19c20a4380eb1&amp;type=2#Valorax SDF&apos;); padding-left: 10px; padding-right: 10px;" />
+                <ui:DropdownField label="Resolution" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="Resolution" class="dropdown" />
             </ui:VisualElement>
             <ui:Button text="Back" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Back" class="button-primary button-menu" style="width: 80%; flex-grow: 1;">
                 <ui:VisualElement name="background" class="button-background" />

@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class OptionsMenuManager : MonoBehaviour
 {
@@ -16,12 +17,22 @@ public class OptionsMenuManager : MonoBehaviour
     {
         Slider musicVolumeSlider = UIDocument.rootVisualElement.Q<Slider>("MusicVolume");
         Slider sfxVolumeSlider = UIDocument.rootVisualElement.Q<Slider>("SFXVolume");
-        EnumField resolutionEnum = UIDocument.rootVisualElement.Q<EnumField>("Resolution");
+        Toggle fullscreenToggle = UIDocument.rootVisualElement.Q<Toggle>("FullscreenToggle");
+
         Button backButton = UIDocument.rootVisualElement.Q<Button>("Back");
 
-        musicVolumeSlider.RegisterValueChangedCallback(value =>
+        musicVolumeSlider.value = AudioManager.Instance.GetMusicVolume();
+        sfxVolumeSlider.value = AudioManager.Instance.GetSfxVolume();
+
+
+        musicVolumeSlider.RegisterValueChangedCallback(ev =>
         {
-            Debug.Log(value);
+            AudioManager.Instance.SetMusicVolume(ev.newValue);
+        });
+
+        sfxVolumeSlider.RegisterValueChangedCallback(ev =>
+        {
+            AudioManager.Instance.SetSfxVolume(ev.newValue);
         });
 
         backButton.RegisterCallback<ClickEvent>((ev) =>
@@ -29,5 +40,43 @@ public class OptionsMenuManager : MonoBehaviour
             // TODO: Check if possible to previous scene
             SceneManager.LoadScene("MainMenu");
         });
+
+
+        fullscreenToggle.RegisterValueChangedCallback(ev =>
+        {
+            Resolution currentResolution = Screen.currentResolution;
+
+            FullScreenMode fullScreenMode = ev.newValue ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+
+            Screen.SetResolution(currentResolution.width, currentResolution.height, fullScreenMode);
+        });
+        fullscreenToggle.value = Screen.fullScreenMode == FullScreenMode.FullScreenWindow ? true : false;
+
+        PrepareResolutionDropdown();
+    }
+
+    private void PrepareResolutionDropdown()
+    {
+        Resolution[] availableResolutions = Screen.resolutions;
+        Resolution currentResolution = Screen.currentResolution;
+
+
+        DropdownField resolutionDropdown = UIDocument.rootVisualElement.Q<DropdownField>("Resolution");
+        resolutionDropdown.value = $"{currentResolution.width} x {currentResolution.height}";
+
+        resolutionDropdown.RegisterValueChangedCallback((ev) =>
+        {
+            string[] splittedOption = ev.newValue.Split('x');
+
+            Screen.SetResolution(int.Parse(splittedOption[0]), int.Parse(splittedOption[1]), Screen.fullScreenMode);
+        });
+
+
+        resolutionDropdown.choices.Clear();
+        foreach (Resolution availableResolution in availableResolutions)
+        {
+            string choice = $"{availableResolution.width} x {availableResolution.height}";
+            resolutionDropdown.choices.Add(choice);
+        }
     }
 }
