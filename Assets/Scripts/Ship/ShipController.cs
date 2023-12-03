@@ -203,7 +203,8 @@ public class ShipController : MonoBehaviour
         if (other.tag == "Enemy" || other.tag == "Wall")
         {
             Destroy(gameObject);
-            GameLoopManager.Instance.ShowDeathOverlay();
+
+            PopupManager.Instance.ShowDeathOverlay(GameLoopManager.Instance.StopDrawRoundTime());
 
             AudioManager.Instance.PlaySfx(explosionSfx);
         }

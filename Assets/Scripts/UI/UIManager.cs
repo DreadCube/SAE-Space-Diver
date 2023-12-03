@@ -1,8 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+/**
+ * The UIManager is the main Manager for UI behaviours.
+ * 
+ * As example we Register proper SoundEffects for buttons / dropdown fields / toggles
+ * on start.
+ */
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
@@ -21,6 +25,11 @@ public class UIManager : MonoBehaviour
     protected virtual void Start()
     {
         EnableSfx();
+    }
+
+    public void PlayUISfx()
+    {
+        AudioManager.Instance.PlaySfx(UISfx);
     }
 
     private void Awake()
@@ -43,8 +52,6 @@ public class UIManager : MonoBehaviour
     {
         var buttons = UIDocument.rootVisualElement.Query<Button>();
 
-        var sliders = UIDocument.rootVisualElement.Query<Slider>();
-
         var dropdownFields = UIDocument.rootVisualElement.Query<DropdownField>();
 
         var toggles = UIDocument.rootVisualElement.Query<Toggle>();
@@ -54,20 +61,12 @@ public class UIManager : MonoBehaviour
         {
             button.RegisterCallback<ClickEvent>(ev =>
             {
-                AudioManager.Instance.PlaySfx(UISfx);
+                PlayUISfx();
             });
 
             button.RegisterCallback<MouseEnterEvent>(ev =>
             {
-                AudioManager.Instance.PlaySfx(UISfx);
-            });
-        });
-
-        sliders.ForEach(slider =>
-        {
-            slider.RegisterValueChangedCallback(ev =>
-            {
-                AudioManager.Instance.PlaySfx(UISfx);
+                PlayUISfx();
             });
         });
 
@@ -75,7 +74,7 @@ public class UIManager : MonoBehaviour
         {
             dropdownField.RegisterValueChangedCallback(ev =>
             {
-                AudioManager.Instance.PlaySfx(UISfx);
+                PlayUISfx();
             });
         });
 
@@ -83,7 +82,7 @@ public class UIManager : MonoBehaviour
         {
             toggle.RegisterValueChangedCallback(ev =>
             {
-                AudioManager.Instance.PlaySfx(UISfx);
+                PlayUISfx();
             });
         });
     }

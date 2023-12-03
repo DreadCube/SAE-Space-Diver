@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UserInterface/UIs/Stylesheet.uss?fileID=7433441132597879392&amp;guid=b19c6e9d9c2744231b7aa6c7e99cc7c1&amp;type=3#Stylesheet" />
+    <Style src="project://database/Assets/UserInterface/UI%20Toolkit/UnityThemes/Overrides.uss?fileID=7433441132597879392&amp;guid=7b7af953558e241bcb522732ca70c33d&amp;type=3#Overrides" />
+    <ui:VisualElement name="DeathOverlay" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/UserInterface/3rdParty/Cyberpunk_RPG_UI/UI_Parts/Poup_window_left_r.png?fileID=2800000&amp;guid=9ca5a37ed864ab34fa60198d03790fd8&amp;type=3#Poup_window_left_r&apos;); width: 100%; height: 100%; align-items: center; justify-content: flex-start; padding-top: 87px; padding-bottom: 80px; padding-left: 11px; padding-right: 30px; align-self: center; background-color: rgba(166, 0, 0, 0);">
+        <ui:Label tabindex="-1" text="You died" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" class="label-primary" style="font-size: 30px; margin-bottom: 20px;" />
+        <ui:Label tabindex="-1" text="your time:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" class="label-primary" style="font-size: 24px; margin-bottom: 10px;" />
+        <ui:Label tabindex="-1" text="00:00" parse-escape-sequences="true" display-tooltip-when-elided="true" name="FinalTime" class="label-primary" style="font-size: 24px; align-self: auto; justify-content: center;" />
+        <ui:VisualElement name="Options" style="flex-grow: 0; width: 80%; margin-top: 20px; height: 100%; justify-content: space-around;">
+            <ui:Button text="Restart" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Restart" class="button-primary button-menu" style="width: 100%; flex-grow: 0;">
+                <ui:VisualElement name="background" class="button-background" />
+            </ui:Button>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

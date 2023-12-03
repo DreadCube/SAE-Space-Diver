@@ -1,4 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UserInterface/UIs/Stylesheet.uss?fileID=7433441132597879392&amp;guid=b19c6e9d9c2744231b7aa6c7e99cc7c1&amp;type=3#Stylesheet" />
     <ui:VisualElement name="Outer" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/UserInterface/3rdParty/Cyberpunk_RPG_UI/UI_Parts/Background_03_main_menu.png?fileID=2800000&amp;guid=d74574a31706a4b4f8145d105c448748&amp;type=3#Background_03_main_menu&apos;); flex-direction: column; align-items: center; justify-content: center;">
         <ui:VisualElement name="Layout" style="width: 80%; height: 80%;" />
     </ui:VisualElement>

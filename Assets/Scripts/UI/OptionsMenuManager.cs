@@ -1,9 +1,8 @@
-
-using UnityEngine;
-using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
 
+/**
+ *  THe OptionsMenuManager is the UIManager for the Options Scene.
+ */
 public class OptionsMenuManager : UIManager
 {
     protected override void Start()

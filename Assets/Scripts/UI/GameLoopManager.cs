@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 using static InventoryManager;
 
+/*
+ * The GameLoopManager is the UI Manager for the Main Game Loop Scene.
+ * It handles as example the UI Inventory Logic.
+ */
 public class GameLoopManager : UIManager
 {
     public static new GameLoopManager Instance { get; private set; }
@@ -112,6 +116,23 @@ public class GameLoopManager : UIManager
         }
     }
 
+    public string StopDrawRoundTime()
+    {
+        CancelInvoke("DrawRoundTime");
+        DrawRoundTime();
+        return GetRoundTime();
+    }
+
+    protected override void Start()
+    {
+        Instance.EnableInventoryUI();
+        Instance.DrawInventoryUI();
+
+        InvokeRepeating("DrawRoundTime", 0, 1f);
+
+        base.Start();
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -123,16 +144,6 @@ public class GameLoopManager : UIManager
         Instance = this;
 
         UIDocument = GetComponent<UIDocument>();
-    }
-
-    protected override void Start()
-    {
-        Instance.EnableInventoryUI();
-        Instance.DrawInventoryUI();
-
-        InvokeRepeating("DrawRoundTime", 0, 1f);
-
-        base.Start();
     }
 
     /**
@@ -178,13 +189,13 @@ public class GameLoopManager : UIManager
                 case KeyCode.Q:
                     InventoryManager.Instance.SetActiveInventoryItem(-1);
                     DrawInventoryUI();
-                    AudioManager.Instance.PlaySfx(UISfx);
+                    GameLoopManager.Instance.PlayUISfx();
 
                     break;
                 case KeyCode.E:
                     InventoryManager.Instance.SetActiveInventoryItem(1);
                     DrawInventoryUI();
-                    AudioManager.Instance.PlaySfx(UISfx);
+                    GameLoopManager.Instance.PlayUISfx();
 
                     break;
             }
@@ -199,48 +210,6 @@ public class GameLoopManager : UIManager
         descButton.RegisterCallback(OnClickSortDirection(InventoryManager.SortDirection.Desc));
     }
 
-    public void ShowDeathOverlay()
-    {
-        VisualElement deathOverlay = UIDocument.rootVisualElement.Q<VisualElement>("DeathOverlay");
-
-        deathOverlay.RegisterCallback<KeyDownEvent>(ev =>
-        {
-            if (ev.keyCode == KeyCode.R)
-            {
-                Restart();
-            }
-        });
-
-        deathOverlay.style.display = DisplayStyle.Flex;
-        deathOverlay.focusable = true;
-        deathOverlay.Focus();
-
-        Button restartButton = deathOverlay.Q<Button>("Restart");
-
-        Label finalTime = deathOverlay.Q<Label>("FinalTime");
-        finalTime.text = GetRoundTime();
-
-        restartButton.RegisterCallback<ClickEvent>(ev =>
-        {
-            AudioManager.Instance.PlaySfx(UISfx);
-            Restart();
-        });
-
-
-        Button quitButton = deathOverlay.Q<Button>("Quit");
-
-
-        quitButton.RegisterCallback<ClickEvent>(ev =>
-        {
-            AudioManager.Instance.PlaySfx(UISfx);
-            Application.Quit();
-        });
-
-
-        DrawRoundTime();
-        CancelInvoke("DrawRoundTime");
-    }
-
     private EventCallback<ClickEvent> OnClickSortType(SortType sortType)
     {
         return (ev) => ChangeSortType(sortType);
@@ -253,7 +222,7 @@ public class GameLoopManager : UIManager
 
     private void ChangeSortType(SortType sortType)
     {
-        AudioManager.Instance.PlaySfx(UISfx);
+        GameLoopManager.Instance.PlayUISfx();
         InventoryManager.SortDirection activeSortDirection = InventoryManager.Instance.GetActiveSortDirection();
         InventoryManager.Instance.SortInventoryItems(sortType, activeSortDirection);
         DrawInventoryUI();
@@ -261,16 +230,10 @@ public class GameLoopManager : UIManager
 
     private void ChangeSortDirection(InventoryManager.SortDirection sortDirection)
     {
-        AudioManager.Instance.PlaySfx(UISfx);
+        GameLoopManager.Instance.PlayUISfx();
         SortType activeSortType = InventoryManager.Instance.GetActiveSortType();
         InventoryManager.Instance.SortInventoryItems(activeSortType, sortDirection);
         DrawInventoryUI();
-    }
-
-    private void DrawRoundTime()
-    {
-        Label timer = UIDocument.rootVisualElement.Q<Label>("Timer");
-        timer.text = GetRoundTime();
     }
 
     private string GetRoundTime()
@@ -286,9 +249,10 @@ public class GameLoopManager : UIManager
         return $"{formattedMinutes}:{formattedSeconds}";
     }
 
-    private void Restart()
+    private void DrawRoundTime()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Label timer = UIDocument.rootVisualElement.Q<Label>("Timer");
+        timer.text = GetRoundTime();
     }
 }
 

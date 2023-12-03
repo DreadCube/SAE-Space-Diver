@@ -1,22 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using System;
-using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
+/**
+ * The PopupManager is responsible for UI Layouts that wil be injected in to the
+ * current defined UIDocument. These UI Layouts act as popups and are capable to use them
+ * in different scenes. As example: Options.
+ */
 public class PopupManager : MonoBehaviour
 {
     public static PopupManager Instance { get; private set; }
 
     [SerializeField]
+    private UIDocument UIDocument;
+
+    [SerializeField]
     private VisualTreeAsset optionsVisuals;
+
+    [SerializeField]
+    private VisualTreeAsset deathOverlayVisuals;
 
     public void ShowOptions(Action closeCallback)
     {
-        UIDocument UIDocument = UIManager.Instance.GetUIDocument();
-
         UIDocument.rootVisualElement.Q("Layout").Add(optionsVisuals.Instantiate());
 
         Slider musicVolumeSlider = UIDocument.rootVisualElement.Q<Slider>("MusicVolume");
@@ -56,6 +62,75 @@ public class PopupManager : MonoBehaviour
         fullscreenToggle.value = Screen.fullScreenMode == FullScreenMode.FullScreenWindow ? true : false;
 
         PrepareResolutionDropdown();
+    }
+
+    // TODO: Move out to Popup.
+    public void ShowDeathOverlay(string finalTime)
+    {
+        VisualElement popupHolder = GetPopupHolder();
+        popupHolder.Clear();
+
+        VisualElement deathOverlay = deathOverlayVisuals.Instantiate();
+
+        popupHolder.Add(deathOverlay);
+
+
+        deathOverlay.RegisterCallback<KeyDownEvent>(ev =>
+        {
+            if (ev.keyCode == KeyCode.R)
+            {
+                RestartScene();
+            }
+        });
+
+        deathOverlay.style.display = DisplayStyle.Flex;
+        deathOverlay.focusable = true;
+        deathOverlay.Focus();
+
+        Button restartButton = deathOverlay.Q<Button>("Restart");
+
+        Label finalTimeLabel = deathOverlay.Q<Label>("FinalTime");
+        finalTimeLabel.text = finalTime;
+
+        restartButton.RegisterCallback<ClickEvent>(ev =>
+        {
+            UIManager.Instance.PlayUISfx();
+            RestartScene();
+        });
+
+
+        /*Button quitButton = deathOverlay.Q<Button>("Quit");
+
+
+        quitButton.RegisterCallback<ClickEvent>(ev =>
+        {
+            UIManager.Instance.PlayUISfx();
+            Application.Quit();
+        });*/
+    }
+
+    private VisualElement GetPopupHolder()
+    {
+        Debug.Log("A");
+        VisualElement popupHolder = UIDocument.rootVisualElement.Q("PopupHolder");
+
+        if (popupHolder == null)
+        {
+            popupHolder = new VisualElement();
+            popupHolder.name = "PopupHolder";
+            popupHolder.AddToClassList("popupHolder");
+
+            UIDocument.rootVisualElement.Add(popupHolder);
+        }
+
+        Debug.Log("B");
+
+        return popupHolder;
+    }
+
+    private void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void PrepareResolutionDropdown()
