@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 using static InventoryManager;
@@ -11,7 +10,8 @@ using static InventoryManager;
  */
 public class GameLoopManager : UIManager
 {
-    public static new GameLoopManager Instance { get; private set; }
+
+    public static GameLoopManager Instance { get; protected set; }
 
     private VisualElement inventoryRoot;
     private VisualElement inventoryItemsRoot;
@@ -123,17 +123,7 @@ public class GameLoopManager : UIManager
         return GetRoundTime();
     }
 
-    protected override void Start()
-    {
-        Instance.EnableInventoryUI();
-        Instance.DrawInventoryUI();
-
-        InvokeRepeating("DrawRoundTime", 0, 1f);
-
-        base.Start();
-    }
-
-    private void Awake()
+    protected override void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -144,6 +134,28 @@ public class GameLoopManager : UIManager
         Instance = this;
 
         UIDocument = GetComponent<UIDocument>();
+    }
+
+    protected override void Start()
+    {
+        EnablePauseMenu();
+        EnableInventoryUI();
+        DrawInventoryUI();
+
+        InvokeRepeating("DrawRoundTime", 0, 1f);
+
+        base.Start();
+    }
+
+    private void EnablePauseMenu()
+    {
+        UIDocument.rootVisualElement.RegisterCallback<KeyDownEvent>(ev =>
+        {
+            if (ev.keyCode == KeyCode.Escape)
+            {
+                PopupManager.Instance.ShowPauseMenu();
+            }
+        });
     }
 
     /**
@@ -189,13 +201,13 @@ public class GameLoopManager : UIManager
                 case KeyCode.Q:
                     InventoryManager.Instance.SetActiveInventoryItem(-1);
                     DrawInventoryUI();
-                    GameLoopManager.Instance.PlayUISfx();
+                    UIManager.Instance.PlayUISfx();
 
                     break;
                 case KeyCode.E:
                     InventoryManager.Instance.SetActiveInventoryItem(1);
                     DrawInventoryUI();
-                    GameLoopManager.Instance.PlayUISfx();
+                    UIManager.Instance.PlayUISfx();
 
                     break;
             }
@@ -222,7 +234,7 @@ public class GameLoopManager : UIManager
 
     private void ChangeSortType(SortType sortType)
     {
-        GameLoopManager.Instance.PlayUISfx();
+        UIManager.Instance.PlayUISfx();
         InventoryManager.SortDirection activeSortDirection = InventoryManager.Instance.GetActiveSortDirection();
         InventoryManager.Instance.SortInventoryItems(sortType, activeSortDirection);
         DrawInventoryUI();
@@ -230,7 +242,7 @@ public class GameLoopManager : UIManager
 
     private void ChangeSortDirection(InventoryManager.SortDirection sortDirection)
     {
-        GameLoopManager.Instance.PlayUISfx();
+        UIManager.Instance.PlayUISfx();
         SortType activeSortType = InventoryManager.Instance.GetActiveSortType();
         InventoryManager.Instance.SortInventoryItems(activeSortType, sortDirection);
         DrawInventoryUI();

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance;
+    public static AudioManager Instance { get; private set; }
 
     [SerializeField]
     private AudioClip soundTrack;
@@ -77,12 +77,12 @@ public class AudioManager : MonoBehaviour
 
         gameObject.transform.SetParent(transform);
 
-        PlaySound(audioClip, gameObject, loop, volume);
-
         if (destroyOnEnd)
         {
             Destroy(gameObject, audioClip.length);
         }
+
+        PlaySound(audioClip, gameObject, loop, volume);
     }
 
     /// <summary>
@@ -90,7 +90,6 @@ public class AudioManager : MonoBehaviour
     /// The Music will be played trough a child GameObject on AudioManager called Music.
     /// Music will be swapped out if theres a differnet audioClip provided.
     /// </summary>
-    /// <param name="gameObject">Game Object</param>
     /// <param name="audioClip">Audio Clip</param>
     public void PlayMusic(AudioClip audioClip)
     {
@@ -125,7 +124,6 @@ public class AudioManager : MonoBehaviour
     /// The SFX will be played trough a child gameObject on AudioManager that
     /// will be destroyed after the SFX ends.
     /// </summary>
-    /// <param name="gameObject">Game Object</param>
     /// <param name="audioClip">Audio Clip</param>
     public void PlaySfx(AudioClip audioClip)
     {
