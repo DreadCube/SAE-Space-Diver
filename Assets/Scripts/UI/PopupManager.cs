@@ -184,7 +184,6 @@ public class PopupManager : MonoBehaviour
 
     private void FadeInPopupHolder()
     {
-        Debug.Log("HIERR");
         VisualElement popupHolder = UIDocument.rootVisualElement.Q("PopupHolder");
         popupHolder.AddToClassList("popupHolder-fadeIn");
         CancelInvoke("FadeInPopupHolder");
