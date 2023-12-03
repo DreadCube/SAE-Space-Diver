@@ -15,21 +15,37 @@ public class PopupManager : MonoBehaviour
     [SerializeField]
     private UIDocument UIDocument;
 
+
     [SerializeField]
     private VisualTreeAsset optionsVisuals;
 
     [SerializeField]
     private VisualTreeAsset deathOverlayVisuals;
 
+    [SerializeField]
+    private VisualTreeAsset pauseMenuVisuals;
+
+    private bool isPopupOpen = false;
+
+
     public void ShowOptions(Action closeCallback)
     {
-        UIDocument.rootVisualElement.Q("Layout").Add(optionsVisuals.Instantiate());
+        if (isPopupOpen)
+        {
+            return;
+        }
+        isPopupOpen = true;
+        VisualElement optionsOverlay = optionsVisuals.Instantiate();
 
-        Slider musicVolumeSlider = UIDocument.rootVisualElement.Q<Slider>("MusicVolume");
-        Slider sfxVolumeSlider = UIDocument.rootVisualElement.Q<Slider>("SFXVolume");
-        Toggle fullscreenToggle = UIDocument.rootVisualElement.Q<Toggle>("FullscreenToggle");
+        CreatePopupHolder();
+        AddContent(optionsOverlay);
 
-        Button backButton = UIDocument.rootVisualElement.Q<Button>("Back");
+
+        Slider musicVolumeSlider = optionsOverlay.Q<Slider>("MusicVolume");
+        Slider sfxVolumeSlider = optionsOverlay.Q<Slider>("SFXVolume");
+        Toggle fullscreenToggle = optionsOverlay.Q<Toggle>("FullscreenToggle");
+
+        Button backButton = optionsOverlay.Q<Button>("Back");
 
         musicVolumeSlider.value = AudioManager.Instance.GetMusicVolume();
         sfxVolumeSlider.value = AudioManager.Instance.GetSfxVolume();
@@ -47,6 +63,7 @@ public class PopupManager : MonoBehaviour
 
         backButton.RegisterCallback<ClickEvent>((ev) =>
         {
+            ClosePopup();
             closeCallback();
         });
 
@@ -64,15 +81,18 @@ public class PopupManager : MonoBehaviour
         PrepareResolutionDropdown();
     }
 
-    // TODO: Move out to Popup.
     public void ShowDeathOverlay(string finalTime)
     {
-        VisualElement popupHolder = GetPopupHolder();
-        popupHolder.Clear();
+        if (isPopupOpen)
+        {
+            return;
+        }
+        isPopupOpen = true;
 
         VisualElement deathOverlay = deathOverlayVisuals.Instantiate();
 
-        popupHolder.Add(deathOverlay);
+        CreatePopupHolder();
+        AddContent(deathOverlay);
 
 
         deathOverlay.RegisterCallback<KeyDownEvent>(ev =>
@@ -94,24 +114,57 @@ public class PopupManager : MonoBehaviour
 
         restartButton.RegisterCallback<ClickEvent>(ev =>
         {
-            UIManager.Instance.PlayUISfx();
             RestartScene();
         });
-
-
-        /*Button quitButton = deathOverlay.Q<Button>("Quit");
-
-
-        quitButton.RegisterCallback<ClickEvent>(ev =>
-        {
-            UIManager.Instance.PlayUISfx();
-            Application.Quit();
-        });*/
     }
 
-    private VisualElement GetPopupHolder()
+    public void ShowPauseMenu()
     {
-        Debug.Log("A");
+        if (isPopupOpen)
+        {
+            return;
+        }
+        isPopupOpen = true;
+
+        VisualElement pauseMenu = pauseMenuVisuals.Instantiate();
+
+        CreatePopupHolder();
+        AddContent(pauseMenu);
+
+
+        Button restartButton = pauseMenu.Q<Button>("Restart");
+        Button optionsButton = pauseMenu.Q<Button>("Options");
+        Button mainMenuButton = pauseMenu.Q<Button>("MainMenu");
+        Button continueButton = pauseMenu.Q<Button>("Continue");
+
+
+        restartButton.RegisterCallback<ClickEvent>(ev => RestartScene());
+        optionsButton.RegisterCallback<ClickEvent>(ev =>
+        {
+            ClosePopup();
+
+            ShowOptions(() =>
+            {
+                ShowPauseMenu();
+            });
+        });
+        mainMenuButton.RegisterCallback<ClickEvent>(ev =>
+        {
+            ClosePopup();
+            SceneManager.LoadScene("MainMenu");
+        });
+
+        continueButton.RegisterCallback<ClickEvent>(ev =>
+        {
+            ClosePopup();
+        });
+    }
+
+
+    private VisualElement CreatePopupHolder()
+    {
+        Time.timeScale = 1;
+
         VisualElement popupHolder = UIDocument.rootVisualElement.Q("PopupHolder");
 
         if (popupHolder == null)
@@ -121,27 +174,46 @@ public class PopupManager : MonoBehaviour
             popupHolder.AddToClassList("popupHolder");
 
             UIDocument.rootVisualElement.Add(popupHolder);
+
+            InvokeRepeating("FadeInPopupHolder", 0.1f, 0f);
         }
 
-        Debug.Log("B");
 
         return popupHolder;
     }
 
+    private void FadeInPopupHolder()
+    {
+        VisualElement popupHolder = UIDocument.rootVisualElement.Q("PopupHolder");
+        popupHolder.AddToClassList("popupHolder-fadeIn");
+        CancelInvoke("FadeInPopupHolder");
+
+        Time.timeScale = 0;
+    }
+
+
+    private void AddContent(VisualElement content)
+    {
+        VisualElement popupHolder = UIDocument.rootVisualElement.Q("PopupHolder");
+        popupHolder.Add(content);
+        UIManager.Instance.EnableSfx(content);
+    }
+
+
     private void RestartScene()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void PrepareResolutionDropdown()
     {
-        UIDocument UIDocument = UIManager.Instance.GetUIDocument();
+        VisualElement popupHolder = UIDocument.rootVisualElement.Q("PopupHolder");
 
         Resolution[] availableResolutions = Screen.resolutions;
         Resolution currentResolution = Screen.currentResolution;
 
-
-        DropdownField resolutionDropdown = UIDocument.rootVisualElement.Q<DropdownField>("Resolution");
+        DropdownField resolutionDropdown = popupHolder.Q<DropdownField>("Resolution");
         resolutionDropdown.value = $"{currentResolution.width} x {currentResolution.height}";
 
         resolutionDropdown.RegisterValueChangedCallback((ev) =>
@@ -158,6 +230,14 @@ public class PopupManager : MonoBehaviour
             string choice = $"{availableResolution.width} x {availableResolution.height}";
             resolutionDropdown.choices.Add(choice);
         }
+    }
+
+    private void ClosePopup()
+    {
+        VisualElement popupHolder = UIDocument.rootVisualElement.Q("PopupHolder");
+        UIDocument.rootVisualElement.Remove(popupHolder);
+        Time.timeScale = 1;
+        isPopupOpen = false;
     }
 
     private void Awake()

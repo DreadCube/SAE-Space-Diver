@@ -224,7 +224,7 @@ public class ShipController : MonoBehaviour
 
         // Redraw the UI
         // TODO: also here. if possible find a way to not redraw the whole UI.
-        GameLoopManager.Instance.DrawInventoryUI();
+        //  GameLoopManager.Instance.DrawInventoryUI();
     }
 
     /**

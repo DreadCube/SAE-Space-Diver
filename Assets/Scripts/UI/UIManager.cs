@@ -17,6 +17,11 @@ public class UIManager : MonoBehaviour
     protected AudioClip UISfx;
 
 
+    public static UIManager GetInstance()
+    {
+        return Instance;
+    }
+
     public UIDocument GetUIDocument()
     {
         return UIDocument;
@@ -24,7 +29,7 @@ public class UIManager : MonoBehaviour
 
     protected virtual void Start()
     {
-        EnableSfx();
+        EnableSfx(UIDocument.rootVisualElement);
     }
 
     public void PlayUISfx()
@@ -32,7 +37,7 @@ public class UIManager : MonoBehaviour
         AudioManager.Instance.PlaySfx(UISfx);
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -48,13 +53,13 @@ public class UIManager : MonoBehaviour
     /**
      * Enables UI SFX
      */
-    private void EnableSfx()
+    public void EnableSfx(VisualElement root)
     {
-        var buttons = UIDocument.rootVisualElement.Query<Button>();
+        var buttons = root.Query<Button>();
 
-        var dropdownFields = UIDocument.rootVisualElement.Query<DropdownField>();
+        var dropdownFields = root.Query<DropdownField>();
 
-        var toggles = UIDocument.rootVisualElement.Query<Toggle>();
+        var toggles = root.Query<Toggle>();
 
 
         buttons.ForEach(button =>
