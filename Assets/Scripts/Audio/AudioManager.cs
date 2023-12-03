@@ -11,6 +11,29 @@ public class AudioManager : MonoBehaviour
     private float musicVolume = 0.25f;
     private float sfxVolume = 0.25f;
 
+    public float GetMusicVolume()
+    {
+        return musicVolume;
+    }
+
+    public float GetSfxVolume()
+    {
+        return sfxVolume;
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        musicVolume = volume;
+
+        // Would update the volume of current playing music
+        GetComponentInChildren<AudioSource>().volume = volume;
+    }
+
+    public void SetSfxVolume(float volume)
+    {
+        sfxVolume = volume;
+    }
+
     /// <summary>
     /// Plays an audioClip on specified gameObject.
     /// </summary>
@@ -36,7 +59,6 @@ public class AudioManager : MonoBehaviour
         else
         {
             audioSource.PlayOneShot(audioClip);
-
         }
         audioSource.volume = volume;
     }
@@ -62,17 +84,6 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject, audioClip.length);
         }
     }
-
-    /// <summary>
-    /// Plays Music on specified Game Object. Will be looped.
-    /// </summary>
-    /// <param name="gameObject">Game Object</param>
-    /// <param name="audioClip">Audio Clip</param>
-    public void PlayMusic(AudioClip audioClip, GameObject gameObject)
-    {
-        PlaySound(audioClip, gameObject, true, musicVolume);
-    }
-
 
     /// <summary>
     /// Plays Music on AudioManager. Will be looped.

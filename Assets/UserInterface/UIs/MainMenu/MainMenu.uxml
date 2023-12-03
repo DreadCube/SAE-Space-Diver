@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UserInterface/UIs/Stylesheet.uss?fileID=7433441132597879392&amp;guid=b19c6e9d9c2744231b7aa6c7e99cc7c1&amp;type=3#Stylesheet" />
+    <Style src="project://database/Assets/UserInterface/UI%20Toolkit/UnityThemes/Overrides.uss?fileID=7433441132597879392&amp;guid=7b7af953558e241bcb522732ca70c33d&amp;type=3#Overrides" />
+    <ui:VisualElement name="Menu" style="width: 100%; align-items: center; flex-grow: 1; padding-top: 80px; padding-right: 30px; padding-left: 11px; padding-bottom: 80px; background-image: url(&apos;project://database/Assets/UserInterface/3rdParty/Cyberpunk_RPG_UI/UI_Parts/Poup_window_left_r.png?fileID=2800000&amp;guid=9ca5a37ed864ab34fa60198d03790fd8&amp;type=3#Poup_window_left_r&apos;); height: 100%; align-self: center; flex-shrink: 0; justify-content: flex-start; position: relative;">
+        <ui:Label tabindex="-1" text="Space Diver" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Title" class="label-primary" style="font-size: 30px;" />
+        <ui:VisualElement name="ButtonsWrapper" style="flex-grow: 1; flex-direction: column; width: 80%; height: auto; flex-shrink: 0; justify-content: space-around;">
+            <ui:Button text="Start Game" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StartGame" class="button-primary button-menu">
+                <ui:VisualElement name="background" class="button-background" />
+            </ui:Button>
+            <ui:Button text="Options" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Options" class="button-primary button-menu">
+                <ui:VisualElement name="background" class="button-background" />
+            </ui:Button>
+            <ui:Button text="Quit Game" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitGame" class="button-primary button-menu">
+                <ui:VisualElement name="background" class="button-background" />
+            </ui:Button>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
