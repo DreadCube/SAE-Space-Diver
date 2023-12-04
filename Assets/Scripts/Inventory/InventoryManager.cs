@@ -27,13 +27,15 @@ public class InventoryManager : MonoBehaviour
 
     private InventoryItem activeInventoryItem;
 
-    public void SortInventoryItems(SortType sortType, SortDirection sortDirection, bool isInitialSort = false)
+    public void SortInventoryItems(SortType sortType, SortDirection sortDirection, bool forceSort = false)
     {
         /*
          * Nothing to do if the requested sorting is the current active sorting
-         * and not the initial sort
+         * and not a forced sort.
+         * 
+         * A forced sort is usually at the beginning and if we picked up a item.
          */
-        if (sortType == activeSortType && activeSortDirection == sortDirection && !isInitialSort)
+        if (sortType == activeSortType && activeSortDirection == sortDirection && !forceSort)
         {
             return;
         }
@@ -126,6 +128,7 @@ public class InventoryManager : MonoBehaviour
         InventoryItem inventoryItem = inventoryItems.Find(item => item.GetShape() == pickupItem.GetShape());
         inventoryItem.Increase();
 
+        SortInventoryItems(activeSortType, activeSortDirection, true);
 
         /**
          * Redraws the inventory UI to show the new amount.

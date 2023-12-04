@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
-    [Range(0f, 100f)]
+    [Range(0f, 200f)]
     [SerializeField]
     private float verticalForceAmount;
 
@@ -27,7 +27,7 @@ public class ShipController : MonoBehaviour
     private GameObject bulletPrefab;
 
     [SerializeField]
-    private float shootInterval = 0.2f;
+    private float shootInterval = 0.1f;
 
     [SerializeField]
     private float shootHitDistance = 500f;
@@ -51,17 +51,28 @@ public class ShipController : MonoBehaviour
     private AudioClip explosionSfx;
 
 
-    private void Start()
+
+    private GameObject laser;
+
+
+    private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
+
+        PrepareLaser();
+    }
+
+
+    private void PrepareLaser()
+    {
+        laser = GetComponentInChildren<LineRenderer>().gameObject;
+        laser.transform.localScale = new Vector3(0, 0, shootHitDistance);
     }
 
     private void Update()
     {
         vertInput = Input.GetAxis("Vertical");
         horizInput = Input.GetAxis("Horizontal");
-
-
         shootInput = Input.GetKey(KeyCode.Space);
     }
 
@@ -80,8 +91,6 @@ public class ShipController : MonoBehaviour
      */
     private void HandleShooting()
     {
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward * shootHitDistance), Color.yellow);
-
         if (shootInput && Time.timeSinceLevelLoad - lastTimeShooted >= shootInterval)
         {
             lastTimeShooted = Time.timeSinceLevelLoad;
@@ -224,7 +233,7 @@ public class ShipController : MonoBehaviour
 
         // Redraw the UI
         // TODO: also here. if possible find a way to not redraw the whole UI.
-        //  GameLoopManager.Instance.DrawInventoryUI();
+        GameLoopManager.Instance.DrawInventoryUI();
     }
 
     /**
