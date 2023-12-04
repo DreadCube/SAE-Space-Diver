@@ -21,6 +21,6 @@ public class Bullet : ShapeMonoBehaviour
 
     private void FixedUpdate()
     {
-        bulletRigidbody.AddRelativeForce(Vector3.forward * 1000f, ForceMode.VelocityChange);
+        bulletRigidbody.AddRelativeForce(Vector3.forward * 2000f, ForceMode.VelocityChange);
     }
 }
