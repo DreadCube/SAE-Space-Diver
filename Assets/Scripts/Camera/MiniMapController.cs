@@ -5,7 +5,7 @@ public class MiniMapController : MonoBehaviour
     [SerializeField]
     private Transform target;
 
-    private float upOffset = 800f;
+    private float upOffset = 600f;
 
     private void Start()
     {
