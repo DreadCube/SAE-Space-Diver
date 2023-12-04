@@ -44,3 +44,8 @@ In Project:     Assets/UserInterface/3rdParty/Cyberpunk_RPG_UI
 Link to Asset:          https://assetstore.unity.com/packages/2d/gui/icons/cyberpunk-rpg-ui-186223
 
 Link to Licence:    	https://unity.com/de/legal/as-terms
+
+
+### Post Processing / Glow Effect
+Post Processing was made with the Offical "Post Processing" Package from Unity and following Tutorial:
+https://www.youtube.com/watch?v=_KBaT6gRgRs
