@@ -18,7 +18,7 @@ public class MainMenuManager : UIManager
 
         startGameButton.RegisterCallback<ClickEvent>((ev) =>
         {
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene("GameLoop");
         });
 
         optionsButton.RegisterCallback<ClickEvent>((ev) =>
