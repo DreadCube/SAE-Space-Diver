@@ -5,8 +5,6 @@ public class Enemy : ShapeMonoBehaviour
 
     private GameObject followTarget;
 
-    private Color materialColor;
-
     [SerializeField]
     private float speed = 50f;
 
@@ -20,24 +18,6 @@ public class Enemy : ShapeMonoBehaviour
     private void Awake()
     {
         followTarget = GameObject.Find("Ship");
-    }
-
-    private void Start()
-    {
-        materialColor = shapeRenderer.material.color;
-    }
-
-    private void Update()
-    {
-        /**
-         * Ping Pong between material color and white for the Enemy. Makes it a litle bit easier to see the difference
-         * betweeen Enemy and PickupItem from Distance.
-         * 
-         * TODO: Maybe there are better ways. Still not really cool.
-         */
-        float a = Mathf.PingPong(Time.time, 1);
-        shapeRenderer.material.color = a >= 0.7 ? Color.white : materialColor;
-
     }
 
     private void FixedUpdate()

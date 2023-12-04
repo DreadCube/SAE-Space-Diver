@@ -17,7 +17,16 @@ public class ShapeMonoBehaviour : MonoBehaviour
 
         shapeRenderer = child.GetComponent<Renderer>();
 
-        shapeRenderer.material.SetColor("_Color", shape.Color);
+        /**
+         * 
+         * Made with help from here:
+         * https://discussions.unity.com/t/setting-emission-color-programatically/152813
+         * 
+         * We can set Emission and EmissionColor per code. This enables us the fancy
+         * glow effect on Shape Objects.
+         */
+        shapeRenderer.material.EnableKeyword("_EMISSION");
+        shapeRenderer.material.SetColor("_EmissionColor", shape.Color);
 
 
         if (shape.Type == Shape.ShapeType.Cube)
