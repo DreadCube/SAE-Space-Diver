@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 /**
  * The PopupManager is responsible for UI Layouts that wil be injected in to the
@@ -91,7 +92,7 @@ public class PopupManager : MonoBehaviour
 
         VisualElement deathOverlay = deathOverlayVisuals.Instantiate();
 
-        CreatePopupHolder();
+        CreatePopupHolder(1);
         AddContent(deathOverlay);
 
 
@@ -161,7 +162,7 @@ public class PopupManager : MonoBehaviour
     }
 
 
-    private VisualElement CreatePopupHolder()
+    private VisualElement CreatePopupHolder(float fadeInDelay = 0.1f)
     {
         Time.timeScale = 1;
 
@@ -175,7 +176,7 @@ public class PopupManager : MonoBehaviour
 
             UIDocument.rootVisualElement.Add(popupHolder);
 
-            InvokeRepeating("FadeInPopupHolder", 0.1f, 0f);
+            InvokeRepeating("FadeInPopupHolder", fadeInDelay, 0f);
         }
 
 

@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using System.Collections;
+
 public class ShipController : MonoBehaviour
 {
     [Range(0f, 200f)]
@@ -53,6 +55,8 @@ public class ShipController : MonoBehaviour
     [SerializeField]
     private AudioClip shootEmptySfx;
 
+    [SerializeField]
+    private GameObject deathParticles;
 
     private GameObject laser;
 
@@ -214,12 +218,24 @@ public class ShipController : MonoBehaviour
 
         if (other.tag == "Enemy" || other.tag == "Wall")
         {
-            Destroy(gameObject);
-
-            PopupManager.Instance.ShowDeathOverlay(GameLoopManager.Instance.StopDrawRoundTime());
-
-            AudioManager.Instance.PlaySfx(explosionSfx);
+            HandleDeath();
         }
+    }
+
+    private void HandleDeath()
+    {
+
+        GameObject particles = Instantiate(deathParticles, transform.position, Quaternion.identity);
+        particles.GetComponent<DeathParticles>().Init(Color.white, 10);
+
+        string roundTime = GameLoopManager.Instance.StopDrawRoundTime();
+
+
+        AudioManager.Instance.PlaySfx(explosionSfx);
+
+        PopupManager.Instance.ShowDeathOverlay(roundTime);
+
+        Destroy(gameObject);
     }
 
     private void Shoot()

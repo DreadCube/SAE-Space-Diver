@@ -15,6 +15,10 @@ public class Enemy : ShapeMonoBehaviour
     private AudioClip explosionSfx;
 
 
+    [SerializeField]
+    GameObject deathParticles;
+
+
     private void Awake()
     {
         followTarget = GameObject.Find("Ship");
@@ -49,5 +53,8 @@ public class Enemy : ShapeMonoBehaviour
         Destroy(gameObject);
 
         AudioManager.Instance.PlaySfx(explosionSfx);
+
+        GameObject particles = Instantiate(deathParticles, transform.position, Quaternion.identity);
+        particles.GetComponent<DeathParticles>().Init(shape.Color, transform.localScale.y / 2);
     }
 }
