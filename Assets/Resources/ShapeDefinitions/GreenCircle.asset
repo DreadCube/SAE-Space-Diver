@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GreenCircle
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 1
-  <Color>k__BackingField: {r: 0.29992044, g: 1, b: 0, a: 1}
+  <Color>k__BackingField: {r: 0.25652528, g: 1, b: 0, a: 1}
   <UITexture>k__BackingField: {fileID: 2800000, guid: 9ee1decce9e2c483fa97ddb433371c07, type: 3}
   <GameObject>k__BackingField: {fileID: 7881342757829168128, guid: d80cdf8a955da400bbfea594ec77778c, type: 3}

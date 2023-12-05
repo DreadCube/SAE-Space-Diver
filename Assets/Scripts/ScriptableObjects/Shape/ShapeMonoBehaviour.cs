@@ -17,6 +17,8 @@ public class ShapeMonoBehaviour : MonoBehaviour
 
         shapeRenderer = child.GetComponent<Renderer>();
 
+        shapeRenderer.material.color = Color.black;
+
         /**
          * 
          * Made with help from here:
@@ -26,7 +28,7 @@ public class ShapeMonoBehaviour : MonoBehaviour
          * glow effect on Shape Objects.
          */
         shapeRenderer.material.EnableKeyword("_EMISSION");
-        shapeRenderer.material.SetColor("_EmissionColor", shape.Color);
+        shapeRenderer.material.SetColor("_EmissionColor", shape.Color * 2);
 
 
         if (shape.Type == Shape.ShapeType.Cube)

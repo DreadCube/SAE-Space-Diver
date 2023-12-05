@@ -1063,12 +1063,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: efbb76c83f42d4c2b9f09dd9a1c9ccd3, type: 3}
     - target: {fileID: 3931106136611343690, guid: 9b64079d9159140ef8425d79e6def662, type: 3}
+      propertyPath: shootEmptySfx
+      value: 
+      objectReference: {fileID: 8300000, guid: efbb76c83f42d4c2b9f09dd9a1c9ccd3, type: 3}
+    - target: {fileID: 3931106136611343690, guid: 9b64079d9159140ef8425d79e6def662, type: 3}
       propertyPath: shootInterval
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3931106136611343690, guid: 9b64079d9159140ef8425d79e6def662, type: 3}
       propertyPath: verticalForceAmount
-      value: 100
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 4078819074889118747, guid: 9b64079d9159140ef8425d79e6def662, type: 3}
       propertyPath: moveWithTransform

@@ -50,6 +50,8 @@ public class ShipController : MonoBehaviour
     [SerializeField]
     private AudioClip explosionSfx;
 
+    [SerializeField]
+    private AudioClip shootEmptySfx;
 
 
     private GameObject laser;
@@ -100,6 +102,7 @@ public class ShipController : MonoBehaviour
             // Check if we have enough ammo of active Type
             if (activeInventoryItem.GetAmount() <= 0)
             {
+                AudioManager.Instance.PlaySfx(shootEmptySfx);
                 return;
             }
 
