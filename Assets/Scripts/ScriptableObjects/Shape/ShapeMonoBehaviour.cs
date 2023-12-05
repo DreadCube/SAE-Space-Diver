@@ -7,11 +7,11 @@ public class ShapeMonoBehaviour : MonoBehaviour
     protected Renderer shapeRenderer;
 
     /**
-     * The Instantiate of PickupItem creates the child game Object
+     * The Init of PickupItem creates the child game Object
      * based on the shape, sets proper color / scale and the correct collider
      * for our needs.
      */
-    public void Instantiate(Shape shape, bool withCollider = true)
+    public void Init(Shape shape, bool withCollider = true)
     {
         GameObject child = Instantiate(shape.GameObject, transform);
 

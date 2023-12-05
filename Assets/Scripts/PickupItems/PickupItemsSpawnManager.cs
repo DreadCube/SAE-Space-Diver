@@ -39,7 +39,7 @@ public class PickupItemsSpawnManager : MonoBehaviour
             GameObject item = Instantiate(pickupItemPrefab, spawnPosition, Quaternion.identity);
             item.tag = "PickupItem";
 
-            item.GetComponent<PickupItem>().Instantiate(shape);
+            item.GetComponent<PickupItem>().Init(shape);
         }
     }
 }

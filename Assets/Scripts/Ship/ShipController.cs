@@ -232,7 +232,7 @@ public class ShipController : MonoBehaviour
 
         // Instantiate the bullet
         GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
-        bullet.GetComponent<Bullet>().Instantiate(activeInventoryItem.GetShape(), false);
+        bullet.GetComponent<Bullet>().Init(activeInventoryItem.GetShape(), false);
 
         // Redraw the UI
         // TODO: also here. if possible find a way to not redraw the whole UI.
