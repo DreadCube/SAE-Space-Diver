@@ -370,7 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 976993cb73cfb43b4b0fe280d556ab75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundTrack: {fileID: 8300000, guid: da871ae7abd1a4e7980aa50e60929a80, type: 3}
+  soundTrack: {fileID: 8300000, guid: 41b690d93c48b4724b580487af2d6ef3, type: 3}
 --- !u!4 &1287923226
 Transform:
   m_ObjectHideFlags: 0

@@ -1,8 +1,10 @@
 using UnityEngine;
 
+using System.Collections;
+
 public class ShipController : MonoBehaviour
 {
-    [Range(0f, 100f)]
+    [Range(0f, 200f)]
     [SerializeField]
     private float verticalForceAmount;
 
@@ -27,7 +29,7 @@ public class ShipController : MonoBehaviour
     private GameObject bulletPrefab;
 
     [SerializeField]
-    private float shootInterval = 0.2f;
+    private float shootInterval = 0.1f;
 
     [SerializeField]
     private float shootHitDistance = 500f;
@@ -50,18 +52,33 @@ public class ShipController : MonoBehaviour
     [SerializeField]
     private AudioClip explosionSfx;
 
+    [SerializeField]
+    private AudioClip shootEmptySfx;
 
-    private void Start()
+    [SerializeField]
+    private GameObject deathParticles;
+
+    private GameObject laser;
+
+
+    private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
+
+        PrepareLaser();
+    }
+
+
+    private void PrepareLaser()
+    {
+        laser = GetComponentInChildren<LineRenderer>().gameObject;
+        laser.transform.localScale = new Vector3(0, 0, shootHitDistance);
     }
 
     private void Update()
     {
         vertInput = Input.GetAxis("Vertical");
         horizInput = Input.GetAxis("Horizontal");
-
-
         shootInput = Input.GetKey(KeyCode.Space);
     }
 
@@ -80,8 +97,6 @@ public class ShipController : MonoBehaviour
      */
     private void HandleShooting()
     {
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward * shootHitDistance), Color.yellow);
-
         if (shootInput && Time.timeSinceLevelLoad - lastTimeShooted >= shootInterval)
         {
             lastTimeShooted = Time.timeSinceLevelLoad;
@@ -91,6 +106,7 @@ public class ShipController : MonoBehaviour
             // Check if we have enough ammo of active Type
             if (activeInventoryItem.GetAmount() <= 0)
             {
+                AudioManager.Instance.PlaySfx(shootEmptySfx);
                 return;
             }
 
@@ -200,14 +216,32 @@ public class ShipController : MonoBehaviour
             AudioManager.Instance.PlaySfx(pickupSfx, gameObject);
         }
 
-        if (other.tag == "Enemy" || other.tag == "Wall")
+        if (other.tag == "Wall")
         {
-            Destroy(gameObject);
-
-            PopupManager.Instance.ShowDeathOverlay(GameLoopManager.Instance.StopDrawRoundTime());
-
-            AudioManager.Instance.PlaySfx(explosionSfx);
+            HandleDeath();
         }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            HandleDeath();
+        }
+    }
+
+    private void HandleDeath()
+    {
+        GameObject particles = Instantiate(deathParticles, transform.position, Quaternion.identity);
+        particles.GetComponent<DeathParticles>().Init(Color.white, 10);
+
+        string roundTime = GameLoopManager.Instance.StopDrawRoundTime();
+
+        AudioManager.Instance.PlaySfx(explosionSfx);
+
+        PopupManager.Instance.ShowDeathOverlay(roundTime);
+
+        Destroy(gameObject);
     }
 
     private void Shoot()
@@ -220,11 +254,11 @@ public class ShipController : MonoBehaviour
 
         // Instantiate the bullet
         GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
-        bullet.GetComponent<Bullet>().Instantiate(activeInventoryItem.GetShape(), false);
+        bullet.GetComponent<Bullet>().Init(activeInventoryItem.GetShape(), false);
 
         // Redraw the UI
         // TODO: also here. if possible find a way to not redraw the whole UI.
-        //  GameLoopManager.Instance.DrawInventoryUI();
+        GameLoopManager.Instance.DrawInventoryUI();
     }
 
     /**

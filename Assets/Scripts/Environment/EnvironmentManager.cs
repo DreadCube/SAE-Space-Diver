@@ -12,9 +12,9 @@ public class EnvironmentManager : MonoBehaviour
 
     private float laserThickness = 3f;
 
-    private int minY = -50;
-    private int maxY = 50;
-    private int step = 10;
+    private int minY = -40;
+    private int maxY = 40;
+    private int step = 20;
 
     private void Awake()
     {
