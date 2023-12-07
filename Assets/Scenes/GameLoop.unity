@@ -234,6 +234,7 @@ MonoBehaviour:
   optionsVisuals: {fileID: 9197481963319205126, guid: c96b61e8c20864778bc86def16ed40e5, type: 3}
   deathOverlayVisuals: {fileID: 9197481963319205126, guid: 14cde9e1cc7694f37905f8fea2cbb999, type: 3}
   pauseMenuVisuals: {fileID: 9197481963319205126, guid: 4720b64dd19d24cd4b34ecd48d0500c7, type: 3}
+  tutorialVisuals: {fileID: 9197481963319205126, guid: 951bc7096423744fc924e22e67e67380, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
