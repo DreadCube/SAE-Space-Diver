@@ -216,7 +216,15 @@ public class ShipController : MonoBehaviour
             AudioManager.Instance.PlaySfx(pickupSfx, gameObject);
         }
 
-        if (other.tag == "Enemy" || other.tag == "Wall")
+        if (other.tag == "Wall")
+        {
+            HandleDeath();
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Enemy")
         {
             HandleDeath();
         }
@@ -224,12 +232,10 @@ public class ShipController : MonoBehaviour
 
     private void HandleDeath()
     {
-
         GameObject particles = Instantiate(deathParticles, transform.position, Quaternion.identity);
         particles.GetComponent<DeathParticles>().Init(Color.white, 10);
 
         string roundTime = GameLoopManager.Instance.StopDrawRoundTime();
-
 
         AudioManager.Instance.PlaySfx(explosionSfx);
 

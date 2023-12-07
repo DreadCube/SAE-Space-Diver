@@ -80,7 +80,7 @@ public class EnemySpawnManager : MonoBehaviour
 
             Shape shape = inventoryItem.GetShape();
 
-            enemy.GetComponent<Enemy>().Init(shape);
+            enemy.GetComponent<Enemy>().Init(shape, withTrigger: false);
         }
     }
 }

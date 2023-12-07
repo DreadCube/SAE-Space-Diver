@@ -11,7 +11,7 @@ public class ShapeMonoBehaviour : MonoBehaviour
      * based on the shape, sets proper color / scale and the correct collider
      * for our needs.
      */
-    public void Init(Shape shape, bool withCollider = true)
+    public void Init(Shape shape, bool withCollider = true, bool withTrigger = true)
     {
         GameObject child = Instantiate(shape.GameObject, transform);
 
@@ -36,7 +36,8 @@ public class ShapeMonoBehaviour : MonoBehaviour
             if (withCollider)
             {
                 BoxCollider collider = gameObject.AddComponent<BoxCollider>();
-                collider.isTrigger = true;
+
+                collider.isTrigger = withTrigger;
             }
         }
         else
@@ -44,7 +45,7 @@ public class ShapeMonoBehaviour : MonoBehaviour
             if (withCollider)
             {
                 SphereCollider collider = gameObject.AddComponent<SphereCollider>();
-                collider.isTrigger = true;
+                collider.isTrigger = withTrigger;
             }
         }
 

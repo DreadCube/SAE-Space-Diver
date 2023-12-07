@@ -14918,7 +14918,7 @@ MonoBehaviour:
   shootHitDistance: 500
   pickupSfx: {fileID: 8300000, guid: 5efdb1851abd3451ea3384b2b96ca119, type: 3}
   explosionSfx: {fileID: 8300000, guid: 485e858f6fb0e4ceeb60ae5102625498, type: 3}
-  shootEmptySfx: {fileID: 0}
+  shootEmptySfx: {fileID: 8300000, guid: efbb76c83f42d4c2b9f09dd9a1c9ccd3, type: 3}
   deathParticles: {fileID: 8344420325319020443, guid: b1d2dcd1fdbd34f29add7e0dc327b167, type: 3}
 --- !u!54 &5784811386274970510
 Rigidbody:
