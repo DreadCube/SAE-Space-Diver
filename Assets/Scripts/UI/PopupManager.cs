@@ -26,6 +26,9 @@ public class PopupManager : MonoBehaviour
     [SerializeField]
     private VisualTreeAsset pauseMenuVisuals;
 
+    [SerializeField]
+    private VisualTreeAsset tutorialVisuals;
+
     private bool isPopupOpen = false;
 
 
@@ -135,8 +138,15 @@ public class PopupManager : MonoBehaviour
 
         Button restartButton = pauseMenu.Q<Button>("Restart");
         Button optionsButton = pauseMenu.Q<Button>("Options");
+        Button tutorialButton = pauseMenu.Q<Button>("Tutorial");
         Button mainMenuButton = pauseMenu.Q<Button>("MainMenu");
         Button continueButton = pauseMenu.Q<Button>("Continue");
+
+
+        Action OnClose = () =>
+        {
+            ShowPauseMenu();
+        };
 
 
         restartButton.RegisterCallback<ClickEvent>(ev => RestartScene());
@@ -144,11 +154,14 @@ public class PopupManager : MonoBehaviour
         {
             ClosePopup();
 
-            ShowOptions(() =>
-            {
-                ShowPauseMenu();
-            });
+            ShowOptions(OnClose);
         });
+        tutorialButton.RegisterCallback<ClickEvent>(ev =>
+        {
+            ClosePopup();
+            ShowTutorial(OnClose);
+        });
+
         mainMenuButton.RegisterCallback<ClickEvent>(ev =>
         {
             ClosePopup();
@@ -159,6 +172,28 @@ public class PopupManager : MonoBehaviour
         {
             ClosePopup();
         });
+    }
+
+    public void ShowTutorial(Action closeCallback)
+    {
+        if (isPopupOpen)
+        {
+            return;
+        }
+        isPopupOpen = true;
+
+        VisualElement tutorialMenu = tutorialVisuals.Instantiate();
+
+        CreatePopupHolder();
+        AddContent(tutorialMenu);
+
+        Button backButton = tutorialMenu.Q<Button>("Back");
+        backButton.RegisterCallback<ClickEvent>(ev =>
+        {
+            ClosePopup();
+            closeCallback();
+        });
+
     }
 
 

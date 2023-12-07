@@ -14,6 +14,8 @@ public class MainMenuManager : UIManager
 
         Button startGameButton = UIDocument.rootVisualElement.Q<Button>("StartGame");
         Button optionsButton = UIDocument.rootVisualElement.Q<Button>("Options");
+        Button tutorialButton = UIDocument.rootVisualElement.Q<Button>("Tutorial");
+
         Button quitGameButton = UIDocument.rootVisualElement.Q<Button>("QuitGame");
 
         startGameButton.RegisterCallback<ClickEvent>((ev) =>
@@ -24,6 +26,11 @@ public class MainMenuManager : UIManager
         optionsButton.RegisterCallback<ClickEvent>((ev) =>
         {
             SceneManager.LoadScene("OptionsMenu");
+        });
+
+        tutorialButton.RegisterCallback<ClickEvent>((ev) =>
+        {
+            SceneManager.LoadScene("TutorialMenu");
         });
 
 

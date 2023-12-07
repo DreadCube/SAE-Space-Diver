@@ -10,6 +10,9 @@
             <ui:Button text="Options" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Options" class="button-primary button-menu">
                 <ui:VisualElement name="background" class="button-background" />
             </ui:Button>
+            <ui:Button text="Tutorial" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Tutorial" class="button-primary button-menu">
+                <ui:VisualElement name="background" class="button-background" />
+            </ui:Button>
             <ui:Button text="Quit Game" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitGame" class="button-primary button-menu">
                 <ui:VisualElement name="background" class="button-background" />
             </ui:Button>
