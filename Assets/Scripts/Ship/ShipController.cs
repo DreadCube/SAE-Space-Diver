@@ -44,9 +44,9 @@ public class ShipController : MonoBehaviour
 
     private bool shootInput;
 
-    private int fuel = 100;
+    private int Energy = 100;
 
-    private float fuelLossTime = 0f;
+    private float energyLossTime = 0f;
 
     private Rigidbody rigidBody;
 
@@ -84,62 +84,62 @@ public class ShipController : MonoBehaviour
         horizInput = Input.GetAxis("Horizontal");
         shootInput = Input.GetKey(KeyCode.Space);
 
-        HandleFuel();
+        HandleEnergy();
     }
 
     /**
-     * Handles the Fuel Logic. Our Ship loses fuel over time.
+     * Handles the Energy Logic. Our Ship loses Energy over time.
      * 
-     * It loses more fuel if we accelerate horizontal or vertical
+     * It loses more Energy if we accelerate horizontal or vertical
      */
-    private void HandleFuel()
+    private void HandleEnergy()
     {
         if (vertInput != 0f || horizInput != 0)
         {
-            fuelLossTime += 2 * Time.deltaTime;
+            energyLossTime += 2 * Time.deltaTime;
         }
         else
         {
-            fuelLossTime += Time.deltaTime;
+            energyLossTime += Time.deltaTime;
         }
 
         /*
-         * One second of fuel "loss" collected.
-         * We decrease the fuel amount by one
+         * One second of Energy "loss" collected.
+         * We decrease the Energy amount by one
          */
-        if (fuelLossTime >= 1f)
+        if (energyLossTime >= 1f)
         {
-            fuelLossTime -= 1f;
-            DecreaseFuelBy(1);
+            energyLossTime -= 1f;
+            DecreaseEnergyBy(1);
         }
 
-        // If the fuel reaches zero, the player dies.
-        if (fuel <= 0)
+        // If the Energy reaches zero, the player dies.
+        if (Energy <= 0)
         {
             HandleDeath();
         }
     }
 
     /**
-     * Decrease the fuel by provided amount
+     * Decrease the Energy by provided amount
      * 
-     * Fuel will not go under zero.
+     * Energy will not go under zero.
      */
-    private void DecreaseFuelBy(int amount)
+    private void DecreaseEnergyBy(int amount)
     {
-        fuel = Mathf.Max(0, fuel - amount);
-        GameLoopManager.Instance.DrawFuel(fuel);
+        Energy = Mathf.Max(0, Energy - amount);
+        GameLoopManager.Instance.DrawEnergy(Energy);
     }
 
     /**
-     * Increase the fuel by provided amount
+     * Increase the Energy by provided amount
      * 
-     * Fuell will not go over 100 (percent)
+     * Energyl will not go over 100 (percent)
      */
-    private void IncreaseFullBy(int amount)
+    private void IncreaseEnergyBy(int amount)
     {
-        fuel = Mathf.Min(100, fuel + amount);
-        GameLoopManager.Instance.DrawFuel(fuel);
+        Energy = Mathf.Min(100, Energy + amount);
+        GameLoopManager.Instance.DrawEnergy(Energy);
     }
 
     private void FixedUpdate()
@@ -272,7 +272,7 @@ public class ShipController : MonoBehaviour
 
             AudioManager.Instance.PlaySfx(pickupSfx, gameObject);
 
-            IncreaseFullBy(5);
+            IncreaseEnergyBy(5);
         }
 
         if (other.tag == "Wall")

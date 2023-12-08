@@ -29,11 +29,14 @@ public class GameLoopManager : UIManager
 
 
     /**
-     * Draws the fuel in the UI.
+     * Draws the energy in the UI.
      */
-    public void DrawFuel(int fuel)
+    public void DrawEnergy(int energy)
     {
-        UIDocument.rootVisualElement.Q<Label>("Fuel").text = fuel.ToString();
+        VisualElement energyWrapper = inventoryRoot.Q<VisualElement>("EnergyWrapper");
+
+        Label energyLabel = energyWrapper.Q<Label>("Energy");
+        energyLabel.text = energy.ToString();
     }
 
     /**
