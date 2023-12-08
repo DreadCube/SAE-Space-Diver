@@ -96,7 +96,7 @@ public class UIManager : MonoBehaviour
     /**
      * Make the visualElement focusable and set the focus
      */
-    private void SetFocus(VisualElement root)
+    public void SetFocus(VisualElement root)
     {
         root.focusable = true;
         root.Focus();

@@ -277,6 +277,8 @@ public class PopupManager : MonoBehaviour
         UIDocument.rootVisualElement.Remove(popupHolder);
         Time.timeScale = 1;
         isPopupOpen = false;
+
+        UIManager.Instance.SetFocus(UIDocument.rootVisualElement);
     }
 
     private void Awake()
