@@ -121,28 +121,32 @@ public class GameLoopManager : UIManager
         string roundTime = Instance.StopDrawRoundTime();
         PopupManager.Instance.ShowDeathOverlay(roundTime);
 
-        ToggleInventoryEnabled();
+        ToggleUIInteractions();
     }
 
 
     /**
-     * ToggleInventoryEnabled will toggle the current inventory state.
+     * ToggleUIInteractions will toggle the current UI state.
      * 
      * If its active: We gonna deactivate its interactions and SFX
      * If its inactive: We gonna reactivate its interations and SFX
+     * 
+     * The UI is disabled while we are in the Pause Menu.
      */
-    private void ToggleInventoryEnabled()
+    private void ToggleUIInteractions()
     {
         if (inventoryRoot.enabledSelf)
         {
             DisableInventoryUI();
             inventoryRoot.SetEnabled(false);
+            UIDocument.rootVisualElement.Q("PauseMenu").SetEnabled(false);
             DisableSfx(inventoryRoot);
         }
         else
         {
             EnableInventoryUI();
             inventoryRoot.SetEnabled(true);
+            UIDocument.rootVisualElement.Q("PauseMenu").SetEnabled(true);
             EnableSfx(inventoryRoot);
         }
     }
@@ -169,7 +173,6 @@ public class GameLoopManager : UIManager
 
     protected override void Start()
     {
-        EnablePauseMenu();
         EnableInventoryUI();
         DrawInventoryUI();
 
@@ -178,26 +181,17 @@ public class GameLoopManager : UIManager
         base.Start();
     }
 
-    private void EnablePauseMenu()
-    {
-        UIDocument.rootVisualElement.RegisterCallback<KeyDownEvent>(ev =>
-        {
-            if (ev.keyCode == KeyCode.Escape)
-            {
-                ToggleInventoryEnabled();
-                PopupManager.Instance.ShowPauseMenu(() =>
-                {
-                    ToggleInventoryEnabled();
-                });
-            }
-        });
-    }
-
-
     private void HandleKeyDownEvent(KeyDownEvent ev)
     {
         switch (ev.keyCode)
         {
+            case KeyCode.Escape:
+                ToggleUIInteractions();
+                PopupManager.Instance.ShowPauseMenu(() =>
+                {
+                    ToggleUIInteractions();
+                });
+                break;
             case KeyCode.Alpha1:
                 ChangeSortType(SortType.Amount);
                 break;
@@ -223,7 +217,6 @@ public class GameLoopManager : UIManager
                 InventoryManager.Instance.SetActiveInventoryItem(1);
                 DrawInventoryUI();
                 UIManager.Instance.PlayUISfx();
-
                 break;
         }
     }
