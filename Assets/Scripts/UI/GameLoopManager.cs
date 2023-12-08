@@ -29,6 +29,14 @@ public class GameLoopManager : UIManager
 
 
     /**
+     * Draws the fuel in the UI.
+     */
+    public void DrawFuel(int fuel)
+    {
+        UIDocument.rootVisualElement.Q<Label>("Fuel").text = fuel.ToString();
+    }
+
+    /**
      * Based on the current sorted Inventory Items
      * this draws the inventory UI
      */
@@ -119,9 +127,8 @@ public class GameLoopManager : UIManager
     public void HandleFinish()
     {
         string roundTime = Instance.StopDrawRoundTime();
-        PopupManager.Instance.ShowDeathOverlay(roundTime);
-
         ToggleUIInteractions();
+        PopupManager.Instance.ShowDeathOverlay(roundTime);
     }
 
 

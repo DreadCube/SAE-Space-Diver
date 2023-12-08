@@ -44,6 +44,10 @@ public class ShipController : MonoBehaviour
 
     private bool shootInput;
 
+    private int fuel = 100;
+
+    private float fuelLossTime = 0f;
+
     private Rigidbody rigidBody;
 
     [SerializeField]
@@ -68,7 +72,6 @@ public class ShipController : MonoBehaviour
         PrepareLaser();
     }
 
-
     private void PrepareLaser()
     {
         laser = GetComponentInChildren<LineRenderer>().gameObject;
@@ -80,6 +83,63 @@ public class ShipController : MonoBehaviour
         vertInput = Input.GetAxis("Vertical");
         horizInput = Input.GetAxis("Horizontal");
         shootInput = Input.GetKey(KeyCode.Space);
+
+        HandleFuel();
+    }
+
+    /**
+     * Handles the Fuel Logic. Our Ship loses fuel over time.
+     * 
+     * It loses more fuel if we accelerate horizontal or vertical
+     */
+    private void HandleFuel()
+    {
+        if (vertInput != 0f || horizInput != 0)
+        {
+            fuelLossTime += 2 * Time.deltaTime;
+        }
+        else
+        {
+            fuelLossTime += Time.deltaTime;
+        }
+
+        /*
+         * One second of fuel "loss" collected.
+         * We decrease the fuel amount by one
+         */
+        if (fuelLossTime >= 1f)
+        {
+            fuelLossTime -= 1f;
+            DecreaseFuelBy(1);
+        }
+
+        // If the fuel reaches zero, the player dies.
+        if (fuel <= 0)
+        {
+            HandleDeath();
+        }
+    }
+
+    /**
+     * Decrease the fuel by provided amount
+     * 
+     * Fuel will not go under zero.
+     */
+    private void DecreaseFuelBy(int amount)
+    {
+        fuel = Mathf.Max(0, fuel - amount);
+        GameLoopManager.Instance.DrawFuel(fuel);
+    }
+
+    /**
+     * Increase the fuel by provided amount
+     * 
+     * Fuell will not go over 100 (percent)
+     */
+    private void IncreaseFullBy(int amount)
+    {
+        fuel = Mathf.Min(100, fuel + amount);
+        GameLoopManager.Instance.DrawFuel(fuel);
     }
 
     private void FixedUpdate()
@@ -123,11 +183,8 @@ public class ShipController : MonoBehaviour
 
     private void HandlePhysics()
     {
-        // Acceleration forward
-        //if (vertInput >= 0f)
-        //{
+        // Acceleration forward and backwards
         rigidBody.AddForce(transform.forward * vertInput * verticalForceAmount, ForceMode.Force);
-        //}
 
         // Roll and Pitch with Torque sideways
         Vector3 rollTorqueSum = transform.up * horizInput * rollTorqueAmount;
@@ -214,6 +271,8 @@ public class ShipController : MonoBehaviour
             Destroy(other.gameObject);
 
             AudioManager.Instance.PlaySfx(pickupSfx, gameObject);
+
+            IncreaseFullBy(5);
         }
 
         if (other.tag == "Wall")
