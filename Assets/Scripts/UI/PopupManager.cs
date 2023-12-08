@@ -65,6 +65,24 @@ public class PopupManager : MonoBehaviour
             AudioManager.Instance.SetSfxVolume(ev.newValue);
         });
 
+
+        sfxVolumeSlider.Q("unity-drag-container").RegisterCallback<ClickEvent>(ev =>
+        {
+            UIManager.Instance.PlayUISfx();
+        });
+        sfxVolumeSlider.Q("unity-drag-container").RegisterCallback<MouseLeaveEvent>(ev =>
+        {
+            /*
+             * Just an optimization. We only wanna play the sound if the mouse Leaves the Slider and he was currently
+             * sliding with the left mouse button down.
+             */
+            if (ev.pressedButtons == 1)
+            {
+                UIManager.Instance.PlayUISfx();
+            }
+        });
+
+
         backButton.RegisterCallback<ClickEvent>((ev) =>
         {
             ClosePopup();

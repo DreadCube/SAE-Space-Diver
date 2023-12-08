@@ -14,8 +14,7 @@ public class UIManager : MonoBehaviour
     protected UIDocument UIDocument;
 
     [SerializeField]
-    protected AudioClip UISfx;
-
+    private AudioClip UISfx;
 
     public static UIManager GetInstance()
     {
@@ -70,7 +69,6 @@ public class UIManager : MonoBehaviour
     {
         PlayUISfx();
     }
-
 
     /**
      * Enables UI SFX
