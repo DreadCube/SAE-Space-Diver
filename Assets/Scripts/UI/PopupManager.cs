@@ -95,7 +95,9 @@ public class PopupManager : MonoBehaviour
 
         VisualElement deathOverlay = deathOverlayVisuals.Instantiate();
 
-        CreatePopupHolder();
+        CreatePopupHolder(1f);
+        StartCoroutine(PauseGame(1f));
+
         AddContent(deathOverlay);
 
 
@@ -116,16 +118,18 @@ public class PopupManager : MonoBehaviour
 
         restartButton.RegisterCallback<ClickEvent>(ev =>
         {
+            ResumeGame();
             RestartScene();
         });
 
         mainMenuButton.RegisterCallback<ClickEvent>(ev =>
         {
+            ResumeGame();
             SceneManager.LoadScene("MainMenu");
         });
     }
 
-    public void ShowPauseMenu()
+    public void ShowPauseMenu(Action closeCallback)
     {
         if (isPopupOpen)
         {
@@ -150,7 +154,7 @@ public class PopupManager : MonoBehaviour
 
         Action OnClose = () =>
         {
-            ShowPauseMenu();
+            ShowPauseMenu(closeCallback);
         };
 
 
@@ -182,6 +186,7 @@ public class PopupManager : MonoBehaviour
         {
             ClosePopup();
             ResumeGame();
+            closeCallback();
         });
     }
 
@@ -207,7 +212,7 @@ public class PopupManager : MonoBehaviour
     }
 
 
-    private VisualElement CreatePopupHolder()
+    private VisualElement CreatePopupHolder(float fadeInDelay = 0.1f)
     {
         VisualElement popupHolder = UIDocument.rootVisualElement.Q("PopupHolder");
 
@@ -219,7 +224,7 @@ public class PopupManager : MonoBehaviour
 
             UIDocument.rootVisualElement.Add(popupHolder);
 
-            StartCoroutine(FadeInPopupHolder());
+            StartCoroutine(FadeInPopupHolder(fadeInDelay));
         }
 
 
@@ -230,9 +235,9 @@ public class PopupManager : MonoBehaviour
     /**
      * Fades in the Popup after delay
      */
-    private IEnumerator FadeInPopupHolder()
+    private IEnumerator FadeInPopupHolder(float fadeInDelay = 0.1f)
     {
-        yield return new WaitForSecondsRealtime(0.1f);
+        yield return new WaitForSecondsRealtime(fadeInDelay);
 
         VisualElement popupHolder = UIDocument.rootVisualElement.Q("PopupHolder");
         popupHolder.AddToClassList("popupHolder-fadeIn");
@@ -293,6 +298,12 @@ public class PopupManager : MonoBehaviour
     private void PauseGame()
     {
         Time.timeScale = 0;
+    }
+
+    private IEnumerator PauseGame(float delay = 0f)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        PauseGame();
     }
 
     private void ResumeGame()

@@ -232,14 +232,12 @@ public class ShipController : MonoBehaviour
 
     private void HandleDeath()
     {
+        AudioManager.Instance.PlaySfx(explosionSfx);
+
         GameObject particles = Instantiate(deathParticles, transform.position, Quaternion.identity);
         particles.GetComponent<DeathParticles>().Init(Color.white, 10);
 
-        string roundTime = GameLoopManager.Instance.StopDrawRoundTime();
-
-        AudioManager.Instance.PlaySfx(explosionSfx);
-
-        PopupManager.Instance.ShowDeathOverlay(roundTime);
+        GameLoopManager.Instance.HandleFinish();
 
         Destroy(gameObject);
     }

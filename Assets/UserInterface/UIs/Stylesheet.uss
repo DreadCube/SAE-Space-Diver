@@ -17,7 +17,7 @@
     background-image: url('project://database/Assets/UserInterface/3rdParty/Cyberpunk_RPG_UI/UI_Parts/Chip_6.png?fileID=2800000&guid=a3bf107b52733314b9fe25eaa3ae4650&type=3#Chip_6');
 }
 
-.button-primary:hover {
+.button-primary:enabled:hover {
     background-image: url('project://database/Assets/UserInterface/3rdParty/Cyberpunk_RPG_UI/UI_Parts/Chip_6.png?fileID=2800000&guid=a3bf107b52733314b9fe25eaa3ae4650&type=3#Chip_6');
 }
 
@@ -78,7 +78,7 @@
     font-size: 18px;
 }
 
-.button-menu:hover {
+.button-menu:enabled:hover {
     width: 100%;
     background-image: url('project://database/Assets/UserInterface/3rdParty/Cyberpunk_RPG_UI/UI_Parts/Icon_fr_3_r.png?fileID=2800000&guid=69c1a39440607314c8c09a5ab4c268b7&type=3#Icon_fr_3_r');
     background-color: rgba(56, 56, 56, 0);
@@ -94,7 +94,7 @@
     -unity-slice-bottom: 0;
 }
 
-.button-menu:hover > .button-background {
+.button-menu:enabled:hover > .button-background {
     flex-grow: 1;
     width: 100%;
     background-color: rgba(255, 0, 3, 0.23);

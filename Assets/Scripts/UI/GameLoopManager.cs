@@ -85,23 +85,16 @@ public class GameLoopManager : UIManager
             InventoryItem item = inventoryItems[i];
 
             Button itemButton = new Button();
-            itemButton.focusable = false;
             itemButton.AddToClassList(classNameInventoryItem);
 
             itemButton.style.backgroundImage = item.GetShape().UITexture;
 
-
-            // TODO: Add Controls for switching between current active item
             Color shapeColor = item.GetShape().Color;
             itemButton.style.unityBackgroundImageTintColor = shapeColor;
 
             itemButton.text = item.GetAmount().ToString();
 
-            itemButton.RegisterCallback<ClickEvent>((ev) =>
-            {
-                InventoryManager.Instance.SetActiveInventoryItem(item);
-                DrawInventoryUI();
-            });
+            itemButton.RegisterCallback(OnClickInventoryItem(item));
 
             // Sets corresponding active Styles for the active Inventory Item
             // TODO: could also be done over className.
@@ -113,6 +106,44 @@ public class GameLoopManager : UIManager
             }
 
             inventoryItemsRoot.Add(itemButton);
+        }
+    }
+
+    /**
+     * Will be called if the player finished a round:
+     * 
+     * 1. Stop Drawing Round Time
+     * 2. Disable Inventory UI and SFX
+     * 3. Show the Death Overlay
+     */
+    public void HandleFinish()
+    {
+        string roundTime = Instance.StopDrawRoundTime();
+        PopupManager.Instance.ShowDeathOverlay(roundTime);
+
+        ToggleInventoryEnabled();
+    }
+
+
+    /**
+     * ToggleInventoryEnabled will toggle the current inventory state.
+     * 
+     * If its active: We gonna deactivate its interactions and SFX
+     * If its inactive: We gonna reactivate its interations and SFX
+     */
+    private void ToggleInventoryEnabled()
+    {
+        if (inventoryRoot.enabledSelf)
+        {
+            DisableInventoryUI();
+            inventoryRoot.SetEnabled(false);
+            DisableSfx(inventoryRoot);
+        }
+        else
+        {
+            EnableInventoryUI();
+            inventoryRoot.SetEnabled(true);
+            EnableSfx(inventoryRoot);
         }
     }
 
@@ -153,9 +184,48 @@ public class GameLoopManager : UIManager
         {
             if (ev.keyCode == KeyCode.Escape)
             {
-                PopupManager.Instance.ShowPauseMenu();
+                ToggleInventoryEnabled();
+                PopupManager.Instance.ShowPauseMenu(() =>
+                {
+                    ToggleInventoryEnabled();
+                });
             }
         });
+    }
+
+
+    private void HandleKeyDownEvent(KeyDownEvent ev)
+    {
+        switch (ev.keyCode)
+        {
+            case KeyCode.Alpha1:
+                ChangeSortType(SortType.Amount);
+                break;
+
+            case KeyCode.Alpha2:
+                ChangeSortType(SortType.Hue);
+                break;
+            case KeyCode.Alpha3:
+                ChangeSortType(SortType.ShapeType);
+                break;
+
+            case KeyCode.Tab:
+                ChangeSortDirection(InventoryManager.Instance.GetInactiveSortDirection());
+                break;
+
+            case KeyCode.Q:
+                InventoryManager.Instance.SetActiveInventoryItem(-1);
+                DrawInventoryUI();
+                UIManager.Instance.PlayUISfx();
+
+                break;
+            case KeyCode.E:
+                InventoryManager.Instance.SetActiveInventoryItem(1);
+                DrawInventoryUI();
+                UIManager.Instance.PlayUISfx();
+
+                break;
+        }
     }
 
     /**
@@ -178,40 +248,7 @@ public class GameLoopManager : UIManager
         ascButton = inventoryRoot.Q<Button>("Asc");
         descButton = inventoryRoot.Q<Button>("Desc");
 
-        UIDocument.rootVisualElement.focusable = true;
-        UIDocument.rootVisualElement.RegisterCallback<KeyDownEvent>(ev =>
-        {
-            switch (ev.keyCode)
-            {
-                case KeyCode.Alpha1:
-                    ChangeSortType(SortType.Amount);
-                    break;
-
-                case KeyCode.Alpha2:
-                    ChangeSortType(SortType.Hue);
-                    break;
-                case KeyCode.Alpha3:
-                    ChangeSortType(SortType.ShapeType);
-                    break;
-
-                case KeyCode.Tab:
-                    ChangeSortDirection(InventoryManager.Instance.GetInactiveSortDirection());
-                    break;
-
-                case KeyCode.Q:
-                    InventoryManager.Instance.SetActiveInventoryItem(-1);
-                    DrawInventoryUI();
-                    UIManager.Instance.PlayUISfx();
-
-                    break;
-                case KeyCode.E:
-                    InventoryManager.Instance.SetActiveInventoryItem(1);
-                    DrawInventoryUI();
-                    UIManager.Instance.PlayUISfx();
-
-                    break;
-            }
-        });
+        UIDocument.rootVisualElement.RegisterCallback<KeyDownEvent>(HandleKeyDownEvent);
 
 
         amountButton.RegisterCallback(OnClickSortType(SortType.Amount));
@@ -220,6 +257,34 @@ public class GameLoopManager : UIManager
 
         ascButton.RegisterCallback(OnClickSortDirection(InventoryManager.SortDirection.Asc));
         descButton.RegisterCallback(OnClickSortDirection(InventoryManager.SortDirection.Desc));
+    }
+
+    private void DisableInventoryUI()
+    {
+        amountButton = inventoryRoot.Q<Button>("Amount");
+        hueButton = inventoryRoot.Q<Button>("Hue");
+        shapeButton = inventoryRoot.Q<Button>("Shape");
+
+        ascButton = inventoryRoot.Q<Button>("Asc");
+        descButton = inventoryRoot.Q<Button>("Desc");
+
+        UIDocument.rootVisualElement.UnregisterCallback<KeyDownEvent>(HandleKeyDownEvent);
+
+        amountButton.UnregisterCallback(OnClickSortType(SortType.Amount));
+        hueButton.UnregisterCallback(OnClickSortType(SortType.Hue));
+        shapeButton.UnregisterCallback(OnClickSortType(SortType.ShapeType));
+
+        ascButton.UnregisterCallback(OnClickSortDirection(InventoryManager.SortDirection.Asc));
+        descButton.UnregisterCallback(OnClickSortDirection(InventoryManager.SortDirection.Desc));
+    }
+
+    private EventCallback<ClickEvent> OnClickInventoryItem(InventoryItem item)
+    {
+        return (ev) =>
+        {
+            InventoryManager.Instance.SetActiveInventoryItem(item);
+            DrawInventoryUI();
+        };
     }
 
     private EventCallback<ClickEvent> OnClickSortType(SortType sortType)
@@ -234,7 +299,7 @@ public class GameLoopManager : UIManager
 
     private void ChangeSortType(SortType sortType)
     {
-        UIManager.Instance.PlayUISfx();
+        PlayUISfx();
         InventoryManager.SortDirection activeSortDirection = InventoryManager.Instance.GetActiveSortDirection();
         InventoryManager.Instance.SortInventoryItems(sortType, activeSortDirection);
         DrawInventoryUI();
@@ -242,7 +307,7 @@ public class GameLoopManager : UIManager
 
     private void ChangeSortDirection(InventoryManager.SortDirection sortDirection)
     {
-        UIManager.Instance.PlayUISfx();
+        PlayUISfx();
         SortType activeSortType = InventoryManager.Instance.GetActiveSortType();
         InventoryManager.Instance.SortInventoryItems(activeSortType, sortDirection);
         DrawInventoryUI();

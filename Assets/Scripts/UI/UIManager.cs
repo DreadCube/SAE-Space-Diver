@@ -51,6 +51,27 @@ public class UIManager : MonoBehaviour
         UIDocument = GetComponent<UIDocument>();
     }
 
+    private void PlaySfx(ClickEvent _)
+    {
+        PlayUISfx();
+    }
+
+    private void PlaySfx(MouseEnterEvent _)
+    {
+        PlayUISfx();
+    }
+
+    private void PlaySfx(ChangeEvent<string> _)
+    {
+        PlayUISfx();
+    }
+
+    private void PlaySfx(ChangeEvent<bool> _)
+    {
+        PlayUISfx();
+    }
+
+
     /**
      * Enables UI SFX
      */
@@ -65,40 +86,53 @@ public class UIManager : MonoBehaviour
 
         buttons.ForEach(button =>
         {
-            button.RegisterCallback<ClickEvent>(ev =>
-            {
-                PlayUISfx();
-            });
-
-            button.RegisterCallback<MouseEnterEvent>(ev =>
-            {
-                PlayUISfx();
-            });
+            button.RegisterCallback<ClickEvent>(PlaySfx);
+            button.RegisterCallback<MouseEnterEvent>(PlaySfx);
         });
 
         dropdownFields.ForEach(dropdownField =>
         {
-            dropdownField.RegisterValueChangedCallback(ev =>
-            {
-                PlayUISfx();
-            });
+            dropdownField.RegisterValueChangedCallback(PlaySfx);
         });
 
         toggles.ForEach(toggle =>
         {
-            toggle.RegisterValueChangedCallback(ev =>
-            {
-                PlayUISfx();
-            });
+            toggle.RegisterValueChangedCallback(PlaySfx);
+        });
+    }
+
+    public void DisableSfx(VisualElement root)
+    {
+        var buttons = root.Query<Button>();
+
+        var dropdownFields = root.Query<DropdownField>();
+
+        var toggles = root.Query<Toggle>();
+
+
+        buttons.ForEach(button =>
+        {
+            button.UnregisterCallback<ClickEvent>(PlaySfx);
+            button.UnregisterCallback<MouseEnterEvent>(PlaySfx);
+        });
+
+        dropdownFields.ForEach(dropdownField =>
+        {
+            dropdownField.UnregisterValueChangedCallback(PlaySfx);
+        });
+
+        toggles.ForEach(toggle =>
+        {
+            toggle.UnregisterValueChangedCallback(PlaySfx);
         });
     }
 
     /**
-     * Make the visualElement focusable and set the focus
+     * Make the provided visualElement focusable and set the focus to it
      */
-    public void SetFocus(VisualElement root)
+    public void SetFocus(VisualElement element)
     {
-        root.focusable = true;
-        root.Focus();
+        element.focusable = true;
+        element.Focus();
     }
 }
