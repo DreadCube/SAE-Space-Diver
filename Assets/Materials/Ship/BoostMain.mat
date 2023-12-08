@@ -31,5 +31,5 @@ Material:
     - _SmoothnessTextureChannel: 0
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissionColor: {r: 11.6705885, g: 0, b: 0.6712245, a: 1}
+    - _EmissionColor: {r: 2.996079, g: 0, b: 0.17231706, a: 1}
   m_BuildTextureStacks: []
