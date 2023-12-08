@@ -112,6 +112,8 @@ public class PopupManager : MonoBehaviour
         deathOverlay.Focus();
 
         Button restartButton = deathOverlay.Q<Button>("Restart");
+        Button mainMenuButton = deathOverlay.Q<Button>("MainMenu");
+
 
         Label finalTimeLabel = deathOverlay.Q<Label>("FinalTime");
         finalTimeLabel.text = finalTime;
@@ -119,6 +121,11 @@ public class PopupManager : MonoBehaviour
         restartButton.RegisterCallback<ClickEvent>(ev =>
         {
             RestartScene();
+        });
+
+        mainMenuButton.RegisterCallback<ClickEvent>(ev =>
+        {
+            SceneManager.LoadScene("MainMenu");
         });
     }
 
