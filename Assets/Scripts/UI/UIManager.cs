@@ -30,6 +30,7 @@ public class UIManager : MonoBehaviour
     protected virtual void Start()
     {
         EnableSfx(UIDocument.rootVisualElement);
+        SetFocus(UIDocument.rootVisualElement);
     }
 
     public void PlayUISfx()
@@ -90,5 +91,14 @@ public class UIManager : MonoBehaviour
                 PlayUISfx();
             });
         });
+    }
+
+    /**
+     * Make the visualElement focusable and set the focus
+     */
+    private void SetFocus(VisualElement root)
+    {
+        root.focusable = true;
+        root.Focus();
     }
 }

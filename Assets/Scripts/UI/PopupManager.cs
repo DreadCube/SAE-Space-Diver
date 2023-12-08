@@ -107,10 +107,6 @@ public class PopupManager : MonoBehaviour
             }
         });
 
-        deathOverlay.style.display = DisplayStyle.Flex;
-        deathOverlay.focusable = true;
-        deathOverlay.Focus();
-
         Button restartButton = deathOverlay.Q<Button>("Restart");
         Button mainMenuButton = deathOverlay.Q<Button>("MainMenu");
 
