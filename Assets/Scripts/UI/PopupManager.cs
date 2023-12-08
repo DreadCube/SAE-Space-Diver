@@ -95,7 +95,7 @@ public class PopupManager : MonoBehaviour
 
         VisualElement deathOverlay = deathOverlayVisuals.Instantiate();
 
-        CreatePopupHolder(1);
+        CreatePopupHolder();
         AddContent(deathOverlay);
 
 
