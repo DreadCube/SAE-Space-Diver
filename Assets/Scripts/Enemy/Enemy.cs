@@ -42,6 +42,10 @@ public class Enemy : ShapeMonoBehaviour
      */
     private void FixedUpdate()
     {
+        if (!shipTransform)
+        {
+            return;
+        }
         float delta = speed * Time.fixedDeltaTime;
         transform.position = Vector3.MoveTowards(transform.position, shipTransform.position, delta);
 

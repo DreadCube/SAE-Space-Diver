@@ -60,6 +60,11 @@ public class EnemySpawnManager : MonoBehaviour
      */
     private void SpawnCircular(int amount, float radius = 400)
     {
+        if (!shipTransform)
+        {
+            return;
+        }
+
         List<InventoryItem> inventoryItems = InventoryManager.Instance.GetLowestHalfAmount();
 
         for (int i = 0; i < amount; i++)
