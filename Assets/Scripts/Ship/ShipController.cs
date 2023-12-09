@@ -1,7 +1,5 @@
 using UnityEngine;
 
-using System.Collections;
-
 public class ShipController : MonoBehaviour
 {
     [Range(0f, 200f)]
@@ -72,6 +70,10 @@ public class ShipController : MonoBehaviour
         PrepareLaser();
     }
 
+    /**
+     * PrepareLaser's job is to set the local Scale of the laser
+     * to the Shoot hit distance
+     */
     private void PrepareLaser()
     {
         laser = GetComponentInChildren<LineRenderer>().gameObject;
@@ -152,35 +154,41 @@ public class ShipController : MonoBehaviour
     /**
      * Handles Shooting behaviour
      * 
-     * Every time we are allowed to shoot by the shoot Interval we Shoot a Bullet.
-     * Also we check over Raycast if we did hit something.
+     * Every time we are allowed to shoot by the shootInterval we 
+     * shoot a Bullet (if enough ammo)
+     * 
+     * Also we check over a Raycast if we did hit something.
      */
     private void HandleShooting()
     {
-        if (shootInput && Time.timeSinceLevelLoad - lastTimeShooted >= shootInterval)
+        if (!shootInput || Time.timeSinceLevelLoad - lastTimeShooted < shootInterval)
         {
-            lastTimeShooted = Time.timeSinceLevelLoad;
+            return;
+        }
 
-            InventoryItem activeInventoryItem = InventoryManager.Instance.GetActiveInventoryItem();
+        lastTimeShooted = Time.timeSinceLevelLoad;
 
-            // Check if we have enough ammo of active Type
-            if (activeInventoryItem.GetAmount() <= 0)
-            {
-                AudioManager.Instance.PlaySfx(shootEmptySfx);
-                return;
-            }
+        InventoryItem activeInventoryItem = InventoryManager.Instance.GetActiveInventoryItem();
 
-            RaycastHit hit;
+        // Check if we have enough ammo of active Type
+        if (activeInventoryItem.GetAmount() <= 0)
+        {
+            AudioManager.Instance.PlaySfx(shootEmptySfx);
+            return;
+        }
 
-            Shoot();
+        ShootBullet();
 
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, shootHitDistance))
-            {
-                onHit(hit);
-            }
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, shootHitDistance))
+        {
+            OnRaycastHit(hit);
         }
     }
 
+    /**
+     * Handles general physics of the spaceship
+     */
     private void HandlePhysics()
     {
         // Acceleration forward and backwards
@@ -189,12 +197,11 @@ public class ShipController : MonoBehaviour
         // Roll and Pitch with Torque sideways
         Vector3 rollTorqueSum = transform.up * horizInput * rollTorqueAmount;
         rigidBody.AddTorque(rollTorqueSum, ForceMode.Acceleration);
-
         Vector3 pitchTorqueSum = transform.forward * horizInput * -pitchTorqueAmount;
         rigidBody.AddTorque(pitchTorqueSum, ForceMode.Acceleration);
 
 
-        // If we don't have left / right input, we smoothly rotate the pitch rotation back to normal
+        // If we don't have left / right input, we smoothly rotate the pitch rotation back to normal (identity)
         if (horizInput == 0f)
         {
             float lerpedAngle = Mathf.LerpAngle(transform.localEulerAngles.z, 0f, Time.fixedDeltaTime * 0.6f);
@@ -262,6 +269,14 @@ public class ShipController : MonoBehaviour
         return Mathf.Clamp(angle, min + floor, max + floor);
     }
 
+    /**
+     * If a trigger happens with a PickupItem:
+     *   1. Destroy the Pickup Item
+     *   2. Add the Pickup Item into the inventory
+     *   
+     * If a trigger happens with a Wall:
+     *   1. We die. Call Death Logic.
+     */
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "PickupItem")
@@ -289,19 +304,30 @@ public class ShipController : MonoBehaviour
         }
     }
 
+    /**
+     * HandleDeath will be called if the player (ship) dies
+     * 
+     * 1. We spanw Death Particles
+     * 2. Play proper explosion SFX
+     * 3. Inform the GameLoopManager that we finished the round
+     * 4. Destroy the Ship
+     */
     private void HandleDeath()
     {
-        AudioManager.Instance.PlaySfx(explosionSfx);
-
         GameObject particles = Instantiate(deathParticles, transform.position, Quaternion.identity);
         particles.GetComponent<DeathParticles>().Init(Color.white, 10);
+
+        AudioManager.Instance.PlaySfx(explosionSfx);
 
         GameLoopManager.Instance.HandleFinish();
 
         Destroy(gameObject);
     }
 
-    private void Shoot()
+    /**
+     * Instantiates a visual Bullet and updates the inventory accordingly
+     */
+    private void ShootBullet()
     {
         InventoryItem activeInventoryItem = InventoryManager.Instance.GetActiveInventoryItem();
 
@@ -322,7 +348,7 @@ public class ShipController : MonoBehaviour
      * onHit will check if we hitted a enemy and inform the corresponding enemy
      * that he receives now damage
      */
-    private void onHit(RaycastHit hit)
+    private void OnRaycastHit(RaycastHit hit)
     {
         if (hit.transform.gameObject.tag == "Enemy")
         {
