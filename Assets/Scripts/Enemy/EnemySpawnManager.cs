@@ -8,7 +8,7 @@ public class EnemySpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject enemyPrefab;
 
-    private Transform player;
+    private Transform shipTransform;
 
     private float lastSpawnTime;
     private float spawnInterval = 20f;
@@ -27,12 +27,11 @@ public class EnemySpawnManager : MonoBehaviour
         {
             Instance = this;
         }
-
-        player = GameObject.Find("Ship").transform;
     }
 
     private void Start()
     {
+        shipTransform = GameObject.FindWithTag("Ship").GetComponent<Transform>();
         lastSpawnTime = Time.timeSinceLevelLoad;
         SpawnCircular(spawnAmount);
     }
@@ -41,9 +40,8 @@ public class EnemySpawnManager : MonoBehaviour
     {
 
         /**
-         * We have a interval based spawning. To spawn the next enemies following
-         * conditions have to be met:
-         * 1. We reached the spawnInterval
+         * We have a interval based spawning. Enemies wil spawn all 20 seconds
+         * The amount that will be spawned will be increased every cyclus
          */
         if (Time.timeSinceLevelLoad - lastSpawnTime > spawnInterval)
         {
@@ -51,7 +49,7 @@ public class EnemySpawnManager : MonoBehaviour
             lastSpawnTime = Time.timeSinceLevelLoad;
             spawnInterval += spawnInterval * 0.1f;
 
-            SpawnCircular(spawnAmount, 1000);
+            SpawnCircular(spawnAmount, 800);
         }
     }
 
@@ -72,7 +70,7 @@ public class EnemySpawnManager : MonoBehaviour
             float z = Mathf.Sin(nextRad) * radius;
 
 
-            Vector3 spawnPosition = player.transform.position + new Vector3(x, 0, z);
+            Vector3 spawnPosition = shipTransform.position + new Vector3(x, 0, z);
 
             GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
