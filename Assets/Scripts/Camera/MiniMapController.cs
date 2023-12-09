@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/**
+ * The MiniMapController represents the Camera that
+ * will follow the Spaceship from the top
+ */
 public class MiniMapController : MonoBehaviour
 {
     [SerializeField]
@@ -9,10 +13,11 @@ public class MiniMapController : MonoBehaviour
 
     private void Start()
     {
+        // Rotate the camera so it looks down to the ship
         transform.rotation = Quaternion.Euler(90f, 0f, 0f);
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         if (!target)
         {
