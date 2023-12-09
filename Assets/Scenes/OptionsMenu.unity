@@ -325,6 +325,8 @@ MonoBehaviour:
   UIDocument: {fileID: 1475272541}
   optionsVisuals: {fileID: 9197481963319205126, guid: c96b61e8c20864778bc86def16ed40e5, type: 3}
   deathOverlayVisuals: {fileID: 0}
+  pauseMenuVisuals: {fileID: 0}
+  tutorialVisuals: {fileID: 0}
 --- !u!1 &1938551030
 GameObject:
   m_ObjectHideFlags: 0

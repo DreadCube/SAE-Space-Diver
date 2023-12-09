@@ -5,12 +5,17 @@
     </ui:VisualElement>
     <ui:VisualElement name="Inventory" style="flex-grow: 1; position: absolute; bottom: 0; height: 20%; width: 100%; flex-direction: column; background-image: none;">
         <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(255, 0, 0, 0); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 100%; height: 50%; translate: 0 -10px; flex-direction: row; justify-content: flex-start; padding-left: 60px; padding-right: 60px;">
-            <ui:VisualElement name="VisualElement" style="flex-grow: 0; width: 50%; height: 100%; flex-direction: row;">
+            <ui:VisualElement name="VisualElement" style="flex-grow: 0; width: auto; height: 100%; flex-direction: row; flex-shrink: 0;">
                 <ui:Button text="1: Amount" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Amount" class="button-primary" />
                 <ui:Button text="2: Hue" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Hue" class="button-primary" />
                 <ui:Button text="3: Shape" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Shape" class="button-primary" />
             </ui:VisualElement>
-            <ui:VisualElement name="VisualElement" style="flex-grow: 0; width: 100%; height: 100%; flex-direction: row; justify-content: flex-end;">
+            <ui:VisualElement name="EnergyWrapper" style="flex-grow: 1; width: auto; height: 75px; flex-direction: row; justify-content: center; background-image: url(&apos;project://database/Assets/UserInterface/3rdParty/Cyberpunk_RPG_UI/UI_Parts/Big_vert_frame_b.png?fileID=2800000&amp;guid=5dc5b51ae86886f419b2ea884820a476&amp;type=3#Big_vert_frame_b&apos;); -unity-background-scale-mode: scale-and-crop; background-color: rgba(255, 0, 0, 0); flex-shrink: 0; align-items: center; align-self: auto; -unity-font: url(&apos;project://database/Assets/UserInterface/3rdParty/Fonts/Valorax.otf?fileID=12800000&amp;guid=b100759de6b694a808315e3382fe7ed8&amp;type=3#Valorax&apos;); -unity-font-definition: url(&apos;project://database/Assets/UserInterface/3rdParty/Fonts/Valorax%20SDF.asset?fileID=11400000&amp;guid=54bae48c509e54c37bc19c20a4380eb1&amp;type=2#Valorax SDF&apos;); font-size: 24px; color: rgb(8, 164, 169);">
+                <ui:VisualElement name="EnergyLogo" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/UserInterface/3rdParty/Cyberpunk_RPG_UI/Icons_256_256/33_Flash.png?fileID=2800000&amp;guid=aed42a7a7c1f9904fb637e11a651ca78&amp;type=3#33_Flash&apos;); height: 50px; width: 50px; flex-shrink: 0; font-size: 20px; flex-direction: row; margin-right: 0; -unity-background-image-tint-color: rgb(8, 164, 169);" />
+                <ui:Label tabindex="-1" text="100" parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="true" name="Energy" style="flex-grow: 0; margin-left: 20px; margin-right: 10px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                <ui:Label tabindex="-1" text="%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="EnergyPercent" />
+            </ui:VisualElement>
+            <ui:VisualElement name="VisualElement" style="flex-grow: 0; width: auto; height: 100%; flex-direction: row; justify-content: flex-end; flex-shrink: 1;">
                 <ui:Button text="Tab: Asc" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Asc" class="button-primary" />
                 <ui:Button text="Tab: Desc" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Desc" class="button-primary" />
             </ui:VisualElement>

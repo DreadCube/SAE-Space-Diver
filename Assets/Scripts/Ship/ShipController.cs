@@ -44,6 +44,10 @@ public class ShipController : MonoBehaviour
 
     private bool shootInput;
 
+    private int Energy = 100;
+
+    private float energyLossTime = 0f;
+
     private Rigidbody rigidBody;
 
     [SerializeField]
@@ -68,7 +72,6 @@ public class ShipController : MonoBehaviour
         PrepareLaser();
     }
 
-
     private void PrepareLaser()
     {
         laser = GetComponentInChildren<LineRenderer>().gameObject;
@@ -80,6 +83,63 @@ public class ShipController : MonoBehaviour
         vertInput = Input.GetAxis("Vertical");
         horizInput = Input.GetAxis("Horizontal");
         shootInput = Input.GetKey(KeyCode.Space);
+
+        HandleEnergy();
+    }
+
+    /**
+     * Handles the Energy Logic. Our Ship loses Energy over time.
+     * 
+     * It loses more Energy if we accelerate horizontal or vertical
+     */
+    private void HandleEnergy()
+    {
+        if (vertInput != 0f || horizInput != 0)
+        {
+            energyLossTime += 2 * Time.deltaTime;
+        }
+        else
+        {
+            energyLossTime += Time.deltaTime;
+        }
+
+        /*
+         * One second of Energy "loss" collected.
+         * We decrease the Energy amount by one
+         */
+        if (energyLossTime >= 1f)
+        {
+            energyLossTime -= 1f;
+            DecreaseEnergyBy(1);
+        }
+
+        // If the Energy reaches zero, the player dies.
+        if (Energy <= 0)
+        {
+            HandleDeath();
+        }
+    }
+
+    /**
+     * Decrease the Energy by provided amount
+     * 
+     * Energy will not go under zero.
+     */
+    private void DecreaseEnergyBy(int amount)
+    {
+        Energy = Mathf.Max(0, Energy - amount);
+        GameLoopManager.Instance.DrawEnergy(Energy);
+    }
+
+    /**
+     * Increase the Energy by provided amount
+     * 
+     * Energyl will not go over 100 (percent)
+     */
+    private void IncreaseEnergyBy(int amount)
+    {
+        Energy = Mathf.Min(100, Energy + amount);
+        GameLoopManager.Instance.DrawEnergy(Energy);
     }
 
     private void FixedUpdate()
@@ -123,11 +183,8 @@ public class ShipController : MonoBehaviour
 
     private void HandlePhysics()
     {
-        // Acceleration forward
-        //if (vertInput >= 0f)
-        //{
+        // Acceleration forward and backwards
         rigidBody.AddForce(transform.forward * vertInput * verticalForceAmount, ForceMode.Force);
-        //}
 
         // Roll and Pitch with Torque sideways
         Vector3 rollTorqueSum = transform.up * horizInput * rollTorqueAmount;
@@ -214,6 +271,8 @@ public class ShipController : MonoBehaviour
             Destroy(other.gameObject);
 
             AudioManager.Instance.PlaySfx(pickupSfx, gameObject);
+
+            IncreaseEnergyBy(5);
         }
 
         if (other.tag == "Wall")
@@ -232,14 +291,12 @@ public class ShipController : MonoBehaviour
 
     private void HandleDeath()
     {
+        AudioManager.Instance.PlaySfx(explosionSfx);
+
         GameObject particles = Instantiate(deathParticles, transform.position, Quaternion.identity);
         particles.GetComponent<DeathParticles>().Init(Color.white, 10);
 
-        string roundTime = GameLoopManager.Instance.StopDrawRoundTime();
-
-        AudioManager.Instance.PlaySfx(explosionSfx);
-
-        PopupManager.Instance.ShowDeathOverlay(roundTime);
+        GameLoopManager.Instance.HandleFinish();
 
         Destroy(gameObject);
     }

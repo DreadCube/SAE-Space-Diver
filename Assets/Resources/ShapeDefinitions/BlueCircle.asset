@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c748c1d3580f54d73b08b63eda93c74c, type: 3}
-  m_Name: GreenCube
+  m_Name: BlueCircle
   m_EditorClassIdentifier: 
-  <Type>k__BackingField: 0
-  <Color>k__BackingField: {r: 0.25490198, g: 1, b: 0, a: 1}
-  <UITexture>k__BackingField: {fileID: 2800000, guid: 5f45936f612db43ee9c118ee438c87e9, type: 3}
-  <GameObject>k__BackingField: {fileID: 2328902122769462419, guid: 7b705199a4f4f45f0b03d93486db2d65, type: 3}
+  <Type>k__BackingField: 1
+  <Color>k__BackingField: {r: 0, g: 0.81226325, b: 1, a: 1}
+  <UITexture>k__BackingField: {fileID: 2800000, guid: 9ee1decce9e2c483fa97ddb433371c07, type: 3}
+  <GameObject>k__BackingField: {fileID: 7881342757829168128, guid: d80cdf8a955da400bbfea594ec77778c, type: 3}
