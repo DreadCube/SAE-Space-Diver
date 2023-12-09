@@ -1,6 +1,9 @@
 
 using UnityEngine;
 
+/**
+ * A Bullet that will be shooted out from the Spaceship
+ */
 public class Bullet : ShapeMonoBehaviour
 {
     private Rigidbody bulletRigidbody;
@@ -10,7 +13,11 @@ public class Bullet : ShapeMonoBehaviour
     [SerializeField]
     private AudioClip bulletSfx;
 
-    private void Start()
+    /**
+     * Yes "new" keyboard. Because we don't need the Start Logic
+     * from inherited ShapeMonoBehaviour in case of Bullet
+     */
+    private new void Start()
     {
         bulletRigidbody = GetComponent<Rigidbody>();
 

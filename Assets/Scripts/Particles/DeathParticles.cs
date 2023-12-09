@@ -1,16 +1,21 @@
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
 
 public class DeathParticles : MonoBehaviour
 {
+    /**
+     * Initialize the Death Particles with provided 
+     * emission Color (will be multiplied with 2 for increased glow effect)
+     * and the size of the particles.
+     */
     public void Init(Color emissionColor, float size)
     {
         ParticleSystem particleSystem = GetComponent<ParticleSystem>();
 
         Renderer renderer = particleSystem.GetComponent<Renderer>();
-        renderer.material.SetColor("_EmissionColor", emissionColor * 2);
 
-        MainModule mainModule = particleSystem.main;
+        ShapeMonoBehaviour.SetMaterialEmission(renderer.material, emissionColor);
+
+        ParticleSystem.MainModule mainModule = particleSystem.main;
         mainModule.startSize = size;
     }
 }
