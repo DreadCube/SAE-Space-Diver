@@ -56,8 +56,6 @@ public class InventoryManager : MonoBehaviour
 
         activeSortType = sortType;
         activeSortDirection = sortDirection;
-
-        activeInventoryItem = inventoryItems[0];
     }
 
     public List<InventoryItem> GetInventoryItems() => inventoryItems;
@@ -189,5 +187,7 @@ public class InventoryManager : MonoBehaviour
 
         // Sorts the items initially based on defaults
         SortInventoryItems(activeSortType, activeSortDirection, true);
+
+        activeInventoryItem = inventoryItems[0];
     }
 }
