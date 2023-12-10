@@ -212,22 +212,33 @@ public class ShipController : MonoBehaviour
     }
 
     /// <summary>
-    /// Controls the Particles on the boosts. They will be activated on their proper
-    /// user input andd deactivated if theres no proper input:
+    /// Controls the Particles on the boosts.
     ///
-    /// vertical input: activate main Boost
+    /// positive vertical input: activate main Boost
+    /// zero vertical input: activate Main boost but with lower speed (little idle animation)
     /// left Input: activate right Boost
     /// right Input: activate left Boost
     /// </summary>
     private void HandleParticles()
     {
-        if (vertInput <= 0f)
+        if (vertInput < 0f)
         {
             boostMain.Stop();
         }
         else
         {
             boostMain.Play();
+
+            ParticleSystem.MainModule main = boostMain.main;
+
+            if (vertInput > 0f)
+            {
+                main.startSpeed = 75f;
+            }
+            else
+            {
+                main.startSpeed = 2f;
+            }
         }
 
         if (horizInput > 0f)
