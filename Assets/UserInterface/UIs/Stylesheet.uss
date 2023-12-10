@@ -33,6 +33,7 @@
     -unity-font-definition: url('project://database/Assets/UserInterface/3rdParty/Fonts/Azonix%20SDF.asset?fileID=11400000&guid=06f2868e1d20247d3901194d9a377ec0&type=2#Azonix SDF');
     font-size: 10px;
     color: rgb(255, 255, 255);
+    opacity: 0.2;
 }
 
 .label-primary {
@@ -228,4 +229,9 @@
     transition-duration: 0.25s;
     transition-timing-function: ease-in;
     transition-delay: 0s;
+}
+
+.inventory-item-selected {
+    opacity: 1;
+    color: rgb(255, 255, 255);
 }

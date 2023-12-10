@@ -70,7 +70,7 @@ public class AudioManager : MonoBehaviour
     /// <param name="audioClip">audio clip</param>
     /// <param name="loop">Loop the audio clip?</param>
     /// <param name="volume">volume of audio clip</param>
-    /// <param name="destroyOnEnd">Should the gameObject be destroyed after the sound finieshed playing? </param>
+    /// <param name="destroyOnEnd">Should the gameObject be destroyed after the sound finieshed playing?</param>
     public void PlaySound(AudioClip audioClip, bool loop = false, float volume = 1f, bool destroyOnEnd = false)
     {
         GameObject gameObject = new GameObject();
@@ -88,7 +88,7 @@ public class AudioManager : MonoBehaviour
     /// <summary>
     /// Plays Music on AudioManager. Will be looped.
     /// The Music will be played trough a child GameObject on AudioManager called Music.
-    /// Music will be swapped out if theres a differnet audioClip provided.
+    /// Music will be swapped out if theres alredy music.
     /// </summary>
     /// <param name="audioClip">Audio Clip</param>
     public void PlayMusic(AudioClip audioClip)
@@ -137,10 +137,9 @@ public class AudioManager : MonoBehaviour
             Destroy(this);
             return;
         }
-        else
-        {
-            Instance = this;
-        }
+
+        Instance = this;
+
         // This will enforce that the AudioManager still exists if we switch or
         // reload a scene.
         DontDestroyOnLoad(gameObject);

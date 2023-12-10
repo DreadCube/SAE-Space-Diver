@@ -48,7 +48,8 @@ MonoBehaviour:
   speed: 50
   dropAmount: 5
   explosionSfx: {fileID: 8300000, guid: 485e858f6fb0e4ceeb60ae5102625498, type: 3}
-  deathParticles: {fileID: 8344420325319020443, guid: b1d2dcd1fdbd34f29add7e0dc327b167, type: 3}
+  shipPrefab: {fileID: 5405419134468925256, guid: 9b64079d9159140ef8425d79e6def662, type: 3}
+  deathParticlesPrefab: {fileID: 8344420325319020443, guid: b1d2dcd1fdbd34f29add7e0dc327b167, type: 3}
 --- !u!54 &-7333525178370796264
 Rigidbody:
   m_ObjectHideFlags: 0

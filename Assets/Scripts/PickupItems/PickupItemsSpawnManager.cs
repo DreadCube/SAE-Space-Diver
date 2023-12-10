@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PickupItemsSpawnManager : MonoBehaviour
@@ -9,25 +7,11 @@ public class PickupItemsSpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject pickupItemPrefab;
 
-
     [SerializeField]
     private int spawnMaxOffset = 10;
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
-
-    /***
-     * Spawns pickup Items near the position, requested Shape and the amount of pickup Items
-     * that will be spawnend
+    /**
+     * Spawns x amount of pickup Items based on the shape on provided position
      */
     public void SpawnAroundPosition(Vector3 position, Shape shape, int amount)
     {
@@ -40,6 +24,18 @@ public class PickupItemsSpawnManager : MonoBehaviour
             item.tag = "PickupItem";
 
             item.GetComponent<PickupItem>().Init(shape);
+        }
+    }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
         }
     }
 }

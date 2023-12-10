@@ -23,9 +23,9 @@ public class InventoryManager : MonoBehaviour
 
     private SortType activeSortType = SortType.Amount;
     private SortDirection activeSortDirection = SortDirection.Desc;
-
-
     private InventoryItem activeInventoryItem;
+
+    private int defaultInventoryAmount = 5;
 
     public void SortInventoryItems(SortType sortType, SortDirection sortDirection, bool forceSort = false)
     {
@@ -33,7 +33,7 @@ public class InventoryManager : MonoBehaviour
          * Nothing to do if the requested sorting is the current active sorting
          * and not a forced sort.
          * 
-         * A forced sort is usually at the beginning and if we picked up a item.
+         * A forced sort is happening at the beginning and if we picked up a item.
          */
         if (sortType == activeSortType && activeSortDirection == sortDirection && !forceSort)
         {
@@ -56,7 +56,6 @@ public class InventoryManager : MonoBehaviour
 
         activeSortType = sortType;
         activeSortDirection = sortDirection;
-        activeInventoryItem = inventoryItems[0];
     }
 
     public List<InventoryItem> GetInventoryItems() => inventoryItems;
@@ -77,23 +76,31 @@ public class InventoryManager : MonoBehaviour
     public InventoryItem GetActiveInventoryItem() => activeInventoryItem;
 
 
-    /**
-     * Sets the active inventoryItem based on requested inventory item.
-     */
+    /// <summary>
+    /// Set active Inventory Item based on InventoryItem
+    /// </summary>
+    /// <param name="item">inventory item</param>
     public void SetActiveInventoryItem(InventoryItem item)
     {
         activeInventoryItem = inventoryItems.Find(inventoryItem => inventoryItem == item);
     }
 
-    /**
-     * Sets the active inventoryItem based on -1 or 1
-     * 
-     * 1: Set the next inventoryItem in the list as active
-     *    If we would go over the length of the list we set the first as active
-     * 
-     * -1: Set the previous inventoryItem in the list as active
-     *     If we would go under the length of the list we set the last as active
-     */
+    /// <summary>
+    /// Set the active inventoryItem based on -1 or 1
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// /* Move index one to the right (will go to 0 index if index is > list length) */
+    /// SetActiveInventoryItem(1)
+    /// </code>
+    /// </example>
+    /// <example>
+    /// <code>
+    /// /* Move index one to the left (will go to last index if index is < 0) */
+    /// SetActiveInventoryItem(-1)
+    /// </code>
+    /// </example>
+    /// <param name="index">-1 or 1</param>
     public void SetActiveInventoryItem(sbyte index)
     {
         int currentIndex = inventoryItems.FindIndex(inventoryItem => inventoryItem == activeInventoryItem);
@@ -143,7 +150,8 @@ public class InventoryManager : MonoBehaviour
      * Average = The current average of all inventory items amount
      * 
      * This will be used for the EnemySpawnManager to spawn these enemy types.
-     * The target with that is, that the player will not run out of ammo.
+     * The target with that is, that the player will not run out of ammo and
+     * balances the gameplay
      */
     public List<InventoryItem> GetLowestHalfAmount()
     {
@@ -167,13 +175,19 @@ public class InventoryManager : MonoBehaviour
 
         List<Shape> shapes = ShapeDefinition.GetShapeDefinitions();
 
+        /**
+         * Prepare / Preload our inventory Items based on the
+         * default inventory amount
+         */
         foreach (Shape shape in shapes)
         {
-            InventoryItem item = new InventoryItem(shape, 5);
+            InventoryItem item = new InventoryItem(shape, defaultInventoryAmount);
             inventoryItems.Add(item);
         }
 
         // Sorts the items initially based on defaults
         SortInventoryItems(activeSortType, activeSortDirection, true);
+
+        activeInventoryItem = inventoryItems[0];
     }
 }

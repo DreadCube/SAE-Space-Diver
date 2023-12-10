@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * The Camera Controller follows the Ship
+ */
 public class CameraController : MonoBehaviour
 {
     [SerializeField]
@@ -27,7 +28,7 @@ public class CameraController : MonoBehaviour
 
         /**
          * Our Camera position is based on the position of the target.
-         * We use a default forward offfset and the sqrtMagnitute of the target as an
+         * We use a default forward offset and the sqrtMagnitute of the target as an
          * additional "velocity" offset.
          */
         float sqrtMagnitude = targetRigidbody.velocity.sqrMagnitude;

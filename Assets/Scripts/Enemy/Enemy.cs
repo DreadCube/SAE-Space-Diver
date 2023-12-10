@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class Enemy : ShapeMonoBehaviour
 {
-
-    private GameObject followTarget;
-
     [SerializeField]
     private float speed = 50f;
 
@@ -14,28 +11,8 @@ public class Enemy : ShapeMonoBehaviour
     [SerializeField]
     private AudioClip explosionSfx;
 
-
     [SerializeField]
-    GameObject deathParticles;
-
-
-    private void Awake()
-    {
-        followTarget = GameObject.Find("Ship");
-    }
-
-    private void FixedUpdate()
-    {
-        if (!followTarget)
-        {
-            return;
-        }
-
-        float delta = speed * Time.fixedDeltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, followTarget.transform.position, delta);
-
-        transform.LookAt(followTarget.transform);
-    }
+    private GameObject deathParticlesPrefab;
 
     public void TakeDamage(Shape otherShape)
     {
@@ -47,14 +24,31 @@ public class Enemy : ShapeMonoBehaviour
             return;
         }
 
-
         // If the Enemy takes Damage: We destroy it for now. Could change in future.
-        PickupItemsSpawnManager.Instance.SpawnAroundPosition(transform.position, shape, dropAmount);
         Destroy(gameObject);
+
+        // We drop Ammo
+        PickupItemsSpawnManager.Instance.SpawnAroundPosition(transform.position, shape, dropAmount);
 
         AudioManager.Instance.PlaySfx(explosionSfx);
 
-        GameObject particles = Instantiate(deathParticles, transform.position, Quaternion.identity);
+        // Create Death Particle Effect
+        GameObject particles = Instantiate(deathParticlesPrefab, transform.position, Quaternion.identity);
         particles.GetComponent<DeathParticles>().Init(shape.Color, transform.localScale.y / 2);
+    }
+
+    /**
+     * A spawned Enemy will always follow the spaceship
+     */
+    private void FixedUpdate()
+    {
+        if (!shipTransform)
+        {
+            return;
+        }
+        float delta = speed * Time.fixedDeltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, shipTransform.position, delta);
+
+        transform.LookAt(shipTransform);
     }
 }
