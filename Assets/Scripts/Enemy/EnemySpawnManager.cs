@@ -33,7 +33,8 @@ public class EnemySpawnManager : MonoBehaviour
     {
         shipTransform = GameObject.FindWithTag("Ship").GetComponent<Transform>();
         lastSpawnTime = Time.timeSinceLevelLoad;
-        SpawnCircular(spawnAmount);
+
+        SpawnRandom(spawnAmount);
     }
 
     private void Update()
@@ -49,33 +50,34 @@ public class EnemySpawnManager : MonoBehaviour
             lastSpawnTime = Time.timeSinceLevelLoad;
             spawnInterval += spawnInterval * 0.1f;
 
-            SpawnCircular(spawnAmount, 800);
+            SpawnRandom(spawnAmount);
         }
     }
 
     /**
-     * This will spawn our Enemies circular around the player.
-     * Based on amount of enemies to spawn and the radius in which they should
-     * spawn.
+     * This will spawn our Enemiues random in the world Dimension
      */
-    private void SpawnCircular(int amount, float radius = 400)
+    private void SpawnRandom(int amount)
     {
         if (!shipTransform)
         {
             return;
         }
-
         List<InventoryItem> inventoryItems = InventoryManager.Instance.GetLowestHalfAmount();
 
         for (int i = 0; i < amount; i++)
         {
-            float nextRad = 360 / amount * i * Mathf.Deg2Rad;
+            Vector3 spawnPosition;
 
-            float x = Mathf.Cos(nextRad) * radius;
-            float z = Mathf.Sin(nextRad) * radius;
+            do
+            {
+                spawnPosition = new Vector3(Random.Range(-900, 901), 0, Random.Range(-900, 901));
 
-
-            Vector3 spawnPosition = shipTransform.position + new Vector3(x, 0, z);
+                /*
+                * Will ensure that the spawn position of the enemy has some offset from the player
+                * We regenerate a new one if not
+                */
+            } while ((shipTransform.position - spawnPosition).sqrMagnitude < 15000);
 
             GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
@@ -86,4 +88,5 @@ public class EnemySpawnManager : MonoBehaviour
             enemy.GetComponent<Enemy>().Init(shape, withTrigger: false);
         }
     }
+
 }
