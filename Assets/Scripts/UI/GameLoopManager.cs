@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using System.Collections;
 
 using static InventoryManager;
 
@@ -10,8 +11,7 @@ using static InventoryManager;
  */
 public class GameLoopManager : UIManager
 {
-
-    public static GameLoopManager Instance { get; protected set; }
+    public static new GameLoopManager Instance { get; protected set; }
 
     private VisualElement inventoryRoot;
     private VisualElement inventoryItemsRoot;
@@ -26,6 +26,7 @@ public class GameLoopManager : UIManager
 
     private string classNamePrimarySelected = "button-primary-selected";
     private string classNameInventoryItem = "inventory-item";
+    private string classNameInventoryItemSelected = "inventory-item-selected";
 
 
     /**
@@ -85,6 +86,7 @@ public class GameLoopManager : UIManager
 
 
         InventoryItem activeInventoryItem = InventoryManager.Instance.GetActiveInventoryItem();
+
         /**
          * For every inventoryItem we create the proper Button and apply the correct
          * backgroundImage / tintColor and item Count.
@@ -107,13 +109,9 @@ public class GameLoopManager : UIManager
 
             itemButton.RegisterCallback(OnClickInventoryItem(item));
 
-            // Sets corresponding active Styles for the active Inventory Item
-            // TODO: could also be done over className.
             if (item == activeInventoryItem)
             {
-                itemButton.style.color = Color.white;
-                itemButton.style.borderBottomColor = Color.white;
-                itemButton.style.borderBottomWidth = 2;
+                itemButton.AddToClassList(classNameInventoryItemSelected);
             }
 
             inventoryItemsRoot.Add(itemButton);
@@ -129,44 +127,14 @@ public class GameLoopManager : UIManager
      */
     public void HandleFinish()
     {
-        string roundTime = Instance.StopDrawRoundTime();
+        string roundTime = GetRoundTime();
+
+        StopAllCoroutines();
+
         ToggleUIInteractions();
         PopupManager.Instance.ShowDeathOverlay(roundTime);
     }
 
-
-    /**
-     * ToggleUIInteractions will toggle the current UI state.
-     * 
-     * If its active: We gonna deactivate its interactions and SFX
-     * If its inactive: We gonna reactivate its interations and SFX
-     * 
-     * The UI is disabled while we are in the Pause Menu.
-     */
-    private void ToggleUIInteractions()
-    {
-        if (inventoryRoot.enabledSelf)
-        {
-            DisableInventoryUI();
-            inventoryRoot.SetEnabled(false);
-            UIDocument.rootVisualElement.Q("PauseMenu").SetEnabled(false);
-            DisableSfx(inventoryRoot);
-        }
-        else
-        {
-            EnableInventoryUI();
-            inventoryRoot.SetEnabled(true);
-            UIDocument.rootVisualElement.Q("PauseMenu").SetEnabled(true);
-            EnableSfx(inventoryRoot);
-        }
-    }
-
-    public string StopDrawRoundTime()
-    {
-        CancelInvoke("DrawRoundTime");
-        DrawRoundTime();
-        return GetRoundTime();
-    }
 
     protected override void Awake()
     {
@@ -181,27 +149,60 @@ public class GameLoopManager : UIManager
         UIDocument = GetComponent<UIDocument>();
     }
 
+
     protected override void Start()
     {
-        EnableInventoryUI();
+        RegisterInventoryUI();
         DrawInventoryUI();
 
-        InvokeRepeating("DrawRoundTime", 0, 1f);
+        StartCoroutine(DrawRoundTime());
 
         base.Start();
     }
 
+    /**
+     * ToggleUIInteractions will toggle the current UI state.
+     * 
+     * If its active: We gonna deactivate its interactions and SFX
+     * If its inactive: We gonna reactivate its interations and SFX
+     * 
+     * The UI is disabled while we are in the Pause Menu.
+     */
+    private void ToggleUIInteractions()
+    {
+        if (inventoryRoot.enabledSelf)
+        {
+            UnregisterInventoryUI();
+            inventoryRoot.SetEnabled(false);
+            UIDocument.rootVisualElement.Q("PauseMenu").SetEnabled(false);
+            DisableSfx(inventoryRoot);
+        }
+        else
+        {
+            RegisterInventoryUI();
+            inventoryRoot.SetEnabled(true);
+            UIDocument.rootVisualElement.Q("PauseMenu").SetEnabled(true);
+            EnableSfx(inventoryRoot);
+        }
+    }
+
+    /**
+     * Handles proper User Key Down Input for the UI:
+     * 
+     * Escape: Show Pause Menu
+     * 1 / 2 / 3: Will switch the Sort Type
+     * Tab: Will switch the Sort Direction
+     * Q / E: Switch between active Inventory Item
+     */
     private void HandleKeyDownEvent(KeyDownEvent ev)
     {
         switch (ev.keyCode)
         {
             case KeyCode.Escape:
                 ToggleUIInteractions();
-                PopupManager.Instance.ShowPauseMenu(() =>
-                {
-                    ToggleUIInteractions();
-                });
+                PopupManager.Instance.ShowPauseMenu(ToggleUIInteractions);
                 break;
+
             case KeyCode.Alpha1:
                 ChangeSortType(SortType.Amount);
                 break;
@@ -209,6 +210,7 @@ public class GameLoopManager : UIManager
             case KeyCode.Alpha2:
                 ChangeSortType(SortType.Hue);
                 break;
+
             case KeyCode.Alpha3:
                 ChangeSortType(SortType.ShapeType);
                 break;
@@ -221,25 +223,28 @@ public class GameLoopManager : UIManager
                 InventoryManager.Instance.SetActiveInventoryItem(-1);
                 DrawInventoryUI();
                 UIManager.Instance.PlayUISfx();
-
                 break;
+
             case KeyCode.E:
                 InventoryManager.Instance.SetActiveInventoryItem(1);
                 DrawInventoryUI();
                 UIManager.Instance.PlayUISfx();
                 break;
+
+            default:
+                break;
         }
     }
 
     /**
-     * EnableInventoryUI registers the needed functionality of our Inventory UI.
+     * RegisterInventoryUI registers the needed functionality of our Inventory UI.
      * This includes:
      * 1. Reference our Buttons from the UI so we can work with them
      * 2. Register proper on click callbacks for the buttons
      * 3. Register proper KeyPress Events so we can control the Inventory UI with
      *    keypresses
      */
-    private void EnableInventoryUI()
+    private void RegisterInventoryUI()
     {
         inventoryRoot = UIDocument.rootVisualElement.Q<VisualElement>("Inventory");
         inventoryItemsRoot = inventoryRoot.Q<VisualElement>("InventoryItems");
@@ -262,7 +267,10 @@ public class GameLoopManager : UIManager
         descButton.RegisterCallback(OnClickSortDirection(InventoryManager.SortDirection.Desc));
     }
 
-    private void DisableInventoryUI()
+    /**
+     * Unregisters proper Callbacks from the Inventory UI
+     */
+    private void UnregisterInventoryUI()
     {
         amountButton = inventoryRoot.Q<Button>("Amount");
         hueButton = inventoryRoot.Q<Button>("Hue");
@@ -285,6 +293,8 @@ public class GameLoopManager : UIManager
     {
         return (ev) =>
         {
+            PlayUISfx();
+
             InventoryManager.Instance.SetActiveInventoryItem(item);
             DrawInventoryUI();
         };
@@ -316,6 +326,9 @@ public class GameLoopManager : UIManager
         DrawInventoryUI();
     }
 
+    /**
+     * Calculates the round Time based on time since start of the level
+     */
     private string GetRoundTime()
     {
         int seconds = Mathf.RoundToInt(Time.timeSinceLevelLoad);
@@ -329,10 +342,18 @@ public class GameLoopManager : UIManager
         return $"{formattedMinutes}:{formattedSeconds}";
     }
 
-    private void DrawRoundTime()
+    /**
+     * Draws the roundTime every 0.5 Seconds to the UI.
+     */
+    private IEnumerator DrawRoundTime()
     {
-        Label timer = UIDocument.rootVisualElement.Q<Label>("Timer");
-        timer.text = GetRoundTime();
+        while (true)
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            Label timer = UIDocument.rootVisualElement.Q<Label>("Timer");
+            timer.text = GetRoundTime();
+        }
     }
 }
 

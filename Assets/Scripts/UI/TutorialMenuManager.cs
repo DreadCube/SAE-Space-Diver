@@ -10,7 +10,6 @@ public class TutorialMenuManager : UIManager
         PopupManager.Instance.ShowTutorial(() =>
         {
             SceneManager.LoadScene("MainMenu");
-
         });
 
         base.Start();

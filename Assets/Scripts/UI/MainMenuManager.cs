@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
+/*
+ * The MainMenuManager is the UI Manager for the Main Menu Scene.
+ */
 public class MainMenuManager : UIManager
 {
     [SerializeField]

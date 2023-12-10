@@ -10,7 +10,6 @@ public class OptionsMenuManager : UIManager
         PopupManager.Instance.ShowOptions(() =>
         {
             SceneManager.LoadScene("MainMenu");
-
         });
 
         base.Start();
