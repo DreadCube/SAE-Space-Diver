@@ -14,7 +14,7 @@ public class Bullet : ShapeMonoBehaviour
     private AudioClip bulletSfx;
 
     /**
-     * Yes "new" keyboard. Because we don't need the Start Logic
+     * Yes "new" keyword. Because we don't need the Start Logic
      * from inherited ShapeMonoBehaviour in case of Bullet
      */
     private new void Start()
