@@ -46,6 +46,8 @@ public class ShipController : MonoBehaviour
 
     private float energyLossTime = 0f;
 
+    private bool isDead = false;
+
     private Rigidbody rigidBody;
 
     [SerializeField]
@@ -314,6 +316,16 @@ public class ShipController : MonoBehaviour
      */
     private void HandleDeath()
     {
+        /*
+         * Prevents multiple HandleDeath calls trough collisions with enemies
+         * at the same time
+         */
+        if (isDead)
+        {
+            return;
+        }
+        isDead = true;
+
         GameObject particles = Instantiate(deathParticles, transform.position, Quaternion.identity);
         particles.GetComponent<DeathParticles>().Init(Color.white, 10);
 
@@ -333,7 +345,6 @@ public class ShipController : MonoBehaviour
 
         // Decrease amount by one
         activeInventoryItem.Decrease();
-
 
         // Instantiate the bullet
         GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
