@@ -59,7 +59,7 @@ public class ShapeMonoBehaviour : MonoBehaviour
         {
             if (!withCollider)
             {
-
+                return;
             }
             SphereCollider collider = gameObject.AddComponent<SphereCollider>();
             collider.isTrigger = withTrigger;
