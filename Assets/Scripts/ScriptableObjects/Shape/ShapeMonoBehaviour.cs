@@ -44,23 +44,18 @@ public class ShapeMonoBehaviour : MonoBehaviour
 
         SetMaterialEmission(shapeRenderer.material, shape.Color);
 
+        if (!withCollider)
+        {
+            return;
+        }
+
         if (shape.Type == Shape.ShapeType.Cube)
         {
-            if (!withCollider)
-            {
-                return;
-            }
-
             BoxCollider collider = gameObject.AddComponent<BoxCollider>();
-
             collider.isTrigger = withTrigger;
         }
         else
         {
-            if (!withCollider)
-            {
-                return;
-            }
             SphereCollider collider = gameObject.AddComponent<SphereCollider>();
             collider.isTrigger = withTrigger;
         }
