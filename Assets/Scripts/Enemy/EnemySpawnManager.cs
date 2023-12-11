@@ -77,7 +77,7 @@ public class EnemySpawnManager : MonoBehaviour
                 * Will ensure that the spawn position of the enemy has some offset from the player
                 * We regenerate a new one if not
                 */
-            } while ((shipTransform.position - spawnPosition).sqrMagnitude < 15000);
+            } while ((shipTransform.position - spawnPosition).sqrMagnitude < 50000);
 
             GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
