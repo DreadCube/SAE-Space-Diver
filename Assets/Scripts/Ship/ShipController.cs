@@ -2,16 +2,13 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
-    [Range(0f, 200f)]
-    [SerializeField]
+    [SerializeField, Range(0f, 200f)]
     private float verticalForceAmount;
 
-    [Range(0f, 10f)]
-    [SerializeField]
+    [SerializeField, Range(0f, 10f)]
     private float rollTorqueAmount;
 
-    [Range(0f, 10f)]
-    [SerializeField]
+    [SerializeField, Range(0f, 10f)]
     private float pitchTorqueAmount;
 
     [SerializeField]
