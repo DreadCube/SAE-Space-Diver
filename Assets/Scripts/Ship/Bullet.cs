@@ -4,11 +4,12 @@ using UnityEngine;
 /**
  * A Bullet that will be shooted out from the Spaceship
  */
-public class Bullet : ShapeMonoBehaviour
+public class Bullet : ShapeMonoBehaviour, IBulletCamListener
 {
     private Rigidbody bulletRigidbody;
 
     private float maxLiveTime = 1f;
+    private float speed = 2000f;
 
     [SerializeField]
     private AudioClip bulletSfx;
@@ -23,11 +24,32 @@ public class Bullet : ShapeMonoBehaviour
 
         AudioManager.Instance.PlaySfx(bulletSfx, gameObject);
 
+        GetComponentInChildren<TrailRenderer>().material = shapeRenderer.material;
         Destroy(gameObject, maxLiveTime);
     }
 
     private void FixedUpdate()
     {
-        bulletRigidbody.AddRelativeForce(Vector3.forward * 2000f, ForceMode.VelocityChange);
+        bulletRigidbody.AddRelativeForce(Vector3.forward * speed, ForceMode.VelocityChange);
+    }
+
+    void IBulletCamListener.OnBulletCamStart(Bullet targetBullet, RaycastHit targetHit)
+    {
+        if (targetBullet == this)
+        {
+            maxLiveTime = float.MaxValue;
+            speed = 0f;
+            return;
+        }
+        gameObject.SetActive(false);
+    }
+
+    void IBulletCamListener.OnBulletCamEnd(Bullet targetBullet, RaycastHit targetHit)
+    {
+        if (this == null || gameObject == null)
+        {
+            return;
+        }
+        Destroy(gameObject);
     }
 }

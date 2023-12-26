@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Enemy : ShapeMonoBehaviour
+public class Enemy : ShapeMonoBehaviour, IBulletCamListener
 {
     [SerializeField]
     private float speed = 50f;
@@ -50,5 +50,21 @@ public class Enemy : ShapeMonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, shipTransform.position, delta);
 
         transform.LookAt(shipTransform);
+    }
+
+    void IBulletCamListener.OnBulletCamStart(Bullet targetBullet, RaycastHit targetHit)
+    {
+        if (targetHit.transform.gameObject == gameObject)
+        {
+            speed = 0f;
+            return;
+        }
+
+        gameObject.SetActive(false);
+    }
+
+    void IBulletCamListener.OnBulletCamEnd(Bullet targetBullet, RaycastHit targetHit)
+    {
+        gameObject.SetActive(true);
     }
 }
