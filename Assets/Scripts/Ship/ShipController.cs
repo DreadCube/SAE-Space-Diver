@@ -450,6 +450,7 @@ public class ShipController : MonoBehaviour, IBulletCamListener
 
     void IBulletCamListener.OnBulletCamStart(Bullet targetBullet, RaycastHit targetHit)
     {
+        shootInput = false;
         rigidBody.velocity = Vector3.zero;
         isInBulletCam = true;
 
