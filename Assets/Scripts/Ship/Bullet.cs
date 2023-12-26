@@ -41,7 +41,7 @@ public class Bullet : ShapeMonoBehaviour, IBulletCamListener
             speed = 0f;
             return;
         }
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
     void IBulletCamListener.OnBulletCamEnd(Bullet targetBullet, RaycastHit targetHit)
