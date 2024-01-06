@@ -53,7 +53,6 @@ public class EnemySpawnManager : MonoBehaviour, IBulletCamListener
             lastSpawnTime = roundTime;
             spawnInterval += spawnInterval * 0.1f;
 
-            Debug.Log("SPAWN!");
             SpawnRandom(spawnAmount);
         }
     }
