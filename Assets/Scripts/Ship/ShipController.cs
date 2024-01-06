@@ -47,6 +47,8 @@ public class ShipController : MonoBehaviour, IBulletCamListener
 
     private Rigidbody rigidBody;
 
+    private RigidbodyConstraints rigidBodyConstraints;
+
     [SerializeField]
     private AudioClip pickupSfx;
 
@@ -409,11 +411,10 @@ public class ShipController : MonoBehaviour, IBulletCamListener
     /// <returns></returns>
     private bool IsBulletCamHit(Bullet bullet, RaycastHit hit)
     {
-        // TODO: Move to Settings
-        int randomFactor = 10;
+        float intensity = SettingsManager.Instance.GetBulletCamIntensity();
 
         // Check if bullet camera is completely disabled
-        if (randomFactor == 0)
+        if (intensity == 0f)
         {
             return false;
         }
@@ -440,7 +441,7 @@ public class ShipController : MonoBehaviour, IBulletCamListener
         // We trigger the bullet cam depending on settings.
         // Lower value = Bullet cam will not be triggered that often
         // Higher value = Bullet cam will be triggered more often
-        if (Random.Range(1, 11) <= randomFactor)
+        if (Random.Range(0.1f, 1f) <= intensity)
         {
             return true;
         }
@@ -451,7 +452,10 @@ public class ShipController : MonoBehaviour, IBulletCamListener
     void IBulletCamListener.OnBulletCamStart(Bullet targetBullet, RaycastHit targetHit)
     {
         shootInput = false;
-        rigidBody.velocity = Vector3.zero;
+
+        rigidBodyConstraints = rigidBody.constraints;
+        rigidBody.constraints = RigidbodyConstraints.FreezeAll;
+
         isInBulletCam = true;
 
         laser.SetActive(false);
@@ -464,5 +468,6 @@ public class ShipController : MonoBehaviour, IBulletCamListener
 
         isInBulletCam = false;
         laser.SetActive(true);
+        rigidBody.constraints = rigidBodyConstraints;
     }
 }

@@ -42,24 +42,32 @@ public class PopupManager : MonoBehaviour
 
         Slider musicVolumeSlider = optionsOverlay.Q<Slider>("MusicVolume");
         Slider sfxVolumeSlider = optionsOverlay.Q<Slider>("SFXVolume");
+        Slider bulletCamIntensitySlider = optionsOverlay.Q<Slider>("BulletCamIntensity");
+
         Toggle fullscreenToggle = optionsOverlay.Q<Toggle>("FullscreenToggle");
 
         Button backButton = optionsOverlay.Q<Button>("Back");
 
-        musicVolumeSlider.value = AudioManager.Instance.GetMusicVolume();
-        sfxVolumeSlider.value = AudioManager.Instance.GetSfxVolume();
-
+        musicVolumeSlider.value = SettingsManager.Instance.GetMusicVolume();
+        sfxVolumeSlider.value = SettingsManager.Instance.GetSfxVolume();
+        bulletCamIntensitySlider.value = SettingsManager.Instance.GetBulletCamIntensity();
 
         musicVolumeSlider.RegisterValueChangedCallback(ev =>
         {
+            SettingsManager.Instance.SetMusicVolume(ev.newValue);
             AudioManager.Instance.SetMusicVolume(ev.newValue);
         });
 
         sfxVolumeSlider.RegisterValueChangedCallback(ev =>
         {
+            SettingsManager.Instance.SetSfxVolume(ev.newValue);
             AudioManager.Instance.SetSfxVolume(ev.newValue);
         });
 
+        bulletCamIntensitySlider.RegisterValueChangedCallback(ev =>
+        {
+            SettingsManager.Instance.SetBulletCamIntensity(ev.newValue);
+        });
 
         sfxVolumeSlider.Q("unity-drag-container").RegisterCallback<ClickEvent>(ev =>
         {

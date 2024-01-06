@@ -1,9 +1,9 @@
 using UnityEngine;
 
-/**
- * The Interface IBulletCamListener can be attached to classes that need to be
- * informed if we enter the bullet cam.
- */
+/// <summary>
+/// The Interface IBulletCamListener can be attached to classes that need to be
+/// informed if we enter or leave the bullet cam.
+/// </summary>
 public interface IBulletCamListener
 {
     /// <summary>

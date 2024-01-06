@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 using System.Linq;
 
 public class BulletCamManager : MonoBehaviour
@@ -17,8 +18,13 @@ public class BulletCamManager : MonoBehaviour
     private Vector3 bulletMoveDirection;
     private RaycastHit hit;
 
-
     private bool isBulletCamRunning = false;
+
+
+    [SerializeField]
+    private PostProcessVolume postProcessVolume;
+
+    Bloom bloomEffect;
 
     public void Trigger(Bullet bullet, RaycastHit hit)
     {
@@ -41,13 +47,13 @@ public class BulletCamManager : MonoBehaviour
         {
             listener.OnBulletCamStart(bullet, hit);
         }
-
     }
 
     private void Reset()
     {
         bulletCamera.enabled = false;
         isBulletCamRunning = false;
+        bloomEffect.intensity.value = 1f;
     }
 
     private void Awake()
@@ -63,6 +69,7 @@ public class BulletCamManager : MonoBehaviour
         }
 
         bulletCamera = GetComponent<Camera>();
+        bloomEffect = postProcessVolume.profile.GetSetting<Bloom>();
     }
 
     private void Update()
@@ -72,17 +79,9 @@ public class BulletCamManager : MonoBehaviour
             return;
         }
 
+        // The bullet speed will be drastically reduced if we are almost at the target
         float distanceToTarget = (hit.point - bullet.transform.position).sqrMagnitude;
-
-
-        if (distanceToTarget < 150f)
-        {
-            bulletSpeed = 5f;
-        }
-        else
-        {
-            bulletSpeed = 200f;
-        }
+        bulletSpeed = distanceToTarget < 150f ? 5f : 200f;
 
         bullet.transform.position += (bulletMoveDirection.normalized * bulletSpeed) * Time.deltaTime;
 
@@ -90,6 +89,8 @@ public class BulletCamManager : MonoBehaviour
 
         CalcCameraPositionAndRotation(percent);
 
+
+        bloomEffect.intensity.value = (10f / 100f) * percent;
 
         if (percent >= 100)
         {
@@ -102,7 +103,11 @@ public class BulletCamManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Helper func that calculates how much we traveled (in percent) between
+    /// the spawn position of the bullet and our hit point (Enemy)
+    /// </summary>
+    /// <returns>float percent</returns>
     private float CalcTraveledPercent()
     {
         float a = (hit.point - bulletSpawnPosition).sqrMagnitude;
@@ -113,12 +118,18 @@ public class BulletCamManager : MonoBehaviour
         return percent;
     }
 
+    /// <summary>
+    /// Calculates the Bullet Camera position and rotation. The Camera rotates around
+    /// the bullet while it flies to the target. The offset between camera and bullet
+    /// gets higher with actual flying time / distance.
+    /// </summary>
+    /// <param name="percent">float percent</param>
     private void CalcCameraPositionAndRotation(float percent)
     {
         bullet.transform.LookAt(hit.transform);
 
         float angleStep = (360f / 100f) * percent - 90f;
-        float radius = 10f;
+        float radius = percent + 5f;
 
 
         float cos = Mathf.Cos(angleStep * Mathf.Deg2Rad) * radius;
