@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : MonoBehaviour, IBulletCamListener
 {
     public static AudioManager Instance { get; private set; }
 
@@ -8,18 +8,10 @@ public class AudioManager : MonoBehaviour
     private AudioClip soundTrack;
 
 
-    private float musicVolume = 0.25f;
-    private float sfxVolume = 0.25f;
+    private float musicVolume;
+    private float sfxVolume;
 
-    public float GetMusicVolume()
-    {
-        return musicVolume;
-    }
-
-    public float GetSfxVolume()
-    {
-        return sfxVolume;
-    }
+    private float tempMusicVolume;
 
     public void SetMusicVolume(float volume)
     {
@@ -147,6 +139,20 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
+        musicVolume = SettingsManager.Instance.GetMusicVolume();
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+
         PlayMusic(soundTrack);
+    }
+
+    void IBulletCamListener.OnBulletCamStart(Bullet targetBullet, RaycastHit targetHit)
+    {
+        tempMusicVolume = musicVolume;
+        SetMusicVolume(0.01f);
+    }
+
+    void IBulletCamListener.OnBulletCamEnd(Bullet targetBullet, RaycastHit targetHit)
+    {
+        SetMusicVolume(tempMusicVolume);
     }
 }

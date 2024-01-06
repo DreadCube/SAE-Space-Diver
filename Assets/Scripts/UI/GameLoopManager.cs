@@ -9,7 +9,7 @@ using static InventoryManager;
  * The GameLoopManager is the UI Manager for the Main Game Loop Scene.
  * It handles as example the UI Inventory Logic.
  */
-public class GameLoopManager : UIManager
+public class GameLoopManager : UIManager, IBulletCamListener
 {
     public static new GameLoopManager Instance { get; protected set; }
 
@@ -27,6 +27,10 @@ public class GameLoopManager : UIManager
     private string classNamePrimarySelected = "button-primary-selected";
     private string classNameInventoryItem = "inventory-item";
     private string classNameInventoryItemSelected = "inventory-item-selected";
+
+    private float roundTime = 0f;
+
+    private bool inBulletCam = false;
 
 
     /**
@@ -158,6 +162,15 @@ public class GameLoopManager : UIManager
         StartCoroutine(DrawRoundTime());
 
         base.Start();
+    }
+
+    private void Update()
+    {
+        if (inBulletCam)
+        {
+            return;
+        }
+        roundTime += Time.deltaTime;
     }
 
     /**
@@ -327,11 +340,11 @@ public class GameLoopManager : UIManager
     }
 
     /**
-     * Calculates the round Time based on time since start of the level
+     * Calculates the round Time
      */
     private string GetRoundTime()
     {
-        int seconds = Mathf.RoundToInt(Time.timeSinceLevelLoad);
+        int seconds = Mathf.RoundToInt(roundTime);
 
         int minutes = seconds / 60;
         int rest = seconds % 60;
@@ -354,6 +367,20 @@ public class GameLoopManager : UIManager
             Label timer = UIDocument.rootVisualElement.Q<Label>("Timer");
             timer.text = GetRoundTime();
         }
+    }
+
+    void IBulletCamListener.OnBulletCamStart(Bullet targetBullet, RaycastHit targetHit)
+    {
+        inBulletCam = true;
+        UIDocument.rootVisualElement.SetEnabled(false);
+        StopAllCoroutines();
+    }
+
+    void IBulletCamListener.OnBulletCamEnd(Bullet targetBullet, RaycastHit targetHit)
+    {
+        inBulletCam = false;
+        UIDocument.rootVisualElement.SetEnabled(true);
+        StartCoroutine(DrawRoundTime());
     }
 }
 

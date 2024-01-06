@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ShipController : MonoBehaviour
+public class ShipController : MonoBehaviour, IBulletCamListener
 {
     [SerializeField, Range(0f, 200f)]
     private float verticalForceAmount;
@@ -47,6 +47,8 @@ public class ShipController : MonoBehaviour
 
     private Rigidbody rigidBody;
 
+    private RigidbodyConstraints rigidBodyConstraints;
+
     [SerializeField]
     private AudioClip pickupSfx;
 
@@ -60,6 +62,9 @@ public class ShipController : MonoBehaviour
     private GameObject deathParticles;
 
     private GameObject laser;
+
+
+    private bool isInBulletCam = false;
 
 
     private void Awake()
@@ -81,6 +86,10 @@ public class ShipController : MonoBehaviour
 
     private void Update()
     {
+        if (isInBulletCam)
+        {
+            return;
+        }
         vertInput = Input.GetAxis("Vertical");
         horizInput = Input.GetAxis("Horizontal");
         shootInput = Input.GetKey(KeyCode.Space);
@@ -145,6 +154,10 @@ public class ShipController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isInBulletCam)
+        {
+            return;
+        }
         HandlePhysics();
         HandleParticles();
         HandleShooting();
@@ -176,11 +189,17 @@ public class ShipController : MonoBehaviour
             return;
         }
 
-        ShootBullet();
+        Bullet bullet = ShootBullet();
+
 
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, shootHitDistance))
         {
+            if (IsBulletCamHit(bullet, hit))
+            {
+                BulletCamManager.Instance.Trigger(bullet, hit);
+                return;
+            }
             OnRaycastHit(hit);
         }
     }
@@ -347,7 +366,7 @@ public class ShipController : MonoBehaviour
     /**
      * Instantiates a visual Bullet and updates the inventory accordingly
      */
-    private void ShootBullet()
+    private Bullet ShootBullet()
     {
         InventoryItem activeInventoryItem = InventoryManager.Instance.GetActiveInventoryItem();
 
@@ -355,12 +374,14 @@ public class ShipController : MonoBehaviour
         activeInventoryItem.Decrease();
 
         // Instantiate the bullet
-        GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+        GameObject bullet = Instantiate(bulletPrefab, laser.transform.position, laser.transform.rotation);
         bullet.GetComponent<Bullet>().Init(activeInventoryItem.GetShape(), false);
 
         // Redraw the UI
         // TODO: also here. if possible find a way to not redraw the whole UI.
         GameLoopManager.Instance.DrawInventoryUI();
+
+        return bullet.GetComponent<Bullet>();
     }
 
     /**
@@ -369,10 +390,84 @@ public class ShipController : MonoBehaviour
      */
     private void OnRaycastHit(RaycastHit hit)
     {
-        if (hit.transform.gameObject.tag == "Enemy")
+        if (!HitIsEnemy(hit))
         {
-            Enemy enemy = hit.transform.GetComponent<Enemy>();
-            enemy.TakeDamage(InventoryManager.Instance.GetActiveInventoryItem().GetShape());
+            return;
         }
+        Enemy enemy = hit.transform.GetComponent<Enemy>();
+        enemy.TakeDamage(InventoryManager.Instance.GetActiveInventoryItem().GetShape());
+    }
+
+    private bool HitIsEnemy(RaycastHit hit)
+    {
+        return hit.transform.gameObject.tag == "Enemy";
+    }
+
+    /// <summary>
+    /// Helper func that checks if we should trigger the bullet camera
+    /// </summary>
+    /// <param name="bullet"></param>
+    /// <param name="hit"></param>
+    /// <returns></returns>
+    private bool IsBulletCamHit(Bullet bullet, RaycastHit hit)
+    {
+        float intensity = SettingsManager.Instance.GetBulletCamIntensity();
+
+        // Check if bullet camera is completely disabled
+        if (intensity == 0f)
+        {
+            return false;
+        }
+
+        // We need to hit a enemy
+        if (!HitIsEnemy(hit))
+        {
+            return false;
+        }
+
+        // Our enemy has to die after bullet cam (immutable check)
+        Enemy enemy = hit.transform.GetComponent<Enemy>();
+        if (enemy.GetShape() == bullet.GetShape())
+        {
+            return false;
+        }
+
+        // Bullet cam is only allowed if we have some distance between the enemy
+        if ((enemy.gameObject.transform.position - bullet.gameObject.transform.position).magnitude < 200f)
+        {
+            return false;
+        }
+
+        // We trigger the bullet cam depending on settings.
+        // Lower value = Bullet cam will not be triggered that often
+        // Higher value = Bullet cam will be triggered more often
+        if (Random.Range(0.1f, 1f) <= intensity)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    void IBulletCamListener.OnBulletCamStart(Bullet targetBullet, RaycastHit targetHit)
+    {
+        shootInput = false;
+
+        rigidBodyConstraints = rigidBody.constraints;
+        rigidBody.constraints = RigidbodyConstraints.FreezeAll;
+
+        isInBulletCam = true;
+
+        laser.SetActive(false);
+    }
+
+
+    void IBulletCamListener.OnBulletCamEnd(Bullet targetBullet, RaycastHit targetHit)
+    {
+        OnRaycastHit(targetHit);
+
+        isInBulletCam = false;
+        laser.SetActive(true);
+        rigidBody.constraints = rigidBodyConstraints;
     }
 }

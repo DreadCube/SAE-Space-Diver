@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class EnemySpawnManager : MonoBehaviour
+public class EnemySpawnManager : MonoBehaviour, IBulletCamListener
 {
     public static EnemySpawnManager Instance { get; private set; }
 
@@ -11,6 +11,8 @@ public class EnemySpawnManager : MonoBehaviour
     private Transform shipTransform;
 
     private float lastSpawnTime;
+    private float roundTime;
+
     private float spawnInterval = 20f;
 
     private float spawnMultiplier = 1.5f;
@@ -32,22 +34,23 @@ public class EnemySpawnManager : MonoBehaviour
     private void Start()
     {
         shipTransform = GameObject.FindWithTag("Ship").GetComponent<Transform>();
-        lastSpawnTime = Time.timeSinceLevelLoad;
+        lastSpawnTime = 0;
 
         SpawnRandom(spawnAmount);
     }
 
     private void Update()
     {
+        roundTime += Time.deltaTime;
 
         /**
          * We have a interval based spawning. Enemies wil spawn all 20 seconds
          * The amount that will be spawned will be increased every cyclus
          */
-        if (Time.timeSinceLevelLoad - lastSpawnTime > spawnInterval)
+        if (roundTime - lastSpawnTime > spawnInterval)
         {
             spawnAmount = Mathf.RoundToInt(spawnAmount * spawnMultiplier);
-            lastSpawnTime = Time.timeSinceLevelLoad;
+            lastSpawnTime = roundTime;
             spawnInterval += spawnInterval * 0.1f;
 
             SpawnRandom(spawnAmount);
@@ -89,4 +92,13 @@ public class EnemySpawnManager : MonoBehaviour
         }
     }
 
+    void IBulletCamListener.OnBulletCamStart(Bullet targetBullet, RaycastHit targetHit)
+    {
+        gameObject.SetActive(false);
+    }
+
+    void IBulletCamListener.OnBulletCamEnd(Bullet targetBullet, RaycastHit targetHit)
+    {
+        gameObject.SetActive(true);
+    }
 }
