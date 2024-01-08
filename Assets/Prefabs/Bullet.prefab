@@ -147,7 +147,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 5
+  m_Time: Infinity
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -165,13 +165,13 @@ TrailRenderer:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.5074626
+        time: 0.20297028
         value: 0
-        inSlope: -0.03585189
-        outSlope: -0.03585189
+        inSlope: -0.10612024
+        outSlope: -0.10612024
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.8588235
+        inWeight: 0.6911765
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
