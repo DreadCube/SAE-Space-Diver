@@ -96,12 +96,9 @@ public class PopupManager : MonoBehaviour
         fullscreenToggle.RegisterValueChangedCallback(ev =>
         {
             Resolution currentResolution = Screen.currentResolution;
-
-            FullScreenMode fullScreenMode = ev.newValue ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
-
-            Screen.SetResolution(currentResolution.width, currentResolution.height, fullScreenMode);
+            Screen.SetResolution(currentResolution.width, currentResolution.height, ev.newValue);
         });
-        fullscreenToggle.value = Screen.fullScreenMode == FullScreenMode.FullScreenWindow ? true : false;
+        fullscreenToggle.value = Screen.fullScreen;
 
         PrepareResolutionDropdown();
     }
@@ -280,7 +277,6 @@ public class PopupManager : MonoBehaviour
         Resolution currentResolution = Screen.currentResolution;
 
         DropdownField resolutionDropdown = popupHolder.Q<DropdownField>("Resolution");
-        resolutionDropdown.value = FormatResolution(currentResolution);
 
         resolutionDropdown.RegisterValueChangedCallback((ev) =>
         {
@@ -289,7 +285,7 @@ public class PopupManager : MonoBehaviour
             int width = int.Parse(splittedOption[0]);
             int height = int.Parse(splittedOption[1]);
 
-            Screen.SetResolution(width, height, Screen.fullScreenMode);
+            Screen.SetResolution(width, height, Screen.fullScreen);
         });
 
         resolutionDropdown.choices.Clear();
@@ -298,6 +294,8 @@ public class PopupManager : MonoBehaviour
             string choice = FormatResolution(availableResolution);
             resolutionDropdown.choices.Add(choice);
         }
+
+        resolutionDropdown.value = FormatResolution(currentResolution);
     }
 
     private string FormatResolution(Resolution resolution)
