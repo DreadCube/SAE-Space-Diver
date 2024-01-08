@@ -296,12 +296,12 @@ Material:
     - _StarsHeightMask: 0
     - _StarsHeigntMask: 1
     - _StarsHorizonMask: 1
-    - _StarsIntensity: 5
+    - _StarsIntensity: 3
     - _StarsLayer: 3
     - _StarsMaskPower: 1
     - _StarsRotation: 0
     - _StarsRotationSpeed: 0.5
-    - _StarsSize: 0.07
+    - _StarsSize: 0.05
     - _StarsSunMask: 0.02
     - _SunCat: 1
     - _SunIntensity: 2
