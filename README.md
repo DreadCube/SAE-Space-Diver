@@ -49,3 +49,19 @@ Link to Licence:    	https://unity.com/de/legal/as-terms
 ### Post Processing / Glow Effect
 Post Processing was made with the Offical "Post Processing" Package from Unity and following Tutorial:
 https://www.youtube.com/watch?v=_KBaT6gRgRs
+
+
+### Skybox created through template from:
+
+Asset Name:     Polyverse Skies | Low Poly Skybox Shaders
+
+Author:         BOXOPHOBIC
+
+License:   Single Entity
+
+In Project:     Assets/3rdParty/BOXOPHOBIC | Assets/Materials/Skybox
+
+Link to Asset:          https://assetstore.unity.com/packages/vfx/shaders/polyverse-skies-low-poly-skybox-shaders-104017
+
+Link to Licence:    	https://unity.com/de/legal/as-terms
+
